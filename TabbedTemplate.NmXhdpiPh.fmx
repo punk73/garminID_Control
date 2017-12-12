@@ -126,7 +126,8 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
           Viewport.Width = 217.000000000000000000
           Viewport.Height = 176.000000000000000000
         end
-        inherited StringGrid1: TStringGrid
+        inherited garminDemandQtyGrid: TStringGrid
+          RowCount = 7
           Viewport.Width = 273.000000000000000000
           Viewport.Height = 137.000000000000000000
         end
@@ -145,5 +146,8 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
             GestureID = sgiRight
           end>
       end>
+  end
+  inherited demandQuery: TFDQuery
+    Active = True
   end
 end

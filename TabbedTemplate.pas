@@ -109,11 +109,13 @@ type
     StringColumn8: TStringColumn;
     StringColumn9: TStringColumn;
     StringColumn10: TStringColumn;
-    StringGrid1: TStringGrid;
+    garminDemandQtyGrid: TStringGrid;
     Label17: TLabel;
+    demandQuery: TFDQuery;
+    BindSourceDB5: TBindSourceDB;
+    LinkGridToDataSourceBindSourceDB5: TLinkGridToDataSource;
     procedure Button12Click(Sender: TObject);
     procedure Button13Click(Sender: TObject);
-    procedure Button14Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -128,6 +130,8 @@ type
     procedure FormGesture(Sender: TObject; const EventInfo: TGestureEventInfo;
       var Handled: Boolean);
     procedure FormShow(Sender: TObject);
+    procedure garminDemandQtyGridCellClick(const Column: TColumn; const Row:
+        Integer);
     procedure garminGridCellClick(const Column: TColumn; const Row: Integer);
     procedure listModelperGarminItemClick(const Sender: TCustomListBox; const Item:
         TListBoxItem);
@@ -135,6 +139,7 @@ type
         TListBoxItem);
     procedure stockGarminComboChange(Sender: TObject);
     procedure refreshQuery;
+    procedure stockGridCellClick(const Column: TColumn; const Row: Integer);
 
 
 
@@ -173,7 +178,7 @@ type
 
 var
   TabbedForm: TTabbedForm;
-  logData, GlobalListModelNumber, AllModelNumber : TStringList;
+  logData, GlobalListModelNumber, AllModelNumber, AllGarminId : TStringList;
   //GlobalListModelNumber Is model number from table garmines_pso
   //AllModelNumber is model number from pso databases (db mas Alvi) per last create_time
   // dua duanya di isi di getModelNumber
@@ -218,16 +223,39 @@ var
   Alist: TStrings;
   query: string;
 begin
-  //ambil dari listModel yang ter check list
-  for I := 0 to listModel.Count-1 do
+  //error handler
+  if demandGarminCombo.ItemIndex=-1 then
   begin
-   if listModel.ListItems[I].IsChecked then
+    ShowMessage('You need to choose garmin id first!');
+    exit;
+  end;
+  //Error Handler
+  if (listModel.ItemIndex=-1) then
+  begin
+    ShowMessage('You need to choose listModel first!');
+    exit;
+  end;
+
+  //ambil dari listModel yang ter check list
+  for I:= listModel.Count-1 downto 0 do
+  begin
+   if (listModel.ListItems[I].IsChecked) then
    begin
     //ShowMessage( listModel.Items[ I ] );
+    //set edtTotalDemand
+    edtTotalDemand.Text:= gridModel.Cells[1, cariIndex(listModel.ListItems[I].Text, AllModelNumber ) ] ;
     query:='insert into garmines_pso (garmines_id, model_number, demand ) values ("'+ demandGarminCombo.Selected.Text +'", "'+listModel.ListItems[I].Text+'", "'+ edtTotalDemand.Text +'" )';
+
     try
       FDConnection1.ExecSQL(query);
+      //add saved item ke listModelPerGarmin
+      listModelperGarmin.Items.Add( listModel.ListItems[I].Text );
+      //hapus selected item di listModel
+      listModel.Items.Delete( I );
+      //total demand updated.
 
+      //garminDemandQtyGrid refresh
+      demandQuery.Refresh;
     except
        on E : Exception do
        ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
@@ -236,10 +264,14 @@ begin
    end;
   end;
 
-  refreshQuery;
-  getGarminId;
-  listModelRefresh; //untuk menghilangkan list model yang sudah dipilih.
-  demandGarminComboChange(Self); //untuk memindahkan yg dipilih ke listModelPerGarmin
+  {
+    refreshQuery;
+    getGarminId;
+    listModelRefresh; //untuk menghilangkan list model yang sudah dipilih.
+    demandGarminComboChange(Self); //untuk memindahkan yg dipilih ke listModelPerGarmin
+  }
+
+
 
   ShowMessage('Data Saved!');
   
@@ -259,22 +291,27 @@ begin
     FDConnection1.ExecSQL(query);
     garmines_pso_Query.Refresh;
 
-    listModelRefresh;  //reload listModel & gridModel
+    {listModelRefresh;  //reload listModel & gridModel
     refreshQuery;
     getGarminId;
     bersih;
-    nonaktif;
+    nonaktif;}
+
+    //add deleted item from listmodelperGarmin ke listModel
+      listModel.Items.Add(listModelperGarmin.Selected.Text);
+    //delete listModelPerGarmin deleted item
+      listModelperGarmin.Items.Delete( listModelperGarmin.Items.IndexOf( listModelperGarmin.Selected.Text ) );
+    //setfocus ke item tsb
+
+    //refresh grid qty based on garmin id
+      demandQuery.Refresh;
+
     ShowMessage('Data Terhapus!');
     demandGarminCombo.SetFocus;
   end;
 
 
 
-end;
-
-procedure TTabbedForm.Button14Click(Sender: TObject);
-begin
-  clearGrid(mainGrid);
 end;
 
 procedure TTabbedForm.Button3Click(Sender: TObject);
@@ -600,6 +637,7 @@ begin
   getGarminId;
   getModelNumber;
   updateStock;
+  sleep(10);
   updateDemand;
   //updateStock; //update stock in db basedOn folder
   ComboBox1.ItemIndex:=0;
@@ -632,6 +670,13 @@ begin
   setGrid;
   nonaktif;
 
+end;
+
+procedure TTabbedForm.garminDemandQtyGridCellClick(const Column: TColumn; const
+    Row: Integer);
+begin
+  demandGarminCombo.ItemIndex:= demandGarminCombo.Items.IndexOf( garminDemandQtyGrid.Cells[0, Row] );
+  demandGarminComboChange(Self);
 end;
 
 procedure TTabbedForm.garminGridCellClick(const Column: TColumn; const Row:
@@ -675,10 +720,15 @@ begin
   garminQuery.First;
   I:=0;
   clearGrid(mainGrid);
+
+  AllGarminId:= Tstringlist.Create;
+  allGarminId.Clear;
+
   mainGrid.RowCount:= garminQuery.RecordCount;
 
   while not (garminQuery.Eof) do
   begin
+    allGarminId.Add( garminQuery['id'] );  //global garmin Id
     isiMainGrid(I);
     garminQuery.Next;
     I:=I+1;
@@ -703,8 +753,9 @@ begin
 
     //ShowMessage( GlobalListModelNumber.Text );
 
-    while not (modelQuery.Eof) do
+    while not ( modelQuery.Eof ) do
     begin
+
       gridModel.RowCount:= modelQuery.RecordCount;
       model_no:= modelQuery['model_no'] ;
 
@@ -809,6 +860,7 @@ begin
     duplicateQuery.Active:=true;
     garminQuery.Active:=true;
     lineQuery.Active:=true;
+    demandQuery.Active:= true;
     psoVersionQuery.Active:=true;
     stockQuery.Active:=true;
     modelQuery.Active:=true;
@@ -857,6 +909,7 @@ end;
 
 procedure TTabbedForm.refreshQuery;
 begin
+  demandQuery.Refresh;
   stockQuery.Refresh;
   garmines_pso_Query.Refresh;
 end;
@@ -941,6 +994,7 @@ begin
     begin
       gridModel.SelectRow(I);
       gridModel.SetFocus;
+      gridModel.TopRow:= I;
       //edtTotalDemand.Text:= gridModel.Cells[1,I];
       listModel.ClearSelection;
       exit;  //biar cepet, gausah lanjut for nya
@@ -1062,6 +1116,23 @@ begin
   end;
 end;
 
+procedure TTabbedForm.stockGridCellClick(const Column: TColumn; const Row:
+    Integer);
+var
+  selectedGrid: string;
+  index: Integer;
+begin
+
+     selectedGrid:= stockGrid.Cells[1, Row];
+     index:= cariIndex(selectedGrid, AllGarminId );
+     //ShowMessage( IntToStr(index) +'  '+ selectedGrid +'  '+ AllGarminId.Text );
+     stockGarminCombo.ItemIndex := index;
+
+     //run stock on change
+     stockGarminComboChange(Self);
+
+end;
+
 procedure TTabbedForm.updateDemand;
 var
   query: string;
@@ -1086,7 +1157,7 @@ begin
       // jika tmpQuery['demand'] != gridModel[1,I] maka update
       if not (index= -1) then //jika ketemu
       begin
-        //ShowMessage(IntToStr(index));
+        //ShowMessage(gridModel.Cells[1, index]+' = '+ IntToStr(tmpQuery['demand']) );
         if not ( gridModel.Cells[1, index] = tmpQuery['demand'] ) then //jika value nya beda.
         begin
           //update
