@@ -1,0 +1,79 @@
+unit Unit1;
+
+interface
+
+uses
+  System.Classes, System.SysUtils, System.Types, System.UITypes,  System.Variants,
+  FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.TabControl,
+  FMX.StdCtrls, FMX.Gestures, System.Rtti, FMX.Grid.Style, FMX.ScrollBox ;
+
+type
+  TMyThread = class(TThread)
+  protected
+    procedure Execute; override;
+    //procedure Create; override;
+    procedure compare;
+  end;
+
+implementation
+uses TabbedTemplate;
+
+
+procedure TMyThread.compare;
+var
+  tmpLogData, rowLogData, rowTmpLogData: TStringList;
+  I,J, duplicateFound : Integer;
+begin
+  tmpLogData := TStringList.Create;
+  tmpLogData:= TabbedTemplate.logData;
+  duplicateFound := 0;
+  TabbedForm.ListBox3.Clear;
+
+  for I := 0 to 10 do
+  begin
+    try
+      rowLogData:=TStringList.Create;
+      rowLogData.Text:= logData[I];
+      rowLogData.CommaText := rowLogData.Text;
+      rowLogData.Delimiter:= ',';
+
+      for J := I+1 to 10 do
+      begin
+        try
+          rowTmpLogData:=TStringList.Create;
+          rowTmpLogData.Text:= tmpLogData[I];
+          rowTmpLogData.CommaText := rowTmpLogData.Text;
+          rowTmpLogData.Delimiter:= ',';
+
+          //comparasi  //jika ada yang sama maka masukan ke duplicate Found
+          if (rowLogData[2]+rowLogData[3] = rowTmpLogData[2] + rowTmpLogData[3] ) then
+          begin
+             duplicateFound:= duplicateFound+1;
+          end;
+          TabbedForm.ListBox3.Items.Add(rowLogData[2]+rowLogData[3]+' <> '+rowTmpLogData[2]+rowTmpLogData[3]);
+        finally
+          rowTmpLogData.Free;
+        end;
+      end;
+
+    finally
+       rowLogData.Free;
+    end;
+
+  end;
+
+    TabbedForm.Label14.Text := IntToStr(duplicateFound);
+end;
+
+
+
+procedure TMyThread.Execute;
+begin
+  NameThreadForDebugging('ComparingThread');
+  { Place thread code here }
+   compare();
+end;
+
+
+
+end.
