@@ -417,6 +417,14 @@ begin
     exit;
   end;
 
+  if not (DirectoryExists(edtPathStock.Text)) then
+  begin
+    ShowMessage('You need to browse the correct path !');
+    edtPathStock.SetFocus;
+    exit;
+  end;
+
+
   try
     edtPathStock.Text:= StringReplace( edtPathStock.Text, '\','\\', [rfReplaceAll, rfIgnoreCase] );
     query:='INSERT INTO `stocks`(`garmines_id`, `stock`, `path`) VALUES ("'+stockGarminCombo.Selected.Text+'","'+edtStocks.Text+'","'+edtPathStock.Text+'")';
@@ -425,12 +433,20 @@ begin
     stockQuery.Refresh;
 
     //listPath.Items.Add( edtPathStock.Text );
-    refreshQuery;
+    {refreshQuery;
     stockGarminComboChange(Self); //untuk update listbox, jika data yang barusan di input sudah masuk.
     getGarminId;
-    bersih;
+    bersih;}
 
+    //edit path jadi bersih
+    edtPathStock.Text:='';
     ShowMessage('Data Saved!');
+    stockGarminComboChange(Self);
+    //path pindah ke list path
+    //stock update based on current total
+
+
+
   except
      on E : Exception do
       ShowMessage(E.ClassName+' rised Exception Of '+E.Message);
