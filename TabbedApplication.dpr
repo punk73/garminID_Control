@@ -10,8 +10,8 @@ uses
   FMX.Forms,
   TabbedTemplate in 'TabbedTemplate.pas' {TabbedForm},
   Unit1 in 'Unit1.pas',
-  TIsiGridThread in 'TIsiGridThread.pas',
-  Unit2 in 'Unit2.pas';
+  Unit2 in 'Unit2.pas',
+  Unit3 in 'Unit3.pas';
 
 {$R *.res}
 

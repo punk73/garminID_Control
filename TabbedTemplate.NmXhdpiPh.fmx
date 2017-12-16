@@ -50,8 +50,11 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
         inherited Panel6: TPanel
           inherited lineGrid: TStringGrid
             Viewport.Width = 209.000000000000000000
-            Viewport.Height = 233.000000000000000000
+            Viewport.Height = 225.000000000000000000
           end
+        end
+        inherited loadingLabel: TLabel
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
         end
       end
     end
@@ -127,7 +130,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
           Viewport.Height = 176.000000000000000000
         end
         inherited garminDemandQtyGrid: TStringGrid
-          RowCount = 7
+          RowCount = 3
           Viewport.Width = 273.000000000000000000
           Viewport.Height = 137.000000000000000000
         end
@@ -146,8 +149,5 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
             GestureID = sgiRight
           end>
       end>
-  end
-  inherited demandQuery: TFDQuery
-    Active = True
   end
 end

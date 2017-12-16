@@ -94,8 +94,8 @@ Coordinates=145,152,91,36
 Coordinates=110,0,94,806
 
 [stockQuery]
-Coordinates=580,310,79,36
-Visible=False
+Coordinates=770,320,79,36
+Visible=True
 
 [garminQuery]
 Coordinates=720,510,89,36
@@ -103,8 +103,8 @@ Visible=False
 
 [Module Settings]
 ModelLayerNames=stock;garmin;duplicated;psoVersion;manage_Demand.GarminID;model;"grid demand"
-ActiveLayerNames="grid demand"
-EditingLayerName=grid demand
+ActiveLayerNames=stock;"grid demand"
+EditingLayerName=stock
 
 [BindSourceDB2]
 Coordinates=720,510,106,102
@@ -116,7 +116,7 @@ Visible=True
 LayerNames=stock
 
 [BindSourceDB3]
-Coordinates=620,300,106,80
+Coordinates=580,310,79,36
 
 [edtGarminId]
 Coordinates=519,10,85,58
@@ -227,9 +227,6 @@ LayerNames="grid demand"
 [Button13]
 Coordinates=209,844,66,58
 
-[Edit1]
-Coordinates=105,940,44,58
-
 [listModelperGarmin]
 Coordinates=278,649,139,212
 
@@ -289,5 +286,8 @@ Coordinates=692,142,60,58
 Coordinates=760,160,106,80
 
 [garminDemandQtyGrid]
-Coordinates=764,56,80,58
+Coordinates=764,56,146,58
+
+[edtDupPath]
+Coordinates=105,940,44,58
 

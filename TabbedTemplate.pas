@@ -3,7 +3,7 @@ unit TabbedTemplate;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages,  Vcl.Graphics, System.IOUtils,
+  Winapi.Windows,System.Generics.Collections, Winapi.Messages,  Vcl.Graphics, System.IOUtils,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   System.SysUtils, System.Types, System.StrUtils , System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.TabControl,
@@ -16,7 +16,7 @@ uses
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FMX.Layouts, FMX.ListBox,
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
-  JvBackgrounds, FMX.Menus, FMX.ComboEdit, FMX.ExtCtrls, FMX.Colors;
+  JvBackgrounds, FMX.Menus, FMX.ComboEdit, FMX.ExtCtrls, FMX.Colors, FMX.Memo;
 
 type
   TTabbedForm = class(TForm)
@@ -94,7 +94,7 @@ type
     Panel6: TPanel;
     Label1: TLabel;
     Button2: TButton;
-    Edit1: TEdit;
+    edtDupPath: TEdit;
     Button10: TButton;
     lineGrid: TStringGrid;
     Button11: TButton;
@@ -114,8 +114,15 @@ type
     demandQuery: TFDQuery;
     BindSourceDB5: TBindSourceDB;
     LinkGridToDataSourceBindSourceDB5: TLinkGridToDataSource;
+    edtLineName: TEdit;
+    Label18: TLabel;
+    loadingLabel: TLabel;
+    procedure Button10Click(Sender: TObject);
+    procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
     procedure Button13Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
@@ -125,7 +132,11 @@ type
     procedure Button9Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure demandGarminComboChange(Sender: TObject);
+    procedure edtDupPathChangeTracking(Sender: TObject);
     procedure edtGarminIdChangeTracking(Sender: TObject);
+    procedure edtLineNameChangeTracking(Sender: TObject);
+    procedure edtLineNameKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
+        Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormGesture(Sender: TObject; const EventInfo: TGestureEventInfo;
       var Handled: Boolean);
@@ -140,6 +151,7 @@ type
     procedure stockGarminComboChange(Sender: TObject);
     procedure refreshQuery;
     procedure stockGridCellClick(const Column: TColumn; const Row: Integer);
+    procedure TabItem1Click(Sender: TObject);
 
 
 
@@ -174,6 +186,8 @@ type
     procedure updateDemand;
     procedure refreshGarminCombo;
     procedure clearGrid(grid: TStringGrid);
+    procedure pindahFile(paramPath:string);
+    procedure finishThread;
   end;
 
 var
@@ -186,7 +200,7 @@ var
 
 
 implementation
-    uses Unit1, Unit2, TIsiGridThread;
+    uses Unit1, Unit2,  Unit3;
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
@@ -215,6 +229,79 @@ begin
 
 
 
+end;
+
+procedure TTabbedForm.Button10Click(Sender: TObject);
+var baseFolder: string;
+  query: string;
+  path:string;
+begin
+  try
+
+    if Trim(edtLineName.Text)='' then
+    begin
+      ShowMessage('you need to fill the line name first!');
+      edtLineName.SetFocus;
+      Exit;
+    end;
+
+    //cek apa edtDupPath sudah diisi.
+    if (Trim(edtDupPath.Text) = '') then
+    begin
+      ShowMessage('you need to choose the path Firts!');
+      edtDupPath.SetFocus;
+      exit;
+    end;
+
+    //cek edtDupPath contain valid directory
+    if not (FileExists(edtDupPath.Text)) then //jika edtDupPath tidak valid
+    begin
+      ShowMessage('You set invalid folder path or filename! ');
+      edtDupPath.SetFocus;
+      exit;
+    end;
+
+    //simpan new path ke db
+    try
+       path:= StringReplace( edtDupPath.Text,'\', '\\', [rfReplaceAll, rfIgnoreCase]  );
+       query:='insert into line (name, path) values("'+edtLineName.Text+'","'+path+'")';
+       //ShowMessage(query);
+       FDConnection1.ExecSQL(query);
+       lineQuery.Refresh;
+    except
+      on E:exception do
+        ShowMessage(E.ClassName+' has rised an exception of '+E.Message);
+    end;
+
+    //bersih edtDUpPath
+    edtDupPath.Text:='';
+    edtLineName.Text:='';
+    button10.Enabled:=false;
+  except
+     on E:exception do
+     ShowMessage(E.ClassName +' rised an error of '+E.Message);
+  end;
+end;
+
+procedure TTabbedForm.Button11Click(Sender: TObject);
+var
+  query: string;
+  message: Integer;
+begin
+  //ShowMessage( lineGrid.Selected.ToString);
+  message:= MessageDlg('Delete Data ?', TMsgDlgType.mtConfirmation , mbOkCancel , 0 );
+  if message = mrOk then
+  begin
+    try
+      query:='delete from line where id='+ lineGrid.Cells[0, lineGrid.Selected ];
+      //ShowMessage(query);
+      FDConnection1.ExecSQL(query);
+      lineQuery.Refresh;
+    except
+       on E:exception do
+       ShowMessage(E.ClassName + ' has rised exception of ' + E.Message );
+    end;
+  end;
 end;
 
 procedure TTabbedForm.Button12Click(Sender: TObject);
@@ -311,6 +398,105 @@ begin
   end;
 
 
+
+end;
+
+procedure TTabbedForm.Button1Click(Sender: TObject);
+var
+  I: Integer;
+  path,localPath: string;
+  logItem:TStringList;
+  anotherThread: TuploadData;
+  //ThreadHandlers: array of THandle;
+  arrThread:array of TuploadData;
+  ThreadHandlers: array of THandle ;
+begin
+
+  if lineGrid.RowCount=0 then
+  begin
+    ShowMessage('you need to set log file path first!');
+    exit;
+  end;
+
+  loadingLabel.Text:='Loading ...';
+  loadingLabel.Visible:=true;
+  
+  try
+    //set length untuk arrThread (penampung thread) & array ThreadHandlers (penampung thread.handle)
+    setlength(ThreadHandlers, lineGrid.RowCount  );
+    setlength( arrThread , lineGrid.RowCount  );
+
+    for I := 0 to lineGrid.RowCount-1 do
+    begin
+
+      path:= lineGrid.Cells[2, I] ;
+
+      //cek apakah file terkait ada.
+      //copy ke localfolder;
+      if FileExists(path) then
+      begin
+        pindahFile(path);
+        //ShowMessage(path);
+      end;
+
+      //masuk ke file local
+      //localPath:= file local
+      localPath := ExtractFilePath( ParamStr(0) );
+      localPath:= StringReplace(localPath, 'Win32\debug\', 'DATALOG\'+ ExtractFileName(path) , [rfReplaceAll, rfIgnoreCase]);
+      //harusnya muncul loading ketika mulai, dan hilang ketika selesai.
+
+      try
+        lineGrid.Selected:= I;
+        arrThread[I] := TuploadData.Create(localPath);
+      finally
+
+      end;
+
+    end;
+
+    //isi thread handlers dengan TuploadThread.handle
+    for i := 0 to Length( arrThread ) - 1 do begin
+      ThreadHandlers[I]:= arrThread[i].Handle;
+    end;
+
+    //wait until all thread terminated!
+    {if (WaitForMultipleObjects(lineGrid.RowCount, Pointer(ThreadHandlers) , True, INFINITE) <> WAIT_OBJECT_0 ) then
+    begin
+      //do something if two thread is finished!
+      duplicateQuery.Refresh;
+      ShowMessage('Data updated!' + SysErrorMessage(GetLastError) );
+    end;}
+
+    WaitForMultipleObjects(lineGrid.RowCount, Pointer(ThreadHandlers) , True, INFINITE);
+    ShowMessage( SysErrorMessage(GetLastError) );
+    Sleep(1000);
+    loadingLabel.Visible:=false;
+  finally
+    //free up threadHandlers
+    for I := 0 to Length(arrThread)-1 do
+    begin
+      arrThread[I].Free;
+    end;
+      
+  end;
+
+
+end;
+
+procedure TTabbedForm.Button2Click(Sender: TObject);
+begin
+  with TFileOpenDialog.Create(nil) do
+  begin
+    try
+      //Options := [fdoPickFolders];
+      if (Execute and (FileName <> '')) then
+      begin
+        edtDupPath.Text:= FileName;
+      end;
+    finally
+      Free;
+    end;
+  end;
 
 end;
 
@@ -638,10 +824,39 @@ begin
   end;
 end;
 
+procedure TTabbedForm.edtDupPathChangeTracking(Sender: TObject);
+begin
+  if (edtLineName.Text <> '') and (edtDupPath.Text <> '') then
+  begin
+    button10.Enabled:=true;
+  end;
+end;
+
 procedure TTabbedForm.edtGarminIdChangeTracking(Sender: TObject);
 begin
   if not (edtGarminId.Text='') then aktif
   else nonaktif;
+end;
+
+procedure TTabbedForm.edtLineNameChangeTracking(Sender: TObject);
+begin
+  if (edtLineName.Text <> '') and (edtDupPath.Text <> '') then
+  begin
+    button10.Enabled:=true;
+  end;
+end;
+
+procedure TTabbedForm.edtLineNameKeyUp(Sender: TObject; var Key: Word; var
+    KeyChar: Char; Shift: TShiftState);
+begin
+  if Key=13 then
+    button2.SetFocus;
+
+end;
+
+procedure TTabbedForm.finishThread;
+begin
+  ShowMessage('loading finish!');
 end;
 
 procedure TTabbedForm.FormCreate(Sender: TObject);
@@ -693,6 +908,7 @@ procedure TTabbedForm.garminDemandQtyGridCellClick(const Column: TColumn; const
 begin
   demandGarminCombo.ItemIndex:= demandGarminCombo.Items.IndexOf( garminDemandQtyGrid.Cells[0, Row] );
   demandGarminComboChange(Self);
+  garminDemandQtyGrid.Cells[1, Row] := edtTotalDemand.Text;
 end;
 
 procedure TTabbedForm.garminGridCellClick(const Column: TColumn; const Row:
@@ -900,6 +1116,34 @@ begin
   demandGarminCombo.ItemIndex:=-1;
   //listModel.Enabled:=false;
 
+  //module duplication checker
+  button10.Enabled:=false;
+
+end;
+
+procedure TTabbedForm.pindahFile(paramPath:String);
+var
+   baseFolder: string;
+begin
+
+   baseFolder := ExtractFilePath( ParamStr(0) );
+   baseFolder:= StringReplace(baseFolder, 'Win32\debug\', 'DATALOG\', [rfReplaceAll, rfIgnoreCase]);
+
+   if not (DirectoryExists(baseFolder)) then //jika baseFolder tidak ada, maka buat.
+    begin
+      if not CreateDir(baseFolder)then
+      begin
+       ShowMessage('New directory add failed with error : '+
+                   IntToStr(GetLastError)+' '+ SysErrorMessage(GetLastError) );
+       exit;
+      end;
+    end;
+
+   //ShowMessage(baseFolder);
+    if not CopyFile(PChar( paramPath ),PChar( baseFolder + ExtractFileName(paramPath) ),false) then
+    begin
+      ShowMessage( SysErrorMessage(GetLastError) );
+    end;
 
 end;
 
@@ -1121,6 +1365,8 @@ begin
         tmpQuery.Next;
       end;
       edtStocks.Text:= IntToStr(total);
+
+
     finally
       tmpQuery.Destroy;
     end;
@@ -1146,7 +1392,15 @@ begin
 
      //run stock on change
      stockGarminComboChange(Self);
+     if (stockGrid.Cells[2,Row] <> edtStocks.Text) then //avoid (BCD)
+        //showMessage(stockGrid.Cells[2,Row] +'<>'+ edtStocks.Text);
+         stockGrid.Cells[2,Row] := edtStocks.Text;
 
+end;
+
+procedure TTabbedForm.TabItem1Click(Sender: TObject);
+begin
+  getGarminId;
 end;
 
 procedure TTabbedForm.updateDemand;
