@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows,System.Generics.Collections, Winapi.Messages,  Vcl.Graphics, System.IOUtils,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  System.SysUtils, System.Types, System.StrUtils , System.UITypes, System.Classes, System.Variants,
+  System.SysUtils, System.DateUtils , System.Types, System.StrUtils , System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.TabControl,
   FMX.StdCtrls, FMX.Gestures, System.Rtti, FMX.Grid.Style, FMX.ScrollBox,
   FMX.Grid, FMX.Controls.Presentation, FMX.Edit, FMX.Ani, FireDAC.Stan.Intf,
@@ -16,7 +16,7 @@ uses
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FMX.Layouts, FMX.ListBox,
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
-  JvBackgrounds, FMX.Menus, FMX.ComboEdit, FMX.ExtCtrls, FMX.Colors, FMX.Memo;
+  JvBackgrounds, FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo;
 
 type
   TTabbedForm = class(TForm)
@@ -117,6 +117,9 @@ type
     edtLineName: TEdit;
     Label18: TLabel;
     loadingLabel: TLabel;
+    Label19: TLabel;
+    Edit1: TEdit;
+    SearchEditButton1: TSearchEditButton;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -132,7 +135,11 @@ type
     procedure Button9Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure demandGarminComboChange(Sender: TObject);
+    procedure demandGarminComboKeyUp(Sender: TObject; var Key: Word; var KeyChar:
+        Char; Shift: TShiftState);
     procedure duplicateGridCellClick(const Column: TColumn; const Row: Integer);
+    procedure Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift:
+        TShiftState);
     procedure edtDupPathChangeTracking(Sender: TObject);
     procedure edtGarminIdChangeTracking(Sender: TObject);
     procedure edtLineNameChangeTracking(Sender: TObject);
@@ -193,7 +200,7 @@ type
 
 var
   TabbedForm: TTabbedForm;
-  logData, GlobalListModelNumber, AllModelNumber, AllGarminId : TStringList;
+  logData, GlobalListModelNumber,GlobalAvailableListModel, AllModelNumber, AllGarminId : TStringList;
   //GlobalListModelNumber Is model number from table garmines_pso
   //AllModelNumber is model number from pso databases (db mas Alvi) per last create_time
   // dua duanya di isi di getModelNumber
@@ -201,7 +208,7 @@ var
 
 
 implementation
-    uses Unit1, Unit2,  Unit3, Unit4;
+    uses Unit1, Unit2,  Unit3, Unit4, Unit5;
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
@@ -209,12 +216,13 @@ implementation
 
 procedure TTabbedForm.aktif;
 begin
-  
+
   //module garmin id
   Button5.Enabled:=true;
   Button6.Enabled:=true;
   listModel.Enabled:=true;
 
+  //UpperCase()
 
 
 end;
@@ -835,6 +843,42 @@ begin
   end;
 end;
 
+procedure TTabbedForm.demandGarminComboKeyUp(Sender: TObject; var Key: Word;
+    var KeyChar: Char; Shift: TShiftState);
+var
+  aStr:string;
+  I: Integer;
+  LastTimeKeydown:TDatetime;
+    Keys:string;
+begin
+  //if key=vkReturn then exit;
+  if (keychar in [chr(48)..chr(57)]) or (keychar in [chr(65)..chr(90)]) or (keychar in [chr(97)..chr(122)]) then begin
+    //combination of keys? (500) is personal reference
+    if (MilliSecondsBetween(LastTimeKeydown,Now)>1000) then
+    begin
+      keys:=keys+keychar;
+      //ShowMessage(IntToStr(MilliSecondsBetween(LastTimeKeydown,Now)) + ' else '+ keys );
+    end
+    else // start new combination
+    begin
+      keys:=keychar;
+      //ShowMessage(IntToStr(MilliSecondsBetween(LastTimeKeydown,Now)) + ' else '+ keys );
+    end;
+
+
+    //last time key was pressed
+    LastTimeKeydown:=Now;
+
+    //lookup item
+    for I := 0 to demandGarminCombo.count-1 do
+      if uppercase(copy(demandGarminCombo.items[i],0,keys.length))=uppercase(keys) then begin
+
+        demandGarminCombo.itemindex:=i;
+        break;  //first item found is good
+      end;
+  end; 
+end;
+
 procedure TTabbedForm.duplicateGridCellClick(const Column: TColumn; const Row:
     Integer);
 var
@@ -852,6 +896,37 @@ begin
   DuplicatedForm.Unit_ID_no:= unitId;
 
   DuplicatedForm.ShowModal;
+end;
+
+procedure TTabbedForm.Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar:
+    Char; Shift: TShiftState);
+var
+  item: string;
+  I: Integer;
+  filteredValue:TStringList;
+begin
+  item:= edit1.Text; //Trim( edit1.Text + KeyChar );
+  //ShowMessage(item);
+  try
+    filteredValue:=TStringList.Create;
+    filteredValue.Clear;
+    
+    for I := 0 to GlobalAvailableListModel.Count-1 do
+    begin
+      if (pos( UpperCase(item) , UpperCase( GlobalAvailableListModel[I]) )> 0 ) then
+      begin
+        filteredValue.Add(GlobalAvailableListModel[I]);
+          
+      end;
+    end;
+
+    listModel.Items:= filteredValue; 
+
+    if (item='') then listModel.Items:=GlobalAvailableListModel;
+      
+  finally
+    filteredValue.Free;
+  end;
 end;
 
 procedure TTabbedForm.edtDupPathChangeTracking(Sender: TObject);
@@ -1012,7 +1087,7 @@ begin
     AllModelNumber.Clear;
     //nanti set disini
     getSelectedListModel;  //hasilnya di GlobalListModelNumber
-
+    GlobalAvailableListModel:=TSTringlist.Create;
     //ShowMessage( GlobalListModelNumber.Text );
 
     while not ( modelQuery.Eof ) do
@@ -1025,6 +1100,7 @@ begin
       begin
         //Jika modelQuery['model_no'] tidak ada di GlobalListModelNumber, maka
         // tambah listmodel
+        GlobalAvailableListModel.Add(modelQuery['model_no']);
         listModel.Items.Add(modelQuery['model_no']);
       end;
       gridModel.Cells[0,baris] := modelQuery['model_no'] ;

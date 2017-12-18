@@ -12,7 +12,8 @@ uses
   Unit1 in 'Unit1.pas',
   Unit2 in 'Unit2.pas',
   Unit3 in 'Unit3.pas',
-  Unit4 in 'Unit4.pas' {DuplicatedForm};
+  Unit4 in 'Unit4.pas' {DuplicatedForm},
+  Unit5 in 'Unit5.pas';
 
 {$R *.res}
 
