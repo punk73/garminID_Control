@@ -16,7 +16,7 @@ uses
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FMX.Layouts, FMX.ListBox,
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
-  JvBackgrounds, FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo;
+  JvBackgrounds, FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit;
 
 type
   TTabbedForm = class(TForm)
@@ -42,7 +42,6 @@ type
     Button5: TButton;
     Button6: TButton;
     garminGrid: TStringGrid;
-    stockGarminCombo: TComboBox;
     Label3: TLabel;
     edtPathStock: TEdit;
     Label4: TLabel;
@@ -65,7 +64,6 @@ type
     Label10: TLabel;
     Label11: TLabel;
     Label6: TLabel;
-    demandGarminCombo: TComboBox;
     Button12: TButton;
     Label12: TLabel;
     edtTotalDemand: TEdit;
@@ -120,6 +118,8 @@ type
     Label19: TLabel;
     Edit1: TEdit;
     SearchEditButton1: TSearchEditButton;
+    demandGarminCombo: TComboEdit;
+    stockGarminCombo: TComboEdit;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -134,9 +134,13 @@ type
     procedure Button8Click(Sender: TObject);
     procedure Button9Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
+    procedure demandGarminCombo2Change(Sender: TObject);
+    procedure demandGarminCombo2KeyUp(Sender: TObject; var Key: Word; var KeyChar:
+        Char; Shift: TShiftState);
     procedure demandGarminComboChange(Sender: TObject);
     procedure demandGarminComboKeyUp(Sender: TObject; var Key: Word; var KeyChar:
         Char; Shift: TShiftState);
+
     procedure duplicateGridCellClick(const Column: TColumn; const Row: Integer);
     procedure Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift:
         TShiftState);
@@ -156,8 +160,8 @@ type
         TListBoxItem);
     procedure listPathItemClick(const Sender: TCustomListBox; const Item:
         TListBoxItem);
-    procedure stockGarminComboChange(Sender: TObject);
     procedure refreshQuery;
+    procedure stockGarminComboChange(Sender: TObject);
     procedure stockGridCellClick(const Column: TColumn; const Row: Integer);
     procedure TabItem1Click(Sender: TObject);
 
@@ -351,7 +355,7 @@ begin
     //ShowMessage( listModel.Items[ I ] );
     //set edtTotalDemand
     edtTotalDemand.Text:= gridModel.Cells[1, cariIndex(listModel.ListItems[I].Text, AllModelNumber ) ] ;
-    query:='insert into garmines_pso (garmines_id, model_number, demand ) values ("'+ demandGarminCombo.Selected.Text +'", "'+listModel.ListItems[I].Text+'", "'+ edtTotalDemand.Text +'" )';
+    query:='insert into garmines_pso (garmines_id, model_number, demand ) values ("'+ demandGarminCombo.Text +'", "'+listModel.ListItems[I].Text+'", "'+ edtTotalDemand.Text +'" )';
 
     try
       FDConnection1.ExecSQL(query);
@@ -632,7 +636,7 @@ begin
 
   try
     edtPathStock.Text:= StringReplace( edtPathStock.Text, '\','\\', [rfReplaceAll, rfIgnoreCase] );
-    query:='INSERT INTO `stocks`(`garmines_id`, `stock`, `path`) VALUES ("'+stockGarminCombo.Selected.Text+'","'+edtStocks.Text+'","'+edtPathStock.Text+'")';
+    query:='INSERT INTO `stocks`(`garmines_id`, `stock`, `path`) VALUES ("'+stockGarminCombo.Text+'","'+edtStocks.Text+'","'+edtPathStock.Text+'")';
     //ShowMessage(query);
     FDConnection1.ExecSQL(query);
     stockQuery.Refresh;
@@ -679,7 +683,7 @@ begin
     path:= listPath.Selected.Text;
     //edit path supaya backslash kebaca di mySql
     path:= StringReplace(path, '\','\\', [rfReplaceAll, rfIgnoreCase]);
-    garminId:= stockGarminCombo.Selected.Text;
+    garminId:= stockGarminCombo.Text;
     query:= 'DELETE FROM `stocks` WHERE `path`="'+path+'" AND `garmines_id`="'+garminId+'"';
     try
       FDConnection1.ExecSQL(query);
@@ -797,7 +801,7 @@ begin
 
 end;
 
-procedure TTabbedForm.demandGarminComboChange(Sender: TObject);
+procedure TTabbedForm.demandGarminCombo2Change(Sender: TObject);
 var
   total,I: Integer;
   tmpModel: TStringList;
@@ -810,7 +814,7 @@ begin
     I:=0;
     listModelperGarmin.Clear;
 
-    garmines_pso_Query.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Selected.Text+'" group by Model_Number ';
+    garmines_pso_Query.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Text+'" group by Model_Number ';
     garmines_pso_Query.Open();
 
     try
@@ -843,7 +847,7 @@ begin
   end;
 end;
 
-procedure TTabbedForm.demandGarminComboKeyUp(Sender: TObject; var Key: Word;
+procedure TTabbedForm.demandGarminCombo2KeyUp(Sender: TObject; var Key: Word;
     var KeyChar: Char; Shift: TShiftState);
 var
   aStr:string;
@@ -877,6 +881,86 @@ begin
         break;  //first item found is good
       end;
   end; 
+end;
+
+procedure TTabbedForm.demandGarminComboChange(Sender: TObject);
+var
+  total,I: Integer;
+  tmpModel: TStringList;
+  isInArrayResult:Integer;
+begin
+  if not (demandGarminCombo.ItemIndex = -1) then
+  begin
+    aktif;
+    total:=0;
+    I:=0;
+    listModelperGarmin.Clear;
+
+    garmines_pso_Query.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Text+'" group by Model_Number ';
+    garmines_pso_Query.Open();
+
+    try
+      //buat tstringlist local disini,
+      tmpModel:=Tstringlist.Create;
+
+      //nanti cek isInArray(str, localStringlist);
+      tmpModel.Clear;
+      while not (garmines_pso_Query.Eof) do
+      begin
+        listModelperGarmin.Items.Add(garmines_pso_Query['Model_Number']);
+        //jika garmines_pso_Query['Model_Number'] ada di array AllModelNumber maka tambahkan ke total.
+         isInArrayResult:= cariIndex( garmines_pso_Query['Model_Number'], AllModelNumber );
+        //jika ketemu di fungsi
+        if (isInArrayResult <> -1) then
+        begin
+          //jika isInArrayResult hasilnya bukan -1 maka ambil return value nya
+          // sebagai index di grid.
+          total:= total+ StrToInt( gridModel.Cells[1, isInArrayResult ] );
+        end;
+        listModel.ListItems[I].IsChecked:=false;
+        garmines_pso_Query.Next;
+        I:=I+1;
+      end;
+    finally
+      tmpModel.Free;
+    end;
+    //ShowMessage('changed!~');
+    edtTotalDemand.Text:= IntToStr(total);
+  end;
+
+end;
+
+procedure TTabbedForm.demandGarminComboKeyUp(Sender: TObject; var Key: Word;
+    var KeyChar: Char; Shift: TShiftState);
+var
+  item: string;
+  I: Integer;
+  filteredValue:TStringList;
+begin
+  item:= demandGarminCombo.Text; //Trim( edit1.Text + KeyChar );
+  //ShowMessage(item);
+  try
+    filteredValue:=TStringList.Create;
+    filteredValue.Clear;
+    
+    for I := 0 to AllGarminId.Count-1 do
+    begin
+      if (pos( UpperCase(item) , UpperCase( AllGarminId[I]) )> 0 ) then
+      begin
+        filteredValue.Add(AllGarminId[I]);
+          
+      end;
+    end;
+
+    demandGarminCombo.Items:= filteredValue; 
+
+    if (item='') then demandGarminCombo.Items:=AllGarminId;
+    
+    //SendMessage(demandGarminCombo.handle , CB_SHOWDROPDOWN, Integer(True), 0);
+    //SendMessage(ComboBox1.handle, CB_SHOWDROPDOWN, Integer(True), 0);  
+  finally
+    filteredValue.Free;
+  end;
 end;
 
 procedure TTabbedForm.duplicateGridCellClick(const Column: TColumn; const Row:
@@ -1303,7 +1387,7 @@ begin
 
   for I := 0 to value.Count-1 do
   begin
-    query:='insert into garmines_pso (garmines_id, model_number ) values('+ demandGarminCombo.Selected.Text +', '+value[I]+' )';
+    query:='insert into garmines_pso (garmines_id, model_number ) values('+ demandGarminCombo.Text +', '+value[I]+' )';
     ShowMessage(query);
   end;
 end;
@@ -1423,7 +1507,7 @@ begin
   path:= listPath.Selected.Text;
   //edit path supaya backslash kebaca di mySql
   path:= StringReplace(path, '\','\\', [rfReplaceAll, rfIgnoreCase]);
-  garminId:= stockGarminCombo.Selected.Text;
+  garminId:= stockGarminCombo.Text;
 
   try
     query:='SELECT stock FROM `stocks` where garmines_id="'+garminId+'" and path="'+path+'" ';
@@ -1455,7 +1539,7 @@ var
   tmpQuery: TFDQuery;
 begin
   try
-    query:='SELECT `path`,stock FROM `stocks` where garmines_id="'+stockGarminCombo.Selected.Text+'"';
+    query:='SELECT `path`,stock FROM `stocks` where garmines_id="'+stockGarminCombo.Text+'"';
     total:=0;
     try
       tmpQuery:= TFDQuery.Create(Self);
@@ -1482,6 +1566,7 @@ begin
    on E: Exception do
     ShowMessage(E.ClassName +' has rised an exceptions '+ E.Message );
   end;
+
 end;
 
 procedure TTabbedForm.stockGridCellClick(const Column: TColumn; const Row:
