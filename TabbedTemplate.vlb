@@ -170,11 +170,6 @@ Coordinates=423,795,100,36
 [psoVersionQuery]
 Coordinates=490,70,114,80
 
-[demandGarminCombo]
-Coordinates=510,500,144,146
-Visible=True
-LayerNames=manage_Demand.GarminID
-
 [stockGarminCombo]
 Coordinates=159,10,128,146
 
@@ -290,4 +285,9 @@ Coordinates=764,56,146,58
 
 [edtDupPath]
 Coordinates=105,940,44,58
+
+[demandGarminCombo]
+Coordinates=510,500,144,146
+Visible=True
+LayerNames=manage_Demand.GarminID
 

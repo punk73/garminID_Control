@@ -132,6 +132,7 @@ type
     procedure Button9Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure demandGarminComboChange(Sender: TObject);
+    procedure duplicateGridCellClick(const Column: TColumn; const Row: Integer);
     procedure edtDupPathChangeTracking(Sender: TObject);
     procedure edtGarminIdChangeTracking(Sender: TObject);
     procedure edtLineNameChangeTracking(Sender: TObject);
@@ -200,7 +201,7 @@ var
 
 
 implementation
-    uses Unit1, Unit2,  Unit3;
+    uses Unit1, Unit2,  Unit3, Unit4;
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
@@ -237,7 +238,7 @@ var baseFolder: string;
   path:string;
 begin
   try
-
+    //error handler
     if Trim(edtLineName.Text)='' then
     begin
       ShowMessage('you need to fill the line name first!');
@@ -287,6 +288,7 @@ procedure TTabbedForm.Button11Click(Sender: TObject);
 var
   query: string;
   message: Integer;
+  path, localPath :string;
 begin
   //ShowMessage( lineGrid.Selected.ToString);
   message:= MessageDlg('Delete Data ?', TMsgDlgType.mtConfirmation , mbOkCancel , 0 );
@@ -296,6 +298,16 @@ begin
       query:='delete from line where id='+ lineGrid.Cells[0, lineGrid.Selected ];
       //ShowMessage(query);
       FDConnection1.ExecSQL(query);
+
+      path:=  lineGrid.Cells[2, lineGrid.Selected ];
+      localPath := ExtractFilePath( ParamStr(0) );
+      localPath:= StringReplace(localPath, 'Win32\debug\', 'DATALOG\'+ ExtractFileName(path) , [rfReplaceAll, rfIgnoreCase]);
+
+      //ShowMessage(localPath + ' ' + path);
+      if DeleteFile(localPath) then
+      ShowMessage('Data Deleted!')
+      else ShowMessage('Data not Deleted! '+ SysErrorMessage(GetLastError) );
+
       lineQuery.Refresh;
     except
        on E:exception do
@@ -443,11 +455,10 @@ begin
       //localPath:= file local
       localPath := ExtractFilePath( ParamStr(0) );
       localPath:= StringReplace(localPath, 'Win32\debug\', 'DATALOG\'+ ExtractFileName(path) , [rfReplaceAll, rfIgnoreCase]);
-      //harusnya muncul loading ketika mulai, dan hilang ketika selesai.
 
       try
         lineGrid.Selected:= I;
-        arrThread[I] := TuploadData.Create(localPath);
+        arrThread[I] := TuploadData.Create(localPath);  //simpan lewat anotherThread
       finally
 
       end;
@@ -822,6 +833,25 @@ begin
     //ShowMessage('changed!~');
     edtTotalDemand.Text:= IntToStr(total);
   end;
+end;
+
+procedure TTabbedForm.duplicateGridCellClick(const Column: TColumn; const Row:
+    Integer);
+var
+  unitId: string;
+  serialNumber: string;
+  yNumber: string;
+begin
+
+  yNumber:= duplicateGrid.Cells[3,Row] ;
+  serialNumber:=duplicateGrid.Cells[4,Row];
+  unitId:=duplicateGrid.Cells[5,Row];
+
+  DuplicatedForm.Y_Number:= yNumber;
+  DuplicatedForm.Serial_No:= serialNumber;
+  DuplicatedForm.Unit_ID_no:= unitId;
+
+  DuplicatedForm.ShowModal;
 end;
 
 procedure TTabbedForm.edtDupPathChangeTracking(Sender: TObject);

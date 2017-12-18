@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<ActiveMobileDevice>
+		<NoProfile iOSSimulator="iPhone5" Android="nexus_new"/>
+	</ActiveMobileDevice>
+	<Transactions>
+    <Transaction>2017/12/04 16:35:15.000.786,=E:\Delphi Project\Garmin id tab project\Unit2.pas</Transaction>
+    <Transaction>2017/12/04 16:37:22.000.806,E:\Delphi Project\Garmin id tab project\Unit2.pas=E:\Delphi Project\Garmin id tab project\TIsiGridThread.pas</Transaction>
+    <Transaction>2017/12/05 09:27:40.000.961,=E:\Delphi Project\Garmin id tab project\Unit2.pas</Transaction>
+    <Transaction>2017/12/09 13:16:07.000.736,=E:\Delphi Project\Garmin id tab project\Unit2.pas</Transaction>
+    <Transaction>2017/12/15 14:42:26.000.047,=E:\Delphi Project\Garmin id tab project\Unit3.pas</Transaction>
+    <Transaction>2017/12/15 14:43:42.000.394,=E:\Delphi Project\Garmin id tab project\Unit3.pas</Transaction>
+    <Transaction>2017/12/16 07:21:36.511,E:\Delphi Project\Garmin id tab project\TIsiGridThread.pas=</Transaction>
+  </Transactions>
+</BorlandProject>

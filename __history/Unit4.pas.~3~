@@ -1,0 +1,43 @@
+unit Unit4;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, System.Rtti,
+  FMX.Grid.Style, FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox,
+  FMX.Grid;
+
+type
+  TDuplicatedForm = class(TForm)
+    detailGrid: TStringGrid;
+    Close: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    var Y_Number, Serial_No, Unit_ID_no: String;
+  end;
+
+var
+  DuplicatedForm: TDuplicatedForm;
+
+implementation
+
+{$R *.fmx}
+
+procedure TDuplicatedForm.FormShow(Sender: TObject);
+begin
+
+  Label4.Text:= Y_Number;
+  Label2.Text:= Serial_No;
+  Label3.Text:= Unit_ID_no;
+
+end;
+
+end.
