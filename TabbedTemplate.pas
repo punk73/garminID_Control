@@ -116,7 +116,7 @@ type
     Label18: TLabel;
     loadingLabel: TLabel;
     Label19: TLabel;
-    Edit1: TEdit;
+    edtSearchModel: TEdit;
     SearchEditButton1: TSearchEditButton;
     demandGarminCombo: TComboEdit;
     stockGarminCombo: TComboEdit;
@@ -142,7 +142,7 @@ type
         Char; Shift: TShiftState);
 
     procedure duplicateGridCellClick(const Column: TColumn; const Row: Integer);
-    procedure Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift:
+    procedure edtSearchModelKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift:
         TShiftState);
     procedure edtDupPathChangeTracking(Sender: TObject);
     procedure edtGarminIdChangeTracking(Sender: TObject);
@@ -383,7 +383,7 @@ begin
   }
 
 
-
+  edtSearchModel.Text:='';
   ShowMessage('Data Saved!');
   
 end;
@@ -416,7 +416,7 @@ begin
 
     //refresh grid qty based on garmin id
       demandQuery.Refresh;
-
+    edtSearchModel.Text:='';
     ShowMessage('Data Terhapus!');
     demandGarminCombo.SetFocus;
   end;
@@ -982,14 +982,14 @@ begin
   DuplicatedForm.ShowModal;
 end;
 
-procedure TTabbedForm.Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar:
+procedure TTabbedForm.edtSearchModelKeyUp(Sender: TObject; var Key: Word; var KeyChar:
     Char; Shift: TShiftState);
 var
   item: string;
   I: Integer;
   filteredValue:TStringList;
 begin
-  item:= edit1.Text; //Trim( edit1.Text + KeyChar );
+  item:= edtSearchModel.Text; //Trim( edit1.Text + KeyChar );
   //ShowMessage(item);
   try
     filteredValue:=TStringList.Create;
