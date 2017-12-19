@@ -3,7 +3,7 @@ unit TabbedTemplate;
 interface
 
 uses
-  Winapi.Windows,System.Generics.Collections, Winapi.Messages,  Vcl.Graphics, System.IOUtils,
+  Winapi.Windows, ShellApi, FMX.Platform.Win ,System.Generics.Collections, Winapi.Messages,  Vcl.Graphics, System.IOUtils,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   System.SysUtils, System.DateUtils , System.Types, System.StrUtils , System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.TabControl,
@@ -120,10 +120,12 @@ type
     SearchEditButton1: TSearchEditButton;
     demandGarminCombo: TComboEdit;
     stockGarminCombo: TComboEdit;
+    Button14: TButton;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
     procedure Button13Click(Sender: TObject);
+    procedure Button14Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -164,6 +166,7 @@ type
     procedure stockGarminComboChange(Sender: TObject);
     procedure stockGridCellClick(const Column: TColumn; const Row: Integer);
     procedure TabItem1Click(Sender: TObject);
+    procedure SelectFileInExplorer(const Fn: string);
 
 
 
@@ -421,6 +424,56 @@ begin
     demandGarminCombo.SetFocus;
   end;
 
+
+
+end;
+
+procedure TTabbedForm.Button14Click(Sender: TObject);
+var
+  I: Integer;
+  list:TStringList;
+  garminID, stock, demand, balance, rowContent,path:string;
+begin
+  getGarminId;
+  try
+    //buat tstringlist
+    list := tstringlist.Create;
+    for I := 0 to mainGrid.RowCount-1 do
+    begin
+      garminID:= mainGrid.Cells[0,I];
+      stock:= mainGrid.Cells[1,I];
+      demand:=mainGrid.Cells[2,I];
+      balance:=mainGrid.Cells[3,I];
+      rowContent := garminId +','+ stock +','+ demand +','+ balance;
+      //isi tstringlist
+      list.Add(rowContent);
+    end;
+    //preapare path
+    path:= ExtractFilePath( ParamStr(0) );
+    path:= StringReplace(path, 'Win32\debug\', 'csv\', [rfReplaceAll, rfIgnoreCase]);
+
+    //buat folder jika folder tidak ada.
+    if not DirectoryExists(path) then
+    begin
+      if not CreateDir(path)then
+      begin
+       ShowMessage('New directory add failed with error : '+
+                   IntToStr(GetLastError)+' '+ SysErrorMessage(GetLastError) );
+       exit;
+      end;
+    end;
+
+    if FileExists( path + 'garmin inventory.csv' ) then DeleteFile(path + 'garmin inventory.csv');
+
+    //simpan tstringlist ke path
+    list.SaveToFile( path + 'garmin inventory.csv');
+
+    ShowMessage( SysErrorMessage( GetLastError ) );
+    SelectFileInExplorer(path);
+  finally
+
+    list.Free;
+  end;
 
 
 end;
@@ -1362,6 +1415,12 @@ begin
   demandQuery.Refresh;
   stockQuery.Refresh;
   garmines_pso_Query.Refresh;
+end;
+
+procedure TTabbedForm.SelectFileInExplorer(const Fn: string);
+begin
+  ShellExecute( FmxHandleToHWND(Self.Handle), 'open', 'explorer.exe',
+    PChar('/select,"' + Fn+'"'), nil, SW_NORMAL);
 end;
 
 procedure TTabbedForm.setGrid;
