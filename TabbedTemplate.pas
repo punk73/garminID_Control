@@ -63,7 +63,6 @@ type
     Panel8: TPanel;
     Label10: TLabel;
     Label11: TLabel;
-    Label6: TLabel;
     Button12: TButton;
     Label12: TLabel;
     edtTotalDemand: TEdit;
@@ -86,8 +85,6 @@ type
     Label8: TLabel;
     garmines_pso_Query: TFDQuery;
     Label9: TLabel;
-    Button13: TButton;
-    listModelperGarmin: TListBox;
     Button1: TButton;
     Panel6: TPanel;
     Label1: TLabel;
@@ -124,7 +121,6 @@ type
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
-    procedure Button13Click(Sender: TObject);
     procedure Button14Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -158,6 +154,8 @@ type
     procedure garminDemandQtyGridCellClick(const Column: TColumn; const Row:
         Integer);
     procedure garminGridCellClick(const Column: TColumn; const Row: Integer);
+    procedure listModelItemClick(const Sender: TCustomListBox; const Item:
+        TListBoxItem);
     procedure listModelperGarminItemClick(const Sender: TCustomListBox; const Item:
         TListBoxItem);
     procedure listPathItemClick(const Sender: TCustomListBox; const Item:
@@ -362,8 +360,7 @@ begin
 
     try
       FDConnection1.ExecSQL(query);
-      //add saved item ke listModelPerGarmin
-      listModelperGarmin.Items.Add( listModel.ListItems[I].Text );
+      
       //hapus selected item di listModel
       listModel.Items.Delete( I );
       //total demand updated.
@@ -378,53 +375,8 @@ begin
    end;
   end;
 
-  {
-    refreshQuery;
-    getGarminId;
-    listModelRefresh; //untuk menghilangkan list model yang sudah dipilih.
-    demandGarminComboChange(Self); //untuk memindahkan yg dipilih ke listModelPerGarmin
-  }
-
-
   edtSearchModel.Text:='';
   ShowMessage('Data Saved!');
-  
-end;
-
-procedure TTabbedForm.Button13Click(Sender: TObject);
-var
-  query: string;
-  message: Integer;
-begin
-
-  message:= MessageDlg('Confirmation', TMsgDlgType.mtConfirmation , mbOkCancel , 0 );
-  if message = mrOk then
-  begin
-
-    query:='delete from garmines_pso where model_number="'+ listModelperGarmin.Selected.Text +'"';
-    FDConnection1.ExecSQL(query);
-    garmines_pso_Query.Refresh;
-
-    {listModelRefresh;  //reload listModel & gridModel
-    refreshQuery;
-    getGarminId;
-    bersih;
-    nonaktif;}
-
-    //add deleted item from listmodelperGarmin ke listModel
-      listModel.Items.Add(listModelperGarmin.Selected.Text);
-    //delete listModelPerGarmin deleted item
-      listModelperGarmin.Items.Delete( listModelperGarmin.Items.IndexOf( listModelperGarmin.Selected.Text ) );
-    //setfocus ke item tsb
-
-    //refresh grid qty based on garmin id
-      demandQuery.Refresh;
-    edtSearchModel.Text:='';
-    ShowMessage('Data Terhapus!');
-    demandGarminCombo.SetFocus;
-  end;
-
-
 
 end;
 
@@ -865,7 +817,7 @@ begin
     aktif;
     total:=0;
     I:=0;
-    listModelperGarmin.Clear;
+    //listModelperGarmin.Clear;
 
     garmines_pso_Query.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Text+'" group by Model_Number ';
     garmines_pso_Query.Open();
@@ -878,7 +830,7 @@ begin
       tmpModel.Clear;
       while not (garmines_pso_Query.Eof) do
       begin
-        listModelperGarmin.Items.Add(garmines_pso_Query['Model_Number']);
+        //listModelperGarmin.Items.Add(garmines_pso_Query['Model_Number']);
         //jika garmines_pso_Query['Model_Number'] ada di array AllModelNumber maka tambahkan ke total.
          isInArrayResult:= cariIndex( garmines_pso_Query['Model_Number'], AllModelNumber );
         //jika ketemu di fungsi
@@ -947,36 +899,35 @@ begin
     aktif;
     total:=0;
     I:=0;
-    listModelperGarmin.Clear;
+    //reload listmodel
+    listModel.Clear;
+    listModel.Items := GlobalAvailableListModel;
 
+    //ambil data dari database.
     garmines_pso_Query.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Text+'" group by Model_Number ';
     garmines_pso_Query.Open();
 
-    try
-      //buat tstringlist local disini,
-      tmpModel:=Tstringlist.Create;
+    while not (garmines_pso_Query.Eof) do
+    begin
+      //tambahkan hasil query ke listmode lalu diceklis.
+      //listModel.Items.Add(garmines_pso_Query['Model_Number']);
+      listModel.Items.Insert(0, garmines_pso_Query['Model_Number'] );
+      listModel.ListItems[ listModel.Items.IndexOf(garmines_pso_Query['Model_Number']) ].IsChecked:=true;
 
-      //nanti cek isInArray(str, localStringlist);
-      tmpModel.Clear;
-      while not (garmines_pso_Query.Eof) do
+      //jika garmines_pso_Query['Model_Number'] ada di array AllModelNumber maka tambahkan ke total.
+      isInArrayResult:= cariIndex( garmines_pso_Query['Model_Number'], AllModelNumber );
+      //jika ketemu di fungsi
+      if (isInArrayResult <> -1) then
       begin
-        listModelperGarmin.Items.Add(garmines_pso_Query['Model_Number']);
-        //jika garmines_pso_Query['Model_Number'] ada di array AllModelNumber maka tambahkan ke total.
-         isInArrayResult:= cariIndex( garmines_pso_Query['Model_Number'], AllModelNumber );
-        //jika ketemu di fungsi
-        if (isInArrayResult <> -1) then
-        begin
-          //jika isInArrayResult hasilnya bukan -1 maka ambil return value nya
-          // sebagai index di grid.
-          total:= total+ StrToInt( gridModel.Cells[1, isInArrayResult ] );
-        end;
-        listModel.ListItems[I].IsChecked:=false;
-        garmines_pso_Query.Next;
-        I:=I+1;
+        //jika isInArrayResult hasilnya bukan -1 maka ambil return value nya
+        // sebagai index di grid.
+        total:= total+ StrToInt( gridModel.Cells[1, isInArrayResult ] );
       end;
-    finally
-      tmpModel.Free;
+      //listModel.ListItems[I].IsChecked:=false;
+      garmines_pso_Query.Next;
+      I:=I+1;
     end;
+
     //ShowMessage('changed!~');
     edtTotalDemand.Text:= IntToStr(total);
   end;
@@ -1355,7 +1306,6 @@ begin
   Button6.Enabled:=false;
   olderID:='';  //global variable for update purpose
   button5.Text:='Save';
-  listModelperGarmin.Clear;
   demandGarminCombo.ItemIndex:=-1;
   //listModel.Enabled:=false;
 
@@ -1490,6 +1440,18 @@ begin
     on E:Exception do
       showmessage(E.ClassName+' Has rised Exeptions of : '+E.Message);
   end;
+end;
+
+procedure TTabbedForm.listModelItemClick(const Sender: TCustomListBox; const
+    Item: TListBoxItem);
+var
+  i: Integer;
+begin
+  //ShowMessage( Item.Text );
+  i:= cariIndex(Item.Text, GlobalListModelNumber );
+  ShowMessage(IntToStr(i));
+  gridModel.selected:= i ;
+  gridModel.TopRow := i;
 end;
 
 procedure TTabbedForm.listModelperGarminItemClick(const Sender: TCustomListBox;
