@@ -1710,15 +1710,15 @@ begin
       begin
         total:= GetDirectoryCount( tmpQuery['path'] );
 
-        if total=-1 then continue; //saat folder path tidak ditemukan diclient
-        
         //ShowMessage(tmpQuery['path']+''+ );
-        if not (total= tmpQuery['stock']) then
+        if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
         begin
-          //update
-          queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +'';
-          //ShowMessage(queryUpdate);
-          FDConnection1.ExecSQL(queryUpdate);
+          if not (total = tmpQuery['stock']) then
+          begin
+            //update
+            queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +'';
+            FDConnection1.ExecSQL(queryUpdate);
+          end;
         end;
 
         tmpQuery.Next;
