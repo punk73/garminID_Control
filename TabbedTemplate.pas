@@ -348,6 +348,18 @@ begin
     exit;
   end;
 
+  //hapus semua record dengan garminId = demandGarmincombo
+  query:= 'delete from garmines_pso where garmines_id="'+demandGarminCombo.Text+'"';
+  try
+    FDConnection1.ExecSQL(query);
+  except
+    on E:exception do
+    begin
+      ShowMessage(E.Message);
+      exit;
+    end;
+  end;
+
   //ambil dari listModel yang ter check list
   for I:= listModel.Count-1 downto 0 do
   begin
@@ -360,9 +372,6 @@ begin
 
     try
       FDConnection1.ExecSQL(query);
-      
-      //hapus selected item di listModel
-      listModel.Items.Delete( I );
       //total demand updated.
 
       //garminDemandQtyGrid refresh
@@ -373,6 +382,14 @@ begin
     end;
     
    end;
+  end;
+
+  //refresh globalAvailable based on current state
+  GlobalAvailableListModel.Clear;
+  for I := 0 to listModel.Count-1 do
+  begin
+    if listModel.ListItems[I].IsChecked = false then
+      GlobalAvailableListModel.Add( listModel.Items[I] );
   end;
 
   edtSearchModel.Text:='';
@@ -1175,7 +1192,9 @@ begin
     AllModelNumber.Clear;
     //nanti set disini
     getSelectedListModel;  //hasilnya di GlobalListModelNumber
+
     GlobalAvailableListModel:=TSTringlist.Create;
+    GlobalAvailableListModel.Clear;
     //ShowMessage( GlobalListModelNumber.Text );
 
     while not ( modelQuery.Eof ) do
@@ -1412,6 +1431,7 @@ begin
   try
 
     GlobalListModelNumber:=TStringList.Create;
+    GlobalListModelNumber.Clear;
 
     while not (garmines_pso_Query.Eof) do
     begin
@@ -1445,13 +1465,18 @@ end;
 procedure TTabbedForm.listModelItemClick(const Sender: TCustomListBox; const
     Item: TListBoxItem);
 var
-  i: Integer;
+  I: Integer;
 begin
-  //ShowMessage( Item.Text );
-  i:= cariIndex(Item.Text, GlobalListModelNumber );
-  ShowMessage(IntToStr(i));
-  gridModel.selected:= i ;
-  gridModel.TopRow := i;
+  for I := 0 to gridModel.RowCount-1  do
+  begin
+    if gridModel.Cells[0,I]=Item.Text then
+    begin
+      gridModel.SelectRow(I);
+      gridModel.SetFocus;
+      gridModel.TopRow:= I;
+      exit;  //biar cepet, gausah lanjut for nya
+    end;
+  end;
 end;
 
 procedure TTabbedForm.listModelperGarminItemClick(const Sender: TCustomListBox;
