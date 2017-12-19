@@ -1304,6 +1304,7 @@ begin
   try
     FDConnection1.Connected:=true;
     psoConnection.Connected:=true;
+
     garmines_pso_Query.Active:=true;
     duplicateQuery.Active:=true;
     garminQuery.Active:=true;
