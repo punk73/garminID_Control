@@ -23,8 +23,8 @@ object DuplicatedForm: TDuplicatedForm
     TabOrder = 0
     RowCount = 0
     Options = [Editing, ColumnResize, ColumnMove, ColLines, RowLines, RowSelect, Tabs, Header, HeaderClick, AutoDisplacement]
-    Viewport.Width = 617.000000000000000000
-    Viewport.Height = 305.000000000000000000
+    Viewport.Width = 613.000000000000000000
+    Viewport.Height = 280.000000000000000000
   end
   object Label1: TLabel
     StyledSettings = [Family, Style, FontColor]
@@ -48,9 +48,9 @@ object DuplicatedForm: TDuplicatedForm
     Params.Strings = (
       'Database=garmin_inventory'
       'User_Name=root'
-      'Server=localhost'
+      'Server=136.198.117.48'
+      'Password=JvcSql@123'
       'DriverID=MySQL')
-    Connected = True
     LoginPrompt = False
     Left = 248
     Top = 16

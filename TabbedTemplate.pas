@@ -174,7 +174,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    procedure setGrid();
+
     procedure koneksi();
     //    var logData: TStringList;
     procedure validasiLogFile;
@@ -1080,7 +1080,6 @@ begin
   updateStock;
   sleep(10);
   updateDemand;
-  //updateStock; //update stock in db basedOn folder
   ComboBox1.ItemIndex:=0;
 end;
 
@@ -1108,7 +1107,7 @@ end;
 
 procedure TTabbedForm.FormShow(Sender: TObject);
 begin
-  setGrid;
+
   nonaktif;
 
 end;
@@ -1302,9 +1301,19 @@ end;
 procedure TTabbedForm.koneksi;
 begin
   try
-    FDConnection1.Connected:=true;
-    psoConnection.Connected:=true;
+    try
+      FDConnection1.Connected:=true;
+    except
+      on E:exception do
+      ShowMessage(E.ClassName +' has rised exception of '+ E.Message);
+    end;
+    try
+      psoConnection.Connected:=true;
 
+    except
+      on E:exception do
+      ShowMessage(E.ClassName +' has rised exception of '+ E.Message);
+    end;
     garmines_pso_Query.Active:=true;
     duplicateQuery.Active:=true;
     garminQuery.Active:=true;
@@ -1394,13 +1403,6 @@ procedure TTabbedForm.SelectFileInExplorer(const Fn: string);
 begin
   ShellExecute( FmxHandleToHWND(Self.Handle), 'open', 'explorer.exe',
     PChar('/select,"' + Fn+'"'), nil, SW_NORMAL);
-end;
-
-procedure TTabbedForm.setGrid;
-begin
-
-
-
 end;
 
 procedure TTabbedForm.showLoading;

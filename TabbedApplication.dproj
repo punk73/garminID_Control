@@ -5,7 +5,7 @@
         <FrameworkType>FMX</FrameworkType>
         <MainSource>TabbedApplication.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1119</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -350,13 +350,6 @@
         <DCC_LocalDebugSymbols>true</DCC_LocalDebugSymbols>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="libmysql.dll">
-            <AssemblyName/>
-            <HintPath>libmysql.dll</HintPath>
-            <AssemblyTag>libmysql</AssemblyTag>
-        </Reference>
-    </ItemGroup>
-    <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
@@ -384,6 +377,13 @@
             <Key>Cfg_1</Key>
             <CfgParent>Base</CfgParent>
         </BuildConfiguration>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="libmysql.dll">
+            <AssemblyName/>
+            <HintPath>libmysql.dll</HintPath>
+            <AssemblyTag>libmysql</AssemblyTag>
+        </Reference>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Delphi.Personality.12</Borland.Personality>
