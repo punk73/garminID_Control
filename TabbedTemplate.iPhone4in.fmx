@@ -90,7 +90,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       inherited Panel8: TPanel
         inherited listModel: TListBox
           Viewport.Width = 217.000000000000000000
-          Viewport.Height = 73.000000000000000000
+          Viewport.Height = 241.000000000000000000
         end
         inherited gridModel: TStringGrid
           Viewport.Width = 273.000000000000000000
@@ -105,21 +105,20 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
         inherited Label9: TLabel
           TextSettings.Font.StyleExt = {00070000000000000004000000}
         end
-        inherited listModelperGarmin: TListBox
-          Viewport.Width = 217.000000000000000000
-          Viewport.Height = 160.000000000000000000
-        end
         inherited garminDemandQtyGrid: TStringGrid
           RowCount = 3
           Viewport.Width = 273.000000000000000000
-          Viewport.Height = 137.000000000000000000
+          Viewport.Height = 161.000000000000000000
         end
-        inherited Edit1: TEdit
+        inherited edtSearchModel: TEdit
           Size.Height = 30.000000000000000000
           inherited SearchEditButton1: TSearchEditButton
             Size.Width = 22.000000000000000000
             Size.Height = 26.000000000000000000
           end
+        end
+        inherited demandGarminCombo: TComboEdit
+          Size.Height = 30.000000000000000000
         end
       end
     end

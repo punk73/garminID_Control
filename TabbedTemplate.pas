@@ -1133,7 +1133,10 @@ end;
 
 function TTabbedForm.GetDirectoryCount(const DirName: string): Integer;
 begin
-  Result := Length(TDirectory.GetDirectories(DirName));
+  if DirectoryExists(DirName) then
+    Result := Length(TDirectory.GetDirectories(DirName))
+  else
+    Result:=-1;
 end;
 
 procedure TTabbedForm.getGarminId;
@@ -1703,6 +1706,9 @@ begin
       while not (tmpQuery.Eof) do
       begin
         total:= GetDirectoryCount( tmpQuery['path'] );
+
+        if total=-1 then continue; //saat folder path tidak ditemukan diclient
+        
         //ShowMessage(tmpQuery['path']+''+ );
         if not (total= tmpQuery['stock']) then
         begin

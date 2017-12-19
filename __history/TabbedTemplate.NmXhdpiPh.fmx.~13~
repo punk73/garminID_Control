@@ -1,0 +1,160 @@
+inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
+  ClientHeight = 615
+  ClientWidth = 400
+  DesignerMasterStyle = 0
+  inherited HeaderToolBar: TToolBar
+    Size.Width = 400.000000000000000000
+    Size.Height = 48.000000000000000000
+    inherited ToolBarLabel: TLabel
+      Size.Width = 400.000000000000000000
+      Size.Height = 48.000000000000000000
+    end
+  end
+  inherited TabControl1: TTabControl
+    Size.Width = 400.000000000000000000
+    Size.Height = 567.000000000000000000
+    Sizes = (
+      400s
+      518s
+      400s
+      518s
+      400s
+      518s
+      400s
+      518s
+      400s
+      518s)
+    inherited TabItem1: TTabItem
+      Size.Width = 80.000000000000000000
+      ExplicitSize.cx = 50.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel1: TPanel
+        inherited mainGrid: TStringGrid
+          Viewport.Width = 753.000000000000000000
+          Viewport.Height = 273.000000000000000000
+          inherited StringColumn7: TStringColumn
+            Size.Width = 209.000000000000000000
+          end
+        end
+      end
+    end
+    inherited TabItem2: TTabItem
+      Size.Width = 80.000000000000000000
+      ExplicitSize.cx = 50.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel2: TPanel
+        inherited duplicateGrid: TStringGrid
+          Viewport.Width = 529.000000000000000000
+          Viewport.Height = 345.000000000000000000
+        end
+        inherited Panel6: TPanel
+          inherited lineGrid: TStringGrid
+            Viewport.Width = 209.000000000000000000
+            Viewport.Height = 225.000000000000000000
+          end
+        end
+        inherited loadingLabel: TLabel
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+        end
+      end
+    end
+    inherited TabItem3: TTabItem
+      Size.Width = 80.000000000000000000
+      ExplicitSize.cx = 158.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel4: TPanel
+        inherited edtGarminId: TEdit
+          Size.Height = 32.000000000000000000
+        end
+        inherited garminGrid: TStringGrid
+          RowCount = 21
+          Viewport.Width = 625.000000000000000000
+          Viewport.Height = 321.000000000000000000
+        end
+      end
+    end
+    inherited TabItem4: TTabItem
+      Size.Width = 80.000000000000000000
+      ExplicitSize.cx = 158.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel5: TPanel
+        inherited edtPathStock: TEdit
+          Size.Height = 32.000000000000000000
+        end
+        inherited edtStocks: TEdit
+          Size.Height = 32.000000000000000000
+        end
+        inherited stockGrid: TStringGrid
+          Viewport.Width = 353.000000000000000000
+          Viewport.Height = 328.000000000000000000
+        end
+        inherited listPath: TListBox
+          Viewport.Width = 185.000000000000000000
+          Viewport.Height = 233.000000000000000000
+        end
+      end
+      inherited stockGarminCombo: TComboBox
+        Size.Height = 32.000000000000000000
+      end
+    end
+    inherited TabItem6: TTabItem
+      Size.Width = 80.000000000000000000
+      ExplicitSize.cx = 132.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel8: TPanel
+        inherited demandGarminCombo: TComboBox
+          Size.Height = 32.000000000000000000
+        end
+        inherited edtTotalDemand: TEdit
+          Size.Height = 32.000000000000000000
+        end
+        inherited listModel: TListBox
+          Viewport.Width = 217.000000000000000000
+          Viewport.Height = 73.000000000000000000
+        end
+        inherited gridModel: TStringGrid
+          Viewport.Width = 273.000000000000000000
+          Viewport.Height = 153.000000000000000000
+          inherited StringColumn5: TStringColumn
+            Size.Width = 169.000000000000000000
+          end
+          inherited StringColumn6: TStringColumn
+            Size.Width = 94.000000000000000000
+          end
+        end
+        inherited Label9: TLabel
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+        end
+        inherited listModelperGarmin: TListBox
+          Viewport.Width = 217.000000000000000000
+          Viewport.Height = 160.000000000000000000
+        end
+        inherited garminDemandQtyGrid: TStringGrid
+          RowCount = 3
+          Viewport.Width = 273.000000000000000000
+          Viewport.Height = 137.000000000000000000
+        end
+        inherited Edit1: TEdit
+          Size.Height = 32.000000000000000000
+          inherited SearchEditButton1: TSearchEditButton
+            Size.Width = 32.000000000000000000
+            Size.Height = 32.000000000000000000
+          end
+        end
+      end
+    end
+  end
+  inherited GestureManager1: TGestureManager
+    GestureData = <
+      item
+        Control = Owner
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end>
+      end>
+  end
+end
