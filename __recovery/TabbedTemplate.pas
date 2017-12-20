@@ -771,7 +771,7 @@ end;
 
 procedure TTabbedForm.isiMainGrid(I: Integer);
 var
-  colId, colStock, colDemand, colBalance:string;
+  colId, colStock, colDemand, colBalance, colAllocatedStock :string;
 
 begin
   //fungsi ini berulang. I adalah indexnya
@@ -783,7 +783,13 @@ begin
   //module main program
   colId := garminQuery['id'];
   colStock := garminQuery['stock'];
-  colDemand:= garminQuery['demand'];
+
+  colDemand:= garminQuery['demand']; //demand dr DB
+  colAllocatedStock := garminQuery['allocated_stock']; //Allocated_Stock
+
+  //demand hasil proses ( demand-alloated stock )
+  colDemand:= inttostr(strtoInt(colDemand) - StrToInt(colAllocatedStock));
+
   colBalance := IntToStr( StrToInt(colStock) - StrToInt(colDemand) );
 
   mainGrid.Cells[0, I] := colId ;
@@ -1144,10 +1150,13 @@ begin
 
   query:='SELECT  garmines.id, ' +
           ' ifnull( s.total_stock, 0 ) as stock , '+
+          'ifnull( s.total_allocated, 0 ) as allocated_stock, ' +
           ' ifnull( d.total_demand,0) as demand ' +
           ' FROM `garmines` ' +
           ' LEFT  JOIN ( ' +
-            ' SELECT garmines_id, ifnull( SUM(stocks.stock),0 ) as total_stock FROM stocks '+
+            ' SELECT garmines_id, ifnull( SUM(stocks.stock),0 ) as total_stock, ' +
+            ' ifnull( SUM(stocks.allocated_stock ), 0 ) as total_allocated '+
+            'FROM stocks '+
               ' GROUP BY stocks.garmines_id ' +
           ' ) AS s ON garmines.id = s.garmines_id ' +
           ' LEFT  JOIN ( ' +
@@ -1735,6 +1744,7 @@ var
   query, queryUpdate: string;
   total, I,Code: Integer;
   tmpQuery: TFDQuery;
+  selisih: Integer;
 begin
     query:='SELECT id,`path`,stock FROM `stocks`';
     total:=0;
@@ -1747,7 +1757,9 @@ begin
 
       while not (tmpQuery.Eof) do
       begin
-        total:= GetDirectoryCount( tmpQuery['path'] );
+        total:= GetDirectoryCount( tmpQuery['path'] ); //Value Baru
+        //tmpQuery['stock'] = value lama
+        selisih := tmpQuery['stock'] - total ; //selisih = value lama- value baru
 
         //ShowMessage(tmpQuery['path']+''+ );
         if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
@@ -1755,7 +1767,7 @@ begin
           if not (total = tmpQuery['stock']) then
           begin
             //update
-            queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +'';
+            queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';
             FDConnection1.ExecSQL(queryUpdate);
           end;
         end;
