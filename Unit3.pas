@@ -100,7 +100,7 @@ begin
             lastPointer := oQuery['last_pointer'];
             //update last_pointer
             try
-              oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count-1) +' where id='+lineId );
+              oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count) +' where id='+lineId );
             except
               on E:Exception do
               begin
