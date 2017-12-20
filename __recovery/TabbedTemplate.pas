@@ -516,7 +516,6 @@ begin
     loadingLabel.Visible:=false;
     duplicateQuery.Refresh;
     lineQuery.Refresh;
-
   finally
     //free up threadHandlers
     for I := 0 to Length(arrThread)-1 do
