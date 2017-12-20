@@ -1297,21 +1297,52 @@ begin
 end;
 
 procedure TTabbedForm.koneksi;
+var
+  oParams: TStringList;
 begin
   try
+
     try
+      if FileExists(ExtractFilePath(ParamStr(0)) + 'file.ini' ) then
+      begin
+        try
+          oParams:=Tstringlist.Create;
+          oParams.LoadFromFile( ExtractFilePath(ParamStr(0)) + 'file.ini' );
+          oParams.Add('Pooled=True');
+          FDManager.AddConnectionDef('garmin_inventory', 'MySQL', oParams);
+          FDConnection1.ConnectionDefName:='garmin_inventory';
+        finally
+          oParams.Free;
+        end;
+      end;
+
+
       FDConnection1.Connected:=true;
     except
       on E:exception do
       ShowMessage(E.ClassName +' has rised exception of '+ E.Message);
     end;
+
     try
+      if FileExists(ExtractFilePath(ParamStr(0)) + 'dbpso.ini' ) then
+      begin
+        try
+          oParams:=Tstringlist.Create;
+          oParams.LoadFromFile( ExtractFilePath(ParamStr(0)) + 'dbpso.ini' );
+          oParams.Add('Pooled=True');
+          FDManager.AddConnectionDef('db_pso', 'MySQL', oParams);
+          psoConnection.ConnectionDefName:='db_pso';
+        finally
+          oParams.Free;
+        end;
+      end;
       psoConnection.Connected:=true;
 
     except
       on E:exception do
       ShowMessage(E.ClassName +' has rised exception of '+ E.Message);
     end;
+
     garmines_pso_Query.Active:=true;
     duplicateQuery.Active:=true;
     garminQuery.Active:=true;
