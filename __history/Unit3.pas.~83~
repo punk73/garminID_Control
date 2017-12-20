@@ -26,6 +26,7 @@ constructor TuploadData.Create(aFile: string;aLineId:string );
 begin
   FileName:=aFile;
   lineId := aLineId;
+
   inherited Create(false);
 
 end;
@@ -46,7 +47,7 @@ end;
 procedure TuploadData.uploadData;
 var
   list, row: TStringList;
-  I: Integer;
+  I, lastPointer: Integer;
   query: string;
   oConn:TFDConnection;
   oQuery:TFDQuery;
@@ -85,19 +86,35 @@ begin
       //buat object Connection
       oConn:= TFDConnection.Create(nil);
       oConn.ConnectionDefName:= 'garmin_inventory';
+
       try
+        oConn.Connected:=true;  //activate oConn
         oQuery:=TFDQuery.Create(nil);
         oQuery.Connection:=oConn;
-        oQuery.SQL.Text:='select * from line where ';
+        oQuery.SQL.Text:='select * from line where id='+lineId;
         oQuery.Active:=true;
         oQuery.Open();
+        while not (oQuery.Eof) do
+        begin
+          lastPointer := oQuery['last_pointer'];
+          //update last_pointer
+          try
+            oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count-1));
+          except
+            on E:Exception do
+            begin
+              TabbedForm.loadingLabel.Text:= E.Message;
+              TabbedForm.loadingLabel.Visible:=true;
+            end;
+          end;
 
+        end;
       finally
         oQuery.Free;
       end;
-    //I = last pointer
 
-    for I := 0 to list.Count-1 do
+    //I = last pointer
+    for I := lastPointer to list.Count-1 do
     begin
       //input ke db.
       try

@@ -9,21 +9,24 @@ type
   TuploadData = class(TThread)
   private
     { Private declarations }
-     FileName:string;
+     FileName, lineId :string;
+
   protected
     procedure Execute; override;
     procedure uploadData;
   public
-    constructor Create( aFile:string );
+    constructor Create( aFile:string; aLineId:string );
     procedure OnTerminate(Sender: TObject);
   end;
 
 implementation
   uses TabbedTemplate;
 
-constructor TuploadData.Create(aFile: string);
+constructor TuploadData.Create(aFile: string;aLineId:string );
 begin
   FileName:=aFile;
+  lineId := aLineId;
+
   inherited Create(false);
 
 end;
@@ -44,7 +47,7 @@ end;
 procedure TuploadData.uploadData;
 var
   list, row: TStringList;
-  I: Integer;
+  I, lastPointer: Integer;
   query: string;
   oConn:TFDConnection;
   oQuery:TFDQuery;
@@ -54,6 +57,7 @@ begin
   try
     list:=TStringList.Create;
     list.LoadFromFile(FileName);
+    lastPointer:=0;
 
     //setting parameter untu FDManager. dikunakan oleh TFDConnections
     try
@@ -80,9 +84,38 @@ begin
     end;
 
     //get last pointer
-    //I = last pointer
+      //buat object Connection
+      oConn:= TFDConnection.Create(nil);
+      oConn.ConnectionDefName:= 'garmin_inventory';
 
-    for I := 0 to list.Count-1 do
+      try
+        oConn.Connected:=true;  //activate oConn
+        oQuery:=TFDQuery.Create(nil);
+        oQuery.Connection:=oConn;
+        oQuery.SQL.Text:='select * from line where id='+lineId;
+        oQuery.Active:=true;
+        oQuery.Open();
+        while not (oQuery.Eof) do
+        begin
+          lastPointer := oQuery['last_pointer'];
+          //update last_pointer
+          try
+            oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count-1) +' where id='+lineId );
+          except
+            on E:Exception do
+            begin
+              TabbedForm.loadingLabel.Text:= E.Message;
+              TabbedForm.loadingLabel.Visible:=true;
+            end;
+          end;
+
+        end;
+      finally
+        oQuery.Free;
+      end;
+
+    //I = last pointer
+    for I := lastPointer to list.Count-1 do
     begin
       //input ke db.
       try

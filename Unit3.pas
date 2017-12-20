@@ -57,6 +57,7 @@ begin
   try
     list:=TStringList.Create;
     list.LoadFromFile(FileName);
+    lastPointer:=0;
 
     //setting parameter untu FDManager. dikunakan oleh TFDConnections
     try
@@ -84,33 +85,37 @@ begin
 
     //get last pointer
       //buat object Connection
+      try
       oConn:= TFDConnection.Create(nil);
       oConn.ConnectionDefName:= 'garmin_inventory';
-
-      try
-        oConn.Connected:=true;  //activate oConn
-        oQuery:=TFDQuery.Create(nil);
-        oQuery.Connection:=oConn;
-        oQuery.SQL.Text:='select * from line where id='+lineId;
-        oQuery.Active:=true;
-        oQuery.Open();
-        while not (oQuery.Eof) do
-        begin
-          lastPointer := oQuery['last_pointer'];
-          //update last_pointer
-          try
-            oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count-1));
-          except
-            on E:Exception do
-            begin
-              TabbedForm.loadingLabel.Text:= E.Message;
-              TabbedForm.loadingLabel.Visible:=true;
+        try
+          oConn.Connected:=true;  //activate oConn
+          oQuery:=TFDQuery.Create(nil);
+          oQuery.Connection:=oConn;
+          oQuery.SQL.Text:='select * from line where id='+lineId;
+          oQuery.Active:=true;
+          oQuery.Open();
+          while not (oQuery.Eof) do
+          begin
+            lastPointer := oQuery['last_pointer'];
+            //update last_pointer
+            try
+              oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count-1) +' where id='+lineId );
+            except
+              on E:Exception do
+              begin
+                TabbedForm.loadingLabel.Text:= E.Message;
+                TabbedForm.loadingLabel.Visible:=true;
+              end;
             end;
-          end;
 
+            oQuery.Next;
+          end;
+        finally
+          oQuery.Free;
         end;
       finally
-        oQuery.Free;
+        oConn.Free;
       end;
 
     //I = last pointer

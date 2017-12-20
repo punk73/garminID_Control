@@ -512,9 +512,10 @@ begin
     WaitForMultipleObjects(lineGrid.RowCount, Pointer(ThreadHandlers) , True, INFINITE);
 
     ShowMessage( SysErrorMessage(GetLastError) );
-    Sleep(1000);
+    Sleep(100);
     loadingLabel.Visible:=false;
     duplicateQuery.Refresh;
+    lineQuery.Refresh;
   finally
     //free up threadHandlers
     for I := 0 to Length(arrThread)-1 do
