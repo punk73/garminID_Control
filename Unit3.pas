@@ -9,21 +9,24 @@ type
   TuploadData = class(TThread)
   private
     { Private declarations }
-     FileName:string;
+     FileName, lineId :string;
+
   protected
     procedure Execute; override;
     procedure uploadData;
   public
-    constructor Create( aFile:string );
+    constructor Create( aFile:string; aLineId:string );
     procedure OnTerminate(Sender: TObject);
   end;
 
 implementation
   uses TabbedTemplate;
 
-constructor TuploadData.Create(aFile: string);
+constructor TuploadData.Create(aFile: string;aLineId:string );
 begin
   FileName:=aFile;
+  lineId := aLineId;
+
   inherited Create(false);
 
 end;
@@ -44,7 +47,7 @@ end;
 procedure TuploadData.uploadData;
 var
   list, row: TStringList;
-  I: Integer;
+  I, lastPointer: Integer;
   query: string;
   oConn:TFDConnection;
   oQuery:TFDQuery;
@@ -58,16 +61,60 @@ begin
     //setting parameter untu FDManager. dikunakan oleh TFDConnections
     try
       oParams := TSTringlist.Create;
-      oParams.Add('Database=garmin_inventory');
-      oParams.Add('User_Name=root');
-      oParams.Add('Password=');
-      oParams.Add('Pooled=True');
+
+      //jika ada file.ini, ambil setting dari file tersebut;
+      if FileExists(ExtractFilePath(ParamStr(0)) + 'file.ini' ) then
+      begin
+        oParams.LoadFromFile( ExtractFilePath(ParamStr(0)) + 'file.ini' );
+        oParams.Add('Pooled=True');
+      end
+      else
+      begin
+        oParams.Add('Database=garmin_inventory');
+        oParams.Add('User_Name=root');
+        oParams.Add('Server=136.198.117.48');
+        oParams.Add('Password=JvcSql@123');
+        oParams.Add('Pooled=True');
+      end;
+
       FDManager.AddConnectionDef('garmin_inventory', 'MySQL', oParams );
     finally
       oParams.Free;
     end;
 
-    for I := 0 to list.Count-1 do
+    //get last pointer
+      //buat object Connection
+      oConn:= TFDConnection.Create(nil);
+      oConn.ConnectionDefName:= 'garmin_inventory';
+
+      try
+        oConn.Connected:=true;  //activate oConn
+        oQuery:=TFDQuery.Create(nil);
+        oQuery.Connection:=oConn;
+        oQuery.SQL.Text:='select * from line where id='+lineId;
+        oQuery.Active:=true;
+        oQuery.Open();
+        while not (oQuery.Eof) do
+        begin
+          lastPointer := oQuery['last_pointer'];
+          //update last_pointer
+          try
+            oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count-1));
+          except
+            on E:Exception do
+            begin
+              TabbedForm.loadingLabel.Text:= E.Message;
+              TabbedForm.loadingLabel.Visible:=true;
+            end;
+          end;
+
+        end;
+      finally
+        oQuery.Free;
+      end;
+
+    //I = last pointer
+    for I := lastPointer to list.Count-1 do
     begin
       //input ke db.
       try
@@ -75,28 +122,22 @@ begin
         row.Text:= list[I]; //satu baris.
         row.CommaText := row.Text;
         row.Delimiter:= ',';
+
         //deklarasi kolom
         date:= row[0];
         time := row[1];
         ynumber:= row[2];
         serialNumber:= row[3];
         unitId:= row[4];
+
         if row.Count > 5  then //kadang jumlah row > 5 kadang tidak.
         begin
           linesName:= row[5];
         end
-        else linesName:='';
-
-        {Synchronize(
-          procedure
-          begin
-             TabbedForm.loadingLabel.Visible:=true;
-             if TabbedForm.loadingLabel.Text = 'Loading' then TabbedForm.loadingLabel.Text:='Loading.';
-             if TabbedForm.loadingLabel.Text = 'Loading.' then TabbedForm.loadingLabel.Text:='Loading..';
-             if TabbedForm.loadingLabel.Text = 'Loading..' then TabbedForm.loadingLabel.Text:='Loading...';
-             if TabbedForm.loadingLabel.Text = 'Loading...' then TabbedForm.loadingLabel.Text:='Loading';
-          end
-        );}
+        else
+        begin
+         linesName:='';
+        end;
 
         try
           //buat object Connection
@@ -118,10 +159,6 @@ begin
           oConn.Free;
         end;
 
-
-
-
-
       finally
         row.Free;
       end;
@@ -129,7 +166,6 @@ begin
 
     TabbedForm.duplicateQuery.Refresh;
     TabbedForm.loadingLabel.Text:= 'Finish!';
-    //TabbedForm.ShowMessage('Data Updated!');
   finally
    list.Free;
   end;

@@ -459,6 +459,7 @@ var
   //ThreadHandlers: array of THandle;
   arrThread:array of TuploadData;
   ThreadHandlers: array of THandle ;
+  lineId: string;
 begin
 
   if lineGrid.RowCount=0 then
@@ -479,6 +480,7 @@ begin
     begin
 
       path:= lineGrid.Cells[2, I] ;
+      lineId := lineGrid.Cells[0,I];
 
       //cek apakah file terkait ada.
       //copy ke localfolder;
@@ -491,11 +493,11 @@ begin
       //masuk ke file local
       //localPath:= file local
       localPath := ExtractFilePath( ParamStr(0) );
-      localPath:= StringReplace(localPath, 'Win32\debug\', 'DATALOG\'+ ExtractFileName(path) , [rfReplaceAll, rfIgnoreCase]);
+      localPath:= localPath + ExtractFileName(path);
 
       try
         lineGrid.Selected:= I;
-        arrThread[I] := TuploadData.Create(localPath);  //simpan lewat anotherThread
+        arrThread[I] := TuploadData.Create(localPath, lineId);  //simpan lewat anotherThread
       finally
 
       end;
@@ -507,18 +509,12 @@ begin
       ThreadHandlers[I]:= arrThread[i].Handle;
     end;
 
-    //wait until all thread terminated!
-    {if (WaitForMultipleObjects(lineGrid.RowCount, Pointer(ThreadHandlers) , True, INFINITE) <> WAIT_OBJECT_0 ) then
-    begin
-      //do something if two thread is finished!
-      duplicateQuery.Refresh;
-      ShowMessage('Data updated!' + SysErrorMessage(GetLastError) );
-    end;}
-
     WaitForMultipleObjects(lineGrid.RowCount, Pointer(ThreadHandlers) , True, INFINITE);
+
     ShowMessage( SysErrorMessage(GetLastError) );
     Sleep(1000);
     loadingLabel.Visible:=false;
+    duplicateQuery.Refresh;
   finally
     //free up threadHandlers
     for I := 0 to Length(arrThread)-1 do

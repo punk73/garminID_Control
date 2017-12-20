@@ -473,3 +473,565 @@ disassembling:
 00ef36e7    > call    -$53d4b4 ($9b6238)     ; FMX.Forms.TApplication.Run
 00ef36ec 25   call    -$ae8d1d ($40a9d4)     ; System.@Halt0
 
+date/time          : 2017-12-20, 10:41:42, 664ms
+computer name      : ENG70
+user name          : eng70
+registered owner   : Microsoft / Microsoft
+operating system   : Windows 7 x64 Service Pack 1 build 7601
+system language    : Indonesian
+system up time     : 2 hours 34 minutes
+program up time    : 1 minute 41 seconds
+processors         : 2x Intel(R) Core(TM) i3-6100 CPU @ 3.70GHz
+physical memory    : 1073/3997 MB (free/total)
+free disk space    : (C:) 116.51 GB (E:) 191.52 GB
+display mode       : 1366x768, 32 bit
+process id         : $454
+allocated memory   : 144.84 MB
+largest free block : 1.00 GB
+executable         : TabbedApplication.exe
+exec. date/time    : 2017-12-20 10:39
+version            : 1.0.0.0
+compiled with      : Delphi 10.2 Tokyo
+madExcept version  : 4.0.18
+callstack crc      : $2035efbe, $12291ee3, $e3059eeb
+exception number   : 1
+exception class    : EFOpenError
+exception message  : Cannot open file "E:\Delphi Project\Garmin id tab project\Win32\Release\". The system cannot find the path specified.
+
+thread $157c (TuploadData):
+0052fdca +126 TabbedApplication.exe System.Classes       TFileStream.Create
+0052fc80 +020 TabbedApplication.exe System.Classes       TFileStream.Create
+0052bcbe +012 TabbedApplication.exe System.Classes       TStrings.LoadFromFile
+00ed3acc +048 TabbedApplication.exe Unit3          56 +3 TuploadData.uploadData
+00ed3a68 +000 TabbedApplication.exe Unit3          34 +0 TuploadData.Execute
+004b0f07 +02b TabbedApplication.exe madExcept            HookedTThreadExecute
+005402d1 +049 TabbedApplication.exe System.Classes       ThreadProc
+0040ab54 +028 TabbedApplication.exe System         79 +0 ThreadWrapper
+004b0ded +00d TabbedApplication.exe madExcept            CallThreadProcSafe
+004b0e52 +032 TabbedApplication.exe madExcept            ThreadExceptFrame
+74e83388 +010 kernel32.dll                               BaseThreadInitThunk
+>> created by main thread ($efc) at:
+00ed3a28 +040 TabbedApplication.exe Unit3          27 +2 TuploadData.Create
+
+main thread ($efc):
+772f01f6 +00e ntdll.dll                                       NtWaitForMultipleObjects
+75091705 +0fa KERNELBASE.dll                                  WaitForMultipleObjectsEx
+74e81a07 +089 kernel32.dll                                    WaitForMultipleObjectsEx
+74e841fb +013 kernel32.dll                                    WaitForMultipleObjects
+00ed8219 +271 TabbedApplication.exe TabbedTemplate    518 +56 TTabbedForm.Button1Click
+00748ef8 +18c TabbedApplication.exe FMX.Controls              TControl.Click
+007f51de +006 TabbedApplication.exe FMX.StdCtrls              TCustomButton.Click
+00749522 +03e TabbedApplication.exe FMX.Controls              TControl.MouseClick
+009bb1c1 +0dd TabbedApplication.exe FMX.Forms                 TCommonCustomForm.MouseUp
+00937eb3 +9cb TabbedApplication.exe FMX.Platform.Win          WndProc
+0040f1f0 +010 TabbedApplication.exe System             79  +0 @IntfClear
+0070e368 +02c TabbedApplication.exe FMX.Gestures.Win          TWinGestureEngine.TRealTimeStylus.StylusButtonUp
+76660d48 +016 USER32.dll                                      CallWindowProcW
+76657885 +00a USER32.dll                                      DispatchMessageW
+009332df +02f TabbedApplication.exe FMX.Platform.Win          TPlatformWin.HandleMessage
+009b5893 +03b TabbedApplication.exe FMX.Forms                 TApplication.HandleMessage
+0093310e +03a TabbedApplication.exe FMX.Platform.Win          TPlatformWin.Run
+009b6277 +03f TabbedApplication.exe FMX.Forms                 TApplication.Run
+00ef36e7 +053 TabbedApplication.exe TabbedApplication  24  +4 initialization
+74e83388 +010 kernel32.dll                                    BaseThreadInitThunk
+
+thread $1434:
+772f01f6 +0e ntdll.dll                       NtWaitForMultipleObjects
+75091705 +fa KERNELBASE.dll                  WaitForMultipleObjectsEx
+74e81a07 +89 kernel32.dll                    WaitForMultipleObjectsEx
+76660864 +00 USER32.dll                      MsgWaitForMultipleObjectsEx
+76660b64 +1a USER32.dll                      MsgWaitForMultipleObjects
+004b0ded +0d TabbedApplication.exe madExcept CallThreadProcSafe
+004b0e52 +32 TabbedApplication.exe madExcept ThreadExceptFrame
+74e83388 +10 kernel32.dll                    BaseThreadInitThunk
+>> created by main thread ($efc) at:
+6e0b78a2 +00 gdiplus.dll
+
+thread $f58:
+772f01f6 +0e ntdll.dll     NtWaitForMultipleObjects
+74e83388 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $131c:
+772f1fdf +0b ntdll.dll     NtWaitForWorkViaWorkerFactory
+74e83388 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $15f0: <priority:2>
+772f01f6 +0e ntdll.dll                       NtWaitForMultipleObjects
+75091705 +fa KERNELBASE.dll                  WaitForMultipleObjectsEx
+74e81a07 +89 kernel32.dll                    WaitForMultipleObjectsEx
+76241323 +67 msvcrt.dll                      _endthreadex
+004b0ded +0d TabbedApplication.exe madExcept CallThreadProcSafe
+004b0e52 +32 TabbedApplication.exe madExcept ThreadExceptFrame
+74e83388 +10 kernel32.dll                    BaseThreadInitThunk
+>> created by main thread ($efc) at:
+7624139c +6e msvcrt.dll                      _beginthreadex
+
+thread $ebc:
+772f01f6 +0e ntdll.dll                       NtWaitForMultipleObjects
+75091705 +fa KERNELBASE.dll                  WaitForMultipleObjectsEx
+74e81a07 +89 kernel32.dll                    WaitForMultipleObjectsEx
+76660864 +00 USER32.dll                      MsgWaitForMultipleObjectsEx
+76241323 +67 msvcrt.dll                      _endthreadex
+004b0ded +0d TabbedApplication.exe madExcept CallThreadProcSafe
+004b0e52 +32 TabbedApplication.exe madExcept ThreadExceptFrame
+74e83388 +10 kernel32.dll                    BaseThreadInitThunk
+>> created by main thread ($efc) at:
+7624139c +6e msvcrt.dll                      _beginthreadex
+
+thread $b80: <priority:2>
+772f01f6 +0e ntdll.dll                       NtWaitForMultipleObjects
+75091705 +fa KERNELBASE.dll                  WaitForMultipleObjectsEx
+74e81a07 +89 kernel32.dll                    WaitForMultipleObjectsEx
+75226269 +ef ole32.dll                       CoWaitForMultipleHandles
+76241323 +67 msvcrt.dll                      _endthreadex
+004b0ded +0d TabbedApplication.exe madExcept CallThreadProcSafe
+004b0e52 +32 TabbedApplication.exe madExcept ThreadExceptFrame
+74e83388 +10 kernel32.dll                    BaseThreadInitThunk
+>> created by main thread ($efc) at:
+7624139c +6e msvcrt.dll                      _beginthreadex
+
+thread $10f8:
+772efe2a +0e ntdll.dll                       NtDelayExecution
+75093d37 +5f KERNELBASE.dll                  SleepEx
+75094608 +0a KERNELBASE.dll                  Sleep
+004b0ded +0d TabbedApplication.exe madExcept CallThreadProcSafe
+004b0e52 +32 TabbedApplication.exe madExcept ThreadExceptFrame
+74e83388 +10 kernel32.dll                    BaseThreadInitThunk
+>> created by thread $ebc at:
+7523da7e +00 ole32.dll
+
+thread $11f0:
+772f1fdf +0b ntdll.dll     NtWaitForWorkViaWorkerFactory
+74e83388 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $178c:
+772f1fdf +0b ntdll.dll     NtWaitForWorkViaWorkerFactory
+74e83388 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $1760:
+772f1fdf +0b ntdll.dll     NtWaitForWorkViaWorkerFactory
+74e83388 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $dbc:
+772f1fdf +0b ntdll.dll     NtWaitForWorkViaWorkerFactory
+74e83388 +10 kernel32.dll  BaseThreadInitThunk
+
+thread $11c0: <priority:1>
+772ef9f2 +0e ntdll.dll                       NtRemoveIoCompletion
+004b0ded +0d TabbedApplication.exe madExcept CallThreadProcSafe
+004b0e52 +32 TabbedApplication.exe madExcept ThreadExceptFrame
+74e83388 +10 kernel32.dll                    BaseThreadInitThunk
+>> created by thread $c04 at:
+745ca337 +00 mswsock.dll
+
+thread $16fc:
+772f1fdf +0b ntdll.dll     NtWaitForWorkViaWorkerFactory
+74e83388 +10 kernel32.dll  BaseThreadInitThunk
+
+modules:
+00400000 TabbedApplication.exe                     1.0.0.0            E:\Delphi Project\Garmin id tab project\Win32\Release
+50f00000 SHDOCVW.dll                               6.1.7601.18222     C:\Windows\system32
+50f70000 DUser.dll                                 6.1.7600.16385     C:\Windows\system32
+510d0000 FaultRep.dll                              6.1.7601.17514     C:\Windows\system32
+55510000 d3d9.dll                                  6.1.7601.17514     C:\Windows\system32
+58760000 d3d8thk.dll                               6.1.7600.16385     C:\Windows\system32
+5a590000 cryptdll.dll                              6.1.7600.16385     C:\Windows\system32
+5ac00000 LINKINFO.dll                              6.1.7600.16385     C:\Windows\system32
+5ade0000 igc32.dll                                 20.19.15.4352      C:\Windows\system32
+5c550000 tiptsf.dll                                6.1.7601.18984     C:\Program Files (x86)\Common Files\microsoft shared\ink
+5ca60000 igd10iumd32.dll                           20.19.15.4352      C:\Windows\system32
+5e170000 NetworkExplorer.dll                       6.1.7601.17514     C:\Windows\system32
+5e9a0000 Kerberos.DLL                              6.1.7601.19135     C:\Windows\SysWOW64
+5ea30000 adsldp.dll                                6.1.7601.17514     C:\Windows\system32
+5ea60000 logoncli.dll                              6.1.7601.17514     C:\Windows\system32
+5ea90000 dsrole.dll                                6.1.7600.16385     C:\Windows\system32
+5eaa0000 EhStorAPI.dll                             6.1.7601.17514     C:\Windows\system32
+5eb50000 PortableDeviceApi.dll                     6.1.7601.17514     C:\Windows\system32
+5ee20000 SearchFolder.dll                          6.1.7601.17514     C:\Windows\system32
+5eec0000 thumbcache.dll                            6.1.7601.17514     C:\Windows\SysWOW64
+5eee0000 ieproxy.dll                               11.0.9600.18098    C:\Program Files (x86)\Internet Explorer
+5ef30000 actxprxy.dll                              6.1.7601.17514     C:\Windows\SysWOW64
+5ef80000 StructuredQuery.dll                       7.0.7601.23451     C:\Windows\System32
+5f080000 explorerframe.dll                         6.1.7601.23537     C:\Windows\system32
+5f1f0000 cscobj.dll                                6.1.7601.17514     C:\Windows\System32
+5f220000 davclnt.dll                               6.1.7601.18912     C:\Windows\System32
+5f270000 DAVHLPR.dll                               6.1.7600.16385     C:\Windows\System32
+5f280000 ntlanman.dll                              6.1.7601.17514     C:\Windows\System32
+5f2a0000 DUI70.dll                                 6.1.7600.16385     C:\Windows\system32
+5f360000 libmysql.dll                              6.1.11.0           E:\Delphi Project\Garmin id tab project\Win32\Release
+5f830000 InkObj.dll                                6.1.7601.23375     C:\Program Files (x86)\Common Files\Microsoft Shared\Ink
+5f990000 drprov.dll                                6.1.7600.16385     C:\Windows\System32
+5f9a0000 snacnp.dll                                12.1.2015.2015     C:\Windows\system32
+5f9b0000 api-ms-win-crt-filesystem-l1-1-0.dll      10.0.10240.16390   C:\Windows\system32
+5f9c0000 api-ms-win-crt-utility-l1-1-0.dll         10.0.10240.16390   C:\Windows\system32
+5f9d0000 api-ms-win-crt-time-l1-1-0.dll            10.0.10240.16390   C:\Windows\system32
+5f9e0000 api-ms-win-crt-math-l1-1-0.dll            10.0.10240.16390   C:\Windows\system32
+5f9f0000 api-ms-win-crt-environment-l1-1-0.dll     10.0.10240.16390   C:\Windows\system32
+5fa00000 api-ms-win-crt-conio-l1-1-0.dll           10.0.10240.16390   C:\Windows\system32
+5fa10000 ucrtbase.DLL                              10.0.10240.16390   C:\Windows\system32
+62fd0000 windowscodecs.dll                         6.2.9200.21830     C:\Windows\system32
+67bd0000 api-ms-win-crt-convert-l1-1-0.dll         10.0.10240.16390   C:\Windows\system32
+67be0000 api-ms-win-crt-stdio-l1-1-0.dll           10.0.10240.16390   C:\Windows\system32
+67bf0000 api-ms-win-crt-heap-l1-1-0.dll            10.0.10240.16390   C:\Windows\system32
+68440000 GrooveIntlResource.dll                    15.0.4420.1017     C:\Program Files (x86)\Microsoft Office\Office15\1033
+68f70000 api-ms-win-crt-string-l1-1-0.dll          10.0.10240.16390   C:\Windows\system32
+68f80000 api-ms-win-core-file-l1-2-0.dll           10.0.10240.16390   C:\Windows\system32
+68f90000 api-ms-win-core-processthreads-l1-1-1.dll 10.0.10240.16390   C:\Windows\system32
+68fa0000 api-ms-win-core-localization-l1-2-0.dll   10.0.10240.16390   C:\Windows\system32
+68fb0000 api-ms-win-core-file-l2-1-0.dll           10.0.10240.16390   C:\Windows\system32
+68fc0000 api-ms-win-core-timezone-l1-1-0.dll       10.0.10240.16390   C:\Windows\system32
+68fd0000 VCRUNTIME140.dll                          14.0.23026.0       C:\Windows\system32
+68ff0000 d3d10_1core.dll                           6.2.9200.16492     C:\Windows\system32
+69040000 api-ms-win-crt-runtime-l1-1-0.dll         10.0.10240.16390   C:\Windows\system32
+69050000 tpcps.dll                                 6.1.7600.16385     C:\Program Files (x86)\Common Files\Microsoft Shared\Ink
+6c0b0000 api-ms-win-downlevel-shell32-l1-1-0.dll   6.2.9200.16492     C:\Windows\system32
+6c150000 ieframe.DLL                               11.0.9600.18098    C:\Windows\system32
+6ce30000 MSVCR100.dll                              10.0.40219.325     C:\Windows\system32
+6cf80000 MSVCP100.dll                              10.0.40219.325     C:\Windows\system32
+6d000000 SXS.DLL                                   6.1.7601.17514     C:\Windows\system32
+6d580000 PROPSYS.dll                               7.0.7601.17514     C:\Windows\system32
+6dc40000 winmm.dll                                 6.1.7601.17514     C:\Windows\system32
+6dc80000 winspool.drv                              6.1.7601.17514     C:\Windows\system32
+6de00000 credssp.dll                               6.1.7601.19135     C:\Windows\system32
+6de30000 MPR.dll                                   6.1.7600.16385     C:\Windows\system32
+6e070000 gdiplus.dll                               6.1.7601.19044     C:\Windows\WinSxS\x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.7601.19044_none_72d48fa18666b13e
+6e3f0000 msi.dll                                   5.0.7601.18896     C:\Windows\system32
+6edc0000 apphelp.dll                               6.1.7601.18777     C:\Windows\system32
+6ee90000 DNSAPI.dll                                6.1.7601.17570     C:\Windows\system32
+6eee0000 pnrpnsp.dll                               6.1.7600.16385     C:\Windows\system32
+6ef00000 rtscom.dll                                6.1.7601.23375     C:\Program Files (x86)\Common Files\Microsoft Shared\Ink
+6ef30000 SHFolder.dll                              6.1.7600.16385     C:\Windows\system32
+6f050000 GROOVEEX.DLL                              15.0.4420.1017     C:\Program Files (x86)\Microsoft Office\Office15
+6f200000 d3d10_1.dll                               6.2.9200.16492     C:\Windows\system32
+6f290000 ntshrui.dll                               6.1.7601.17755     C:\Windows\system32
+6f300000 EhStorShell.dll                           6.1.7600.16385     C:\Windows\system32
+6f380000 ATL100.DLL                                10.0.40219.325     C:\Windows\system32
+70180000 d3d11.dll                                 6.2.9200.16570     C:\Windows\system32
+70300000 dxgi.dll                                  6.2.9200.16492     C:\Windows\system32
+70350000 DWRITE.DLL                                6.2.9200.17461     C:\Windows\system32
+70490000 d2d1.dll                                  6.2.9200.16765     C:\Windows\system32
+707e0000 msls31.dll                                3.10.349.0         C:\Windows\system32
+70a80000 dwmapi.dll                                6.1.7601.18917     C:\Windows\system32
+70aa0000 uxtheme.dll                               6.1.7600.16385     C:\Windows\system32
+70b20000 comctl32.dll                              6.10.7601.18837    C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.18837_none_41e855142bd5705d
+71690000 mshwgst.dll                               6.1.7600.16385     C:\Program Files (x86)\Common Files\Microsoft Shared\Ink
+727d0000 ntmarta.dll                               6.1.7600.16385     C:\Windows\system32
+72d90000 api-ms-win-core-synch-l1-2-0.dll          10.0.10240.16390   C:\Windows\system32
+72fb0000 cscapi.dll                                6.1.7601.17514     C:\Windows\system32
+72fe0000 NTDSAPI.DLL                               6.1.7600.16385     C:\Windows\system32
+73220000 bcryptprimitives.dll                      6.1.7601.19012     C:\Windows\SysWOW64
+73280000 ncrypt.dll                                6.1.7601.19135     C:\Windows\system32
+73580000 rasadhlp.dll                              6.1.7600.16385     C:\Windows\system32
+73590000 ATL.DLL                                   3.5.2284.0         C:\Windows\system32
+735b0000 adsldpc.dll                               6.1.7600.16385     C:\Windows\system32
+735f0000 ACTIVEDS.dll                              6.1.7601.17514     C:\Windows\system32
+73650000 wkscli.dll                                6.1.7601.17514     C:\Windows\system32
+73660000 srvcli.dll                                6.1.7601.17514     C:\Windows\system32
+73680000 netapi32.dll                              6.1.7601.17887     C:\Windows\system32
+73970000 fwpuclnt.dll                              6.1.7601.18283     C:\Windows\System32
+739b0000 netutils.dll                              6.1.7601.17514     C:\Windows\system32
+73cb0000 WINSTA.dll                                6.1.7601.18540     C:\Windows\system32
+73de0000 IconCodecService.dll                      6.1.7600.16385     C:\Windows\system32
+73df0000 rsaenh.dll                                6.1.7600.16385     C:\Windows\system32
+73e30000 CRYPTSP.dll                               6.1.7601.18741     C:\Windows\system32
+73e50000 api-ms-win-downlevel-shlwapi-l2-1-0.dll   6.2.9200.16492     C:\Windows\system32
+73e60000 bcrypt.dll                                6.1.7600.16385     C:\Windows\system32
+73fc0000 wsock32.dll                               6.1.7600.16385     C:\Windows\system32
+73fd0000 WINNSI.DLL                                6.1.7600.16385     C:\Windows\system32
+73fe0000 IPHLPAPI.DLL                              6.1.7601.17514     C:\Windows\system32
+74000000 version.dll                               6.1.7600.16385     C:\Windows\system32
+74010000 slc.dll                                   6.1.7600.16385     C:\Windows\system32
+74170000 wtsapi32.dll                              6.1.7601.17514     C:\Windows\system32
+74180000 Secur32.dll                               6.1.7601.19135     C:\Windows\system32
+741c0000 RpcRtRemote.dll                           6.1.7601.17514     C:\Windows\system32
+744c0000 winrnr.dll                                6.1.7600.16385     C:\Windows\System32
+744d0000 napinsp.dll                               6.1.7600.16385     C:\Windows\system32
+744e0000 NLAapi.dll                                6.1.7601.18685     C:\Windows\system32
+744f0000 wship6.dll                                6.1.7600.16385     C:\Windows\System32
+745b0000 wshtcpip.dll                              6.1.7600.16385     C:\Windows\System32
+745c0000 mswsock.dll                               6.1.7601.23451     C:\Windows\System32
+74a50000 SYSFER.DLL                                12.1.2015.2015     C:\Windows\SysWOW64
+74c20000 CRYPTBASE.dll                             6.1.7601.19135     C:\Windows\syswow64
+74c30000 SspiCli.dll                               6.1.7601.19135     C:\Windows\syswow64
+74c90000 comdlg32.dll                              6.1.7601.17514     C:\Windows\syswow64
+74d10000 RPCRT4.dll                                6.1.7601.19135     C:\Windows\syswow64
+74e00000 DEVOBJ.dll                                6.1.7601.17621     C:\Windows\syswow64
+74e20000 api-ms-win-downlevel-version-l1-1-0.dll   6.2.9200.16492     C:\Windows\syswow64
+74e30000 WINTRUST.dll                              6.1.7601.18839     C:\Windows\syswow64
+74e60000 api-ms-win-downlevel-normaliz-l1-1-0.dll  6.2.9200.16492     C:\Windows\syswow64
+74e70000 kernel32.dll                              6.1.7601.19135     C:\Windows\syswow64
+74f80000 NSI.dll                                   6.1.7600.16385     C:\Windows\syswow64
+74f90000 api-ms-win-downlevel-shlwapi-l1-1-0.dll   6.2.9200.16492     C:\Windows\syswow64
+74fa0000 MSCTF.dll                                 6.1.7601.18731     C:\Windows\syswow64
+75070000 PSAPI.DLL                                 6.1.7600.16385     C:\Windows\syswow64
+75080000 KERNELBASE.dll                            6.1.7601.19135     C:\Windows\syswow64
+750d0000 CRYPT32.dll                               6.1.7601.18839     C:\Windows\syswow64
+75200000 LPK.dll                                   6.1.7601.18985     C:\Windows\syswow64
+75210000 ole32.dll                                 6.1.7601.18915     C:\Windows\syswow64
+75370000 urlmon.dll                                11.0.9600.18098    C:\Windows\SysWOW64
+754c0000 api-ms-win-downlevel-user32-l1-1-0.dll    6.2.9200.16492     C:\Windows\syswow64
+754d0000 SHELL32.dll                               6.1.7601.23537     C:\Windows\syswow64
+76120000 api-ms-win-downlevel-advapi32-l1-1-0.dll  6.2.9200.16492     C:\Windows\syswow64
+76130000 WS2_32.dll                                6.1.7601.23451     C:\Windows\syswow64
+76170000 USERENV.dll                               6.1.7601.17514     C:\Windows\syswow64
+76220000 MSASN1.dll                                6.1.7601.17514     C:\Windows\syswow64
+76230000 msvcrt.dll                                7.0.7601.17744     C:\Windows\syswow64
+762e0000 IMM32.DLL                                 6.1.7601.17514     C:\Windows\system32
+76340000 GDI32.dll                                 6.1.7601.18898     C:\Windows\syswow64
+76430000 SETUPAPI.dll                              6.1.7601.17514     C:\Windows\syswow64
+765d0000 sechost.dll                               6.1.7601.18839     C:\Windows\SysWOW64
+765f0000 WLDAP32.dll                               6.1.7601.17514     C:\Windows\syswow64
+76640000 USER32.dll                                6.1.7601.17514     C:\Windows\syswow64
+76740000 iertutil.dll                              11.0.9600.18098    C:\Windows\syswow64
+76980000 CLBCatQ.DLL                               2001.12.8530.16385 C:\Windows\syswow64
+76a10000 ADVAPI32.dll                              6.1.7601.19135     C:\Windows\syswow64
+76ac0000 WININET.dll                               11.0.9600.18098    C:\Windows\syswow64
+76cf0000 api-ms-win-downlevel-ole32-l1-1-0.dll     6.2.9200.16492     C:\Windows\syswow64
+76d00000 normaliz.DLL                              6.1.7600.16385     C:\Windows\syswow64
+76d10000 USP10.dll                                 1.626.7601.18454   C:\Windows\syswow64
+76db0000 SHLWAPI.dll                               6.1.7601.17514     C:\Windows\syswow64
+76e10000 oleaut32.dll                              6.1.7601.18679     C:\Windows\syswow64
+76ea0000 CFGMGR32.dll                              6.1.7601.17621     C:\Windows\syswow64
+772a0000 profapi.dll                               6.1.7600.16385     C:\Windows\syswow64
+772d0000 ntdll.dll                                 6.1.7601.19135     C:\Windows\SysWOW64
+
+processes:
+0000 Idle                      0 0    0
+0004 System                    0 0    0
+0150 smss.exe                  0 0    0
+01e0 csrss.exe                 0 0    0
+0210 wininit.exe               0 0    0
+0240 services.exe              0 0    0
+0250 lsass.exe                 0 0    0
+0258 lsm.exe                   0 0    0
+02bc svchost.exe               0 0    0
+0308 svchost.exe               0 0    0
+0340 svchost.exe               0 0    0
+0348 csrss.exe                 1 0    0
+0370 svchost.exe               0 0    0
+03a4 winlogon.exe              1 0    0
+03bc svchost.exe               0 0    0
+03e8 svchost.exe               0 0    0
+0458 igfxCUIService.exe        0 0    0
+0490 RtkAudioService64.exe     0 0    0
+04e0 svchost.exe               0 0    0
+055c spoolsv.exe               0 0    0
+0578 svchost.exe               0 0    0
+05e4 armsvc.exe                0 0    0
+0604 BSQLServer.exe            0 0    0
+0670 svchost.exe               0 0    0
+069c firebird.exe              0 0    0
+0724 ccSvcHst.exe              0 0    0
+0764 tvnserver.exe             0 0    0
+0880 Smc.exe                   0 0    0
+08b4 WmiPrvSE.exe              0 0    0
+09f4 svchost.exe               0 0    0
+0b68 taskhost.exe              1 26   22  normal
+0ba0 ccSvcHst.exe              1 75   32  normal       C:\Program Files (x86)\Symantec\Symantec Endpoint Protection\12.1.2015.2015.105\Bin
+0bb0 taskeng.exe               1 10   3   normal
+06a4 PresentationFontCache.exe 0 0    0
+09bc dwm.exe                   1 20   2   high
+06fc explorer.exe              1 777  485 normal
+08a4 GoogleCrashHandler.exe    0 0    0
+0c0c GoogleCrashHandler64.exe  0 0    0
+0c2c igfxEM.exe                1 14   14  normal
+0c38 igfxHK.exe                1 14   12  normal
+0c40 igfxTray.exe              1 12   5   normal
+0cbc svchost.exe               0 0    0
+0d0c RAVBg64.exe               1 17   13  normal
+0d1c WavesSvc64.exe            1 9    2   normal
+0d3c tvnserver.exe             1 16   8   normal
+0d4c fdm.exe                   1 446  281 normal       C:\Program Files (x86)\Free Download Manager
+0de8 iusb3mon.exe              1 19   7   normal       C:\Program Files (x86)\Intel\Intel(R) USB 3.0 eXtensible Host Controller Driver\Application
+0e68 Tonic.exe                 1 1047 316 normal       C:\Program Files (x86)\r2 Studios\Tonic
+0e78 jusched.exe               1 9    2   normal       C:\Program Files (x86)\Common Files\Java\Java Update
+0e8c LWS.exe                   1 37   19  normal       C:\Program Files (x86)\Logitech\LWS\Webcam Software
+0c60 SearchIndexer.exe         0 0    0
+0f74 unsecapp.exe              0 0    0
+0fc4 RAVBg64.exe               1 17   13  below normal
+1108 IAStorIcon.exe            1 28   16  normal       C:\Program Files\Intel\Intel(R) Rapid Storage Technology
+0a0c DFSSvc.exe                0 0    0
+12e4 DellUpService.exe         0 0    0
+04b4 IAStorDataMgrSvc.exe      0 0    0
+0dfc jhi_service.exe           0 0    0
+084c LMS.exe                   0 0    0
+0fac DFS.Common.Agent.exe      1 35   25  normal       C:\Program Files\Dell\Dell Foundation Services
+12d8 wuauclt.exe               1 12   6   normal
+135c bds.exe                   1 4047 812 normal       C:\Program Files (x86)\Embarcadero\Studio\19.0\bin
+1304 Adb.exe                   1 9    5   normal       C:\Users\Public\Documents\Embarcadero\Studio\19.0\PlatformSDKs\android-sdk-windows\platform-tools
+0d08 ConEmu64.exe              1 78   42  normal
+08fc ConEmuC64.exe             1 9    5   normal
+0c94 conhost.exe               1 25   8   normal
+10bc cmd.exe                   1 4    1   normal
+11c4 MySQLWorkbench.exe        1 149  165 normal
+1274 wisptis.exe               1 0    0
+0424 firefox.exe               1 71   58  normal
+05f8 firefox.exe               1 13   9   normal
+11b4 firefox.exe               1 11   24  normal
+0edc firefox.exe               1 11   13  normal
+15ac explorer.exe              1 223  131 normal
+0d54 firefox.exe               1 11   20  normal
+1224 explorer.exe              1 212  125 normal
+1450 explorer.exe              1 199  122 normal
+1534 audiodg.exe               0 0    0
+0454 TabbedApplication.exe     1 154  68  normal       E:\Delphi Project\Garmin id tab project\Win32\Release
+1730 taskeng.exe               0 0    0
+
+hardware:
++ Computer
+  - ACPI x64-based PC
++ Disk drives
+  - WDC WD5000AAKX-75U6A SCSI Disk Device
++ Display adapters
+  - Intel(R) HD Graphics 530 (driver 20.19.15.4352)
++ DVD/CD-ROM drives
+  - PLDS DVD+-RW DU-8A5LH SCSI CdRom Device
++ Human Interface Devices
+  - HID-compliant consumer control device
+  - HID-compliant device
+  - USB Input Device
+  - USB Input Device
+  - USB Input Device
++ IDE ATA/ATAPI controllers
+  - Intel(R) 100 Series/C230 Chipset Family SATA AHCI Controller (driver 14.8.1.1043)
++ Keyboards
+  - HID Keyboard Device
++ Mice and other pointing devices
+  - HID-compliant mouse
++ Monitors
+  - Generic PnP Monitor
++ Network adapters
+  - Microsoft 6to4 Adapter
+  - Microsoft ISATAP Adapter
+  - Realtek PCIe GBE Family Controller #2 (driver 7.92.115.2015)
+  - WAN Miniport (IKEv2)
+  - WAN Miniport (IP)
+  - WAN Miniport (IPv6)
+  - WAN Miniport (L2TP)
+  - WAN Miniport (Network Monitor)
+  - WAN Miniport (PPPOE)
+  - WAN Miniport (PPTP)
+  - WAN Miniport (SSTP)
++ Ports (COM & LPT)
+  - Communications Port (COM1)
++ Processors
+  - Intel(R) Core(TM) i3-6100 CPU @ 3.70GHz
+  - Intel(R) Core(TM) i3-6100 CPU @ 3.70GHz
++ Security Devices
+  - Trusted Platform Module 2.0
++ Sound, video and game controllers
+  - High Definition Audio Device
+  - Intel(R) Display Audio (driver 6.16.0.3190)
++ Storage volume shadow copies
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
+  - Generic volume shadow copy
++ System devices
+  - ACPI Fan
+  - ACPI Fan
+  - ACPI Fan
+  - ACPI Fan
+  - ACPI Fan
+  - ACPI Fixed Feature Button
+  - ACPI Power Button
+  - ACPI Sleep Button
+  - ACPI Thermal Zone
+  - ACPI Thermal Zone
+  - Composite Bus Enumerator
+  - File as Volume Driver
+  - High Definition Audio Controller
+  - High precision event timer
+  - Intel(R) 100 Series/C230 Series Chipset Family LPC Controller - A143 (driver 10.1.1.9)
+  - Intel(R) 100 Series/C230 Series Chipset Family PCI Express Root Port #5 - A114 (driver 10.1.1.9)
+  - Intel(R) 100 Series/C230 Series Chipset PMC - A121 (driver 10.1.1.9)
+  - Intel(R) 100 Series/C230 Series Chipset SMBus - A123 (driver 10.1.1.9)
+  - Intel(R) 100 Series/C230 Series Chipset Thermal subsystem - A131 (driver 10.1.1.9)
+  - Intel(R) 82802 Firmware Hub Device
+  - Intel(R) Management Engine Interface  (driver 11.0.0.1166)
+  - Intel(R) Xeon(R) E3 - 1200/1500 v5/6th Gen Intel(R) Core(TM) PCIe Controller (x16) - 1901 (driver 10.1.1.9)
+  - Microsoft ACPI-Compliant System
+  - Microsoft System Management BIOS Driver
+  - Microsoft Virtual Drive Enumerator Driver
+  - Microsoft Windows Management Interface for ACPI
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - Motherboard resources
+  - Numeric data processor
+  - PCI bus
+  - PCI standard host CPU bridge
+  - Plug and Play Software Device Enumerator
+  - Programmable interrupt controller
+  - Remote Desktop Device Redirector Bus
+  - System CMOS/real time clock
+  - System timer
+  - Terminal Server Keyboard Driver
+  - Terminal Server Mouse Driver
+  - UMBus Enumerator
+  - UMBus Root Bus Enumerator
+  - Volume Manager
++ Universal Serial Bus controllers
+  - Intel(R) USB 3.0 eXtensible Host Controller (driver 4.0.2.42)
+  - Intel(R) USB 3.0 Root Hub (driver 4.0.2.42)
+  - USB Composite Device
+
+cpu registers:
+eax = 0c30b220
+ebx = 0b0b3240
+ecx = 00000000
+edx = 0cc432b0
+esi = 0313227c
+edi = 00000020
+eip = 0052fdcf
+esp = 0c4cfdb8
+ebp = 0c4cfe24
+
+stack dump:
+0c4cfdb8  cf fd 52 00 de fa ed 0e - 01 00 00 00 07 00 00 00  ..R.............
+0c4cfdc8  cc fd 4c 0c cf fd 52 00 - 20 b2 30 0c 40 32 0b 0b  ..L...R. .0.@2..
+0c4cfdd8  7c 22 13 03 20 00 00 00 - 24 fe 4c 0c e8 fd 4c 0c  |".. ...$.L...L.
+0c4cfde8  34 fe 4c 0c 3c a2 40 00 - 24 fe 4c 0c 00 00 00 00  4.L.<.@.$.L.....
+0c4cfdf8  40 32 0b 0b 01 22 13 03 - 00 00 00 00 00 00 00 00  @2..."..........
+0c4cfe08  00 00 00 00 00 00 00 00 - fc 21 13 03 11 b0 50 00  .........!....P.
+0c4cfe18  cc 37 1c 03 11 3a ed 00 - 46 94 40 00 4c fe 4c 0c  .7...:..F.@.L.L.
+0c4cfe28  85 fc 52 00 00 00 00 00 - 20 00 00 00 68 fe 4c 0c  ..R..... ...h.L.
+0c4cfe38  1b a4 40 00 4c fe 4c 0c - 40 32 0b 0b 40 3b 8b 0a  ..@.L.L.@2..@;..
+0c4cfe48  68 3a ed 00 60 fe 4c 0c - c3 bc 52 00 20 00 00 00  h:..`.L...R. ...
+0c4cfe58  d0 1f 2c 0c c4 7f 50 00 - c8 fe 4c 0c cf 3a ed 00  ..,...P...L..:..
+0c4cfe68  74 fe 4c 0c 3c a2 40 00 - c8 fe 4c 0c d4 fe 4c 0c  t.L.<.@...L...L.
+0c4cfe78  3c a2 40 00 c8 fe 4c 0c - 00 00 00 00 80 e3 fc 0a  <.@...L.........
+0c4cfe88  68 3a ed 00 00 00 00 00 - 00 00 00 00 00 00 00 00  h:..............
+0c4cfe98  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0c4cfea8  40 3b 8b 0a 00 00 00 00 - 00 00 00 00 00 00 00 00  @;..............
+0c4cfeb8  00 00 00 00 00 00 00 00 - 00 00 00 00 00 00 00 00  ................
+0c4cfec8  fc fe 4c 0c 6d 3a ed 00 - 09 0f 4b 00 e0 fe 4c 0c  ..L.m:....K...L.
+0c4cfed8  0c a0 40 00 fc fe 4c 0c - 04 ff 4c 0c 72 0f 4b 00  ..@...L...L.r.K.
+0c4cfee8  fc fe 4c 0c 00 00 00 00 - 80 e3 fc 0a 4c ff 4c 0c  ..L.........L.L.
+
+disassembling:
+[...]
+00ed3abc       call    -$9a6811 ($52d2b0)     ; System.Classes.TStringList.Create
+00ed3ac1       mov     [ebp-$20], eax
+00ed3ac4 056   int     3
+00ed3ac5       push    esi
+00ed3ac6       sub     [ebx+$88be045], cl
+00ed3acc     > call    dword ptr [ecx+$6c]
+00ed3acf 059   xor     edx, edx
+00ed3ad1       push    ebp
+00ed3ad2       push    $ed3b50                ; System.@HandleFinally
+00ed3ad7       push    dword ptr fs:[edx]
+00ed3ada       mov     fs:[edx], esp
+[...]
+
