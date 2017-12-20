@@ -352,6 +352,7 @@ begin
   query:= 'delete from garmines_pso where garmines_id="'+demandGarminCombo.Text+'"';
   try
     FDConnection1.ExecSQL(query);
+    edtTotalDemand.Text:='0';
   except
     on E:exception do
     begin
@@ -383,6 +384,8 @@ begin
     
    end;
   end;
+
+  demandQuery.Refresh;
 
   //refresh globalAvailable based on current state
   GlobalAvailableListModel.Clear;
@@ -420,7 +423,7 @@ begin
     //preapare path
     path:= ExtractFilePath( ParamStr(0) );
     path:= StringReplace(path, 'Win32\debug\', 'csv\', [rfReplaceAll, rfIgnoreCase]);
-
+    ShowMessage(path);
     //buat folder jika folder tidak ada.
     if not DirectoryExists(path) then
     begin
@@ -758,9 +761,7 @@ begin
       Result:=I;
       //ShowMessage( str +'='+ list[I] +'='+ IntToStr(I) );
       exit;
-
     end;
-
   end;
 
   Result:=-1;
@@ -1593,15 +1594,19 @@ begin
   try
     query:='SELECT `path`,stock FROM `stocks` where garmines_id="'+stockGarminCombo.Text+'"';
     total:=0;
+    listPath.Clear;
+
     try
+
       tmpQuery:= TFDQuery.Create(Self);
       tmpQuery.Connection:= FDConnection1;
       tmpQuery.SQL.Text:= query;
       tmpQuery.Active:=true;
       tmpQuery.Open();
-      listPath.Clear;
+
       while not (tmpQuery.Eof) do
       begin
+
         listPath.Items.Add( tmpQuery['path']);
         total:=total+tmpQuery['stock'];
         tmpQuery.Next;
@@ -1610,7 +1615,7 @@ begin
 
 
     finally
-      tmpQuery.Destroy;
+      tmpQuery.Free;
     end;
 
 
@@ -1626,7 +1631,13 @@ procedure TTabbedForm.stockGridCellClick(const Column: TColumn; const Row:
 var
   selectedGrid: string;
   index: Integer;
+  I: Integer;
 begin
+     AllGarminId.Clear;
+     for I := 0 to stockGarminCombo.Items.Count-1 do
+     begin
+       AllGarminId.Add(stockGarminCombo.Items[I]);
+     end;
 
      selectedGrid:= stockGrid.Cells[1, Row];
      index:= cariIndex(selectedGrid, AllGarminId );
