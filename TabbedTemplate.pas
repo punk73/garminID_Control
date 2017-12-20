@@ -422,7 +422,7 @@ begin
     end;
     //preapare path
     path:= ExtractFilePath( ParamStr(0) );
-    path:= StringReplace(path, 'Win32\debug\', 'csv\', [rfReplaceAll, rfIgnoreCase]);
+    path:= path + 'reports\'; //StringReplace(path, 'Win32\debug\', 'csv\', [rfReplaceAll, rfIgnoreCase]);
     ShowMessage(path);
     //buat folder jika folder tidak ada.
     if not DirectoryExists(path) then
