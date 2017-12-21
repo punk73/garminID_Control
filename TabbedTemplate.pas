@@ -16,7 +16,8 @@ uses
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FMX.Layouts, FMX.ListBox,
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
-  JvBackgrounds, FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit;
+  JvBackgrounds, FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit,
+  System.ImageList, FMX.ImgList;
 
 type
   TTabbedForm = class(TForm)
@@ -49,7 +50,6 @@ type
     edtStocks: TEdit;
     Button7: TButton;
     Button8: TButton;
-    Button9: TButton;
     stockGrid: TStringGrid;
     Label7: TLabel;
     BindingsList1: TBindingsList;
@@ -88,7 +88,6 @@ type
     Button1: TButton;
     Panel6: TPanel;
     Label1: TLabel;
-    Button2: TButton;
     edtDupPath: TEdit;
     Button10: TButton;
     lineGrid: TStringGrid;
@@ -118,6 +117,10 @@ type
     demandGarminCombo: TComboEdit;
     stockGarminCombo: TComboEdit;
     Button14: TButton;
+    Button9: TEllipsesEditButton;
+    StyleBook1: TStyleBook;
+    Button2: TEllipsesEditButton;
+    ImageList1: TImageList;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -165,6 +168,9 @@ type
     procedure stockGridCellClick(const Column: TColumn; const Row: Integer);
     procedure TabItem1Click(Sender: TObject);
     procedure SelectFileInExplorer(const Fn: string);
+    procedure TabItem2Click(Sender: TObject);
+    procedure TabItem3Click(Sender: TObject);
+    procedure TabItem4Click(Sender: TObject);
 
 
 
@@ -201,6 +207,7 @@ type
     procedure clearGrid(grid: TStringGrid);
     procedure pindahFile(paramPath:string);
     procedure finishThread;
+    procedure getImage;
   end;
 
 var
@@ -458,6 +465,7 @@ var
   I: Integer;
   list:TStringList;
   garminID, stock, demand, balance, rowContent,path:string;
+  reportName: string;
 begin
   getGarminId;
   try
@@ -476,7 +484,7 @@ begin
     //preapare path
     path:= ExtractFilePath( ParamStr(0) );
     path:= path + 'reports\'; //StringReplace(path, 'Win32\debug\', 'csv\', [rfReplaceAll, rfIgnoreCase]);
-    ShowMessage(path);
+    //ShowMessage(path);
     //buat folder jika folder tidak ada.
     if not DirectoryExists(path) then
     begin
@@ -488,10 +496,13 @@ begin
       end;
     end;
 
-    if FileExists( path + 'garmin inventory.csv' ) then DeleteFile(path + 'garmin inventory.csv');
+    reportName:='garmin_inventory_'+Label9.Text+'.csv';
+
+    if FileExists( path + reportName ) then
+      DeleteFile(path + reportName );
 
     //simpan tstringlist ke path
-    list.SaveToFile( path + 'garmin inventory.csv');
+    list.SaveToFile( path + reportName );
 
     ShowMessage( SysErrorMessage( GetLastError ) );
     SelectFileInExplorer(path);
@@ -607,6 +618,7 @@ end;
 
 procedure TTabbedForm.Button4Click(Sender: TObject);
 begin
+  updateStock;
   getGarminId;
 end;
 
@@ -692,6 +704,7 @@ begin
   if (stockGarminCombo.ItemIndex=-1) then
   begin
     ShowMessage('You need to choose garmin Id first !');
+    stockGarminCombo.SetFocus;
     exit;
   end;
   //error handling
@@ -748,6 +761,7 @@ begin
   if listPath.ItemIndex = -1 then
   begin
     ShowMessage('you need to choose path list first!');
+    listPath.SetFocus;
     exit;
   end;
 
@@ -1239,6 +1253,11 @@ begin
   end;
 
   refreshGarminCombo;
+end;
+
+procedure TTabbedForm.getImage;
+begin
+  //  ImageList1.AddOrSet()
 end;
 
 procedure TTabbedForm.getModelNumber;
@@ -1748,7 +1767,24 @@ end;
 
 procedure TTabbedForm.TabItem1Click(Sender: TObject);
 begin
+  updateStock;
   getGarminId;
+end;
+
+procedure TTabbedForm.TabItem2Click(Sender: TObject);
+begin
+  lineQuery.Refresh;
+  duplicateQuery.Refresh;
+end;
+
+procedure TTabbedForm.TabItem3Click(Sender: TObject);
+begin
+  garminQuery.Refresh;
+end;
+
+procedure TTabbedForm.TabItem4Click(Sender: TObject);
+begin
+ // stockQuery.Refresh;
 end;
 
 procedure TTabbedForm.updateDemand;
