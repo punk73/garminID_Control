@@ -336,7 +336,8 @@ var
   
   query: string;
   model_no: string;
-  tmpQuery: TObject;
+  tmpQuery: TFDQuery;
+  modelNo:tstringlist;
 begin
   //error handler
   if demandGarminCombo.ItemIndex=-1 then
@@ -350,23 +351,33 @@ begin
     ShowMessage('You need to choose listModel first!');
     exit;
   end;
-
-  //hapus semua record dengan garminId = demandGarmincombo
-  { query:= 'delete from garmines_pso where garmines_id="'+demandGarminCombo.Text+'"';
-  try
-    FDConnection1.ExecSQL(query);
-    edtTotalDemand.Text:='0';
-  except
-    on E:exception do
-    begin
-      ShowMessage(E.Message);
-      exit;
-    end;
-  end;  }
-
+  
+  //set to 0
+  edtTotalDemand.Text:='0';
+  
   //ambil data basedon garmin id
   try
     tmpQuery := TFDQuery.Create(Self);
+    tmpQuery.Connection:= FDConnection1;
+    tmpQuery.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Text+'"';
+    tmpQuery.Active:=true;
+    try
+      tmpQuery.Open();
+      modelNo := TStringList.Create;
+      modelNo.Clear;
+
+      while not (tmpQuery.Eof) do
+      begin
+        modelNo.Add( tmpQuery['model_number'] );
+        tmpQuery.Next;
+      end;
+    except
+      on E:exception do
+      begin
+        ShowMessage(E.Message);
+      end;
+    end;
+
     
   finally
     tmpQuery.Free;
@@ -385,16 +396,30 @@ begin
 
     try
       FDConnection1.ExecSQL(query);
-      //total demand updated.
-
-      //garminDemandQtyGrid refresh
       demandQuery.Refresh;
     except
        on E : Exception do
        ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
     end;
-    
+   end
+   else
+   begin
+      //jika tidak diceklis, dan ada di array modelNo maka hapus
+      if isInArray(listmodel.Items[I], modelNo ) then
+      begin
+         query:= 'delete from garmines_pso where model_number="'+listmodel.Items[I]+'"';
+         try
+            FDConnection1.ExecSQL(query);
+         except
+            on E:exception do
+            begin
+              ShowMessage(E.Message);
+              //exit;
+            end;
+         end; 
+      end;
    end;
+
   end;
 
   demandQuery.Refresh;
@@ -405,7 +430,7 @@ begin
   //GlobalListModelNumber = list yg ada di table pso.
   getSelectedListModel; //refresh GlobalListModelNumber
     
-
+  //refresh globalAvailable list model
   for I := 0 to gridModel.RowCount-1 do
   begin
     model_no := gridModel.Cells[0, I];
@@ -416,9 +441,13 @@ begin
       GlobalAvailableListModel.Add(model_no);
     end;
   end;
+  //set global list model ke listModel.items
   listModel.Items:=GlobalAvailableListModel;
 
   edtSearchModel.Text:='';
+  modelNo.Free;
+
+  demandGarminComboChange(Self); //ambil yg checked nya
   ShowMessage('Data Saved!');
 
 end;

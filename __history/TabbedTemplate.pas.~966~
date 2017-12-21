@@ -333,8 +333,11 @@ procedure TTabbedForm.Button12Click(Sender: TObject);
 var
   I: Integer;
   Alist: TStrings;
+  
   query: string;
   model_no: string;
+  tmpQuery: TFDQuery;
+  modelNo:tstringlist;
 begin
   //error handler
   if demandGarminCombo.ItemIndex=-1 then
@@ -348,19 +351,38 @@ begin
     ShowMessage('You need to choose listModel first!');
     exit;
   end;
-
-  //hapus semua record dengan garminId = demandGarmincombo
-  query:= 'delete from garmines_pso where garmines_id="'+demandGarminCombo.Text+'"';
+  
+  //set to 0
+  edtTotalDemand.Text:='0';
+  
+  //ambil data basedon garmin id
   try
-    FDConnection1.ExecSQL(query);
-    edtTotalDemand.Text:='0';
-  except
-    on E:exception do
-    begin
-      ShowMessage(E.Message);
-      exit;
+    tmpQuery := TFDQuery.Create(Self);
+    tmpQuery.Connection:= FDConnection1;
+    tmpQuery.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Text+'"';
+    tmpQuery.Active:=true;
+    try
+      tmpQuery.Open();
+      modelNo := TStringList.Create;
+      modelNo.Clear;
+
+      while not (tmpQuery.Eof) do
+      begin
+        modelNo.Add( tmpQuery['model_number'] );
+        tmpQuery.Next;
+      end;
+    except
+      on E:exception do
+      begin
+        ShowMessage(E.Message);
+      end;
     end;
+
+    
+  finally
+    tmpQuery.Free;
   end;
+  
 
   //ambil dari listModel yang ter check list
   for I:= listModel.Count-1 downto 0 do
@@ -374,45 +396,57 @@ begin
 
     try
       FDConnection1.ExecSQL(query);
-      //total demand updated.
-
-      //garminDemandQtyGrid refresh
       demandQuery.Refresh;
     except
        on E : Exception do
        ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
     end;
-    
+   end
+   else
+   begin
+      //jika tidak diceklis, dan ada di array modelNo maka hapus
+      if isInArray(listmodel.Items[I], modelNo ) then
+      begin
+         query:= 'delete from garmines_pso where model_number="'+listmodel.Items[I]+'"';
+         try
+            FDConnection1.ExecSQL(query);
+         except
+            on E:exception do
+            begin
+              ShowMessage(E.Message);
+              //exit;
+            end;
+         end; 
+      end;
    end;
+
   end;
 
   demandQuery.Refresh;
 
   //refresh globalAvailable based on current state
   GlobalAvailableListModel.Clear;
-
-  {while not ( modelQuery.Eof ) do
-  begin
-    model_no:= modelQuery['model_no'] ;
-    //GlobalListModel number = model number yang ada di table garmin_pso
-    if not isInArray(model_no, GlobalListModelNumber ) then
-    begin
-      //Jika modelQuery['model_no'] tidak ada di GlobalListModelNumber, maka
-      GlobalAvailableListModel.Add(modelQuery['model_no']);
-    end;
-  end; }
-
   //looping based on gridModel, get column 0
+  //GlobalListModelNumber = list yg ada di table pso.
+  getSelectedListModel; //refresh GlobalListModelNumber
+    
+  //refresh globalAvailable list model
   for I := 0 to gridModel.RowCount-1 do
   begin
+    model_no := gridModel.Cells[0, I];
     //cek either it is available in globalListModel or not,
-    //if it is, skip.
-    //else, add to globalAvailableListModel
+    //if not, add it to clobalAvailableListModel
+    if not isInArray(model_no, GlobalListModelNumber ) then
+    begin
+      GlobalAvailableListModel.Add(model_no);
+    end;
   end;
-
+  //set global list model ke listModel.items
   listModel.Items:=GlobalAvailableListModel;
 
   edtSearchModel.Text:='';
+  modelNo.Free;
+  
   ShowMessage('Data Saved!');
 
 end;
@@ -1492,10 +1526,12 @@ begin
   garmines_pso_Query.First;
   I := 0;
   try
+    //cek apakah Globallistmodelnumber sudah di declare sebelumnya, kalau sudah,
+    //gausah create lagi.
+    if not Assigned(GlobalListModelNumber) then
+      GlobalListModelNumber:=TStringList.Create;
 
-    GlobalListModelNumber:=TStringList.Create;
     GlobalListModelNumber.Clear;
-
     while not (garmines_pso_Query.Eof) do
     begin
 
