@@ -29,13 +29,20 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cx = 50.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
+        Size.Width = 383.000000000000000000
+        Size.Height = 488.000000000000000000
         inherited mainGrid: TStringGrid
-          Viewport.Width = 753.000000000000000000
-          Viewport.Height = 273.000000000000000000
+          Size.Width = 359.000000000000000000
+          Size.Height = 368.000000000000000000
+          Viewport.Width = 359.000000000000000000
+          Viewport.Height = 368.000000000000000000
           inherited StringColumn7: TStringColumn
             Size.Width = 209.000000000000000000
           end
         end
+      end
+      inherited Panel3: TPanel
+        Size.Width = 359.000000000000000000
       end
     end
     inherited TabItem2: TTabItem
@@ -43,14 +50,24 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cx = 50.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
+        Size.Width = 383.000000000000000000
+        Size.Height = 505.000000000000000000
         inherited duplicateGrid: TStringGrid
-          Viewport.Width = 529.000000000000000000
-          Viewport.Height = 345.000000000000000000
+          Size.Width = 135.000000000000000000
+          Size.Height = 440.000000000000000000
+          Viewport.Width = 135.000000000000000000
+          Viewport.Height = 440.000000000000000000
         end
         inherited Panel6: TPanel
+          Position.X = 150.000000000000000000
+          Size.Height = 472.000000000000000000
           inherited lineGrid: TStringGrid
+            Size.Height = 320.000000000000000000
             Viewport.Width = 209.000000000000000000
-            Viewport.Height = 225.000000000000000000
+            Viewport.Height = 320.000000000000000000
+          end
+          inherited Button11: TButton
+            Position.Y = 439.000000000000000000
           end
         end
         inherited loadingLabel: TLabel
@@ -63,13 +80,17 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cx = 158.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
+        Size.Width = 383.000000000000000000
+        Size.Height = 497.000000000000000000
         inherited edtGarminId: TEdit
           Size.Height = 32.000000000000000000
         end
         inherited garminGrid: TStringGrid
+          Size.Width = 231.000000000000000000
+          Size.Height = 416.000000000000000000
           RowCount = 21
-          Viewport.Width = 625.000000000000000000
-          Viewport.Height = 321.000000000000000000
+          Viewport.Width = 231.000000000000000000
+          Viewport.Height = 416.000000000000000000
         end
       end
     end
@@ -78,6 +99,8 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cx = 158.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
+        Size.Width = 383.000000000000000000
+        Size.Height = 497.000000000000000000
         inherited edtPathStock: TEdit
           Size.Height = 32.000000000000000000
         end
@@ -85,12 +108,15 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
           Size.Height = 32.000000000000000000
         end
         inherited stockGrid: TStringGrid
-          Viewport.Width = 353.000000000000000000
-          Viewport.Height = 328.000000000000000000
+          Size.Width = 0.000000000000000000
+          Size.Height = 423.000000000000000000
+          Viewport.Width = 0.000000000000000000
+          Viewport.Height = 423.000000000000000000
         end
         inherited listPath: TListBox
+          Size.Height = 328.000000000000000000
           Viewport.Width = 185.000000000000000000
-          Viewport.Height = 233.000000000000000000
+          Viewport.Height = 328.000000000000000000
         end
         inherited stockGarminCombo: TComboEdit
           Size.Height = 32.000000000000000000
@@ -102,15 +128,23 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cx = 132.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
+        Size.Width = 383.000000000000000000
+        Size.Height = 497.000000000000000000
+        inherited Label12: TLabel
+          Position.Y = 455.000000000000000000
+        end
         inherited edtTotalDemand: TEdit
+          Position.Y = 455.000000000000000000
           Size.Height = 32.000000000000000000
         end
         inherited listModel: TListBox
+          Size.Height = 336.000000000000000000
           Viewport.Width = 217.000000000000000000
-          Viewport.Height = 241.000000000000000000
+          Viewport.Height = 336.000000000000000000
         end
         inherited gridModel: TStringGrid
-          Viewport.Width = 273.000000000000000000
+          Size.Width = 0.000000000000000000
+          Viewport.Width = 0.000000000000000000
           Viewport.Height = 153.000000000000000000
           inherited StringColumn5: TStringColumn
             Size.Width = 169.000000000000000000
@@ -123,9 +157,11 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
           TextSettings.Font.StyleExt = {00070000000000000004000000}
         end
         inherited garminDemandQtyGrid: TStringGrid
+          Size.Width = 0.000000000000000000
+          Size.Height = 256.000000000000000000
           RowCount = 3
-          Viewport.Width = 273.000000000000000000
-          Viewport.Height = 161.000000000000000000
+          Viewport.Width = 0.000000000000000000
+          Viewport.Height = 256.000000000000000000
         end
         inherited edtSearchModel: TEdit
           Size.Height = 32.000000000000000000

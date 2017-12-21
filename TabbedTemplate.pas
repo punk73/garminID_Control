@@ -333,7 +333,10 @@ procedure TTabbedForm.Button12Click(Sender: TObject);
 var
   I: Integer;
   Alist: TStrings;
+  
   query: string;
+  model_no: string;
+  tmpQuery: TFDQuery;
 begin
   //error handler
   if demandGarminCombo.ItemIndex=-1 then
@@ -349,7 +352,7 @@ begin
   end;
 
   //hapus semua record dengan garminId = demandGarmincombo
-  query:= 'delete from garmines_pso where garmines_id="'+demandGarminCombo.Text+'"';
+  { query:= 'delete from garmines_pso where garmines_id="'+demandGarminCombo.Text+'"';
   try
     FDConnection1.ExecSQL(query);
     edtTotalDemand.Text:='0';
@@ -359,7 +362,20 @@ begin
       ShowMessage(E.Message);
       exit;
     end;
+  end;  }
+
+  //ambil data basedon garmin id
+  try
+    tmpQuery := TFDQuery.Create(Self);
+    tmpQuery.Connection:= FDConnection1;
+    tmpQuery.SQL.Text:= 'select * from garmines_pso where garmines_id='+demandGarminCombo.Text;
+    tmpQuery.Active:=true;
+    tmpQuery.Open();
+    
+  finally
+    tmpQuery.Free;
   end;
+  
 
   //ambil dari listModel yang ter check list
   for I:= listModel.Count-1 downto 0 do
@@ -389,11 +405,22 @@ begin
 
   //refresh globalAvailable based on current state
   GlobalAvailableListModel.Clear;
-  for I := 0 to listModel.Count-1 do
+  //looping based on gridModel, get column 0
+  //GlobalListModelNumber = list yg ada di table pso.
+  getSelectedListModel; //refresh GlobalListModelNumber
+    
+
+  for I := 0 to gridModel.RowCount-1 do
   begin
-    if listModel.ListItems[I].IsChecked = false then
-      GlobalAvailableListModel.Add( listModel.Items[I] );
+    model_no := gridModel.Cells[0, I];
+    //cek either it is available in globalListModel or not,
+    //if not, add it to clobalAvailableListModel
+    if not isInArray(model_no, GlobalListModelNumber ) then
+    begin
+      GlobalAvailableListModel.Add(model_no);
+    end;
   end;
+  listModel.Items:=GlobalAvailableListModel;
 
   edtSearchModel.Text:='';
   ShowMessage('Data Saved!');
@@ -1199,7 +1226,8 @@ begin
     //set AllModelNumber
     AllModelNumber:= TStringList.Create;
     AllModelNumber.Clear;
-    //nanti set disini
+    //GlobalListmodel adalah model number yg sudah memiliki garmin id.
+
     getSelectedListModel;  //hasilnya di GlobalListModelNumber
 
     GlobalAvailableListModel:=TSTringlist.Create;
@@ -1219,6 +1247,7 @@ begin
         GlobalAvailableListModel.Add(modelQuery['model_no']);
         listModel.Items.Add(modelQuery['model_no']);
       end;
+
       gridModel.Cells[0,baris] := modelQuery['model_no'] ;
       AllModelNumber.Add(modelQuery['model_no']);
       gridModel.Cells[1,baris] := modelQuery['jml'] ;
@@ -1473,10 +1502,12 @@ begin
   garmines_pso_Query.First;
   I := 0;
   try
+    //cek apakah Globallistmodelnumber sudah di declare sebelumnya, kalau sudah,
+    //gausah create lagi.
+    if not Assigned(GlobalListModelNumber) then
+      GlobalListModelNumber:=TStringList.Create;
 
-    GlobalListModelNumber:=TStringList.Create;
     GlobalListModelNumber.Clear;
-
     while not (garmines_pso_Query.Eof) do
     begin
 
