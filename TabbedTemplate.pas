@@ -616,7 +616,7 @@ var
 begin
 
   //define variable
-  garminId:= edtGarminId.Text;
+  garminId:= Trim( edtGarminId.Text );
 
   if not FDConnection1.Connected then
     Exit;
