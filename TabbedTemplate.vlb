@@ -71,7 +71,7 @@ Coordinates=687,300,59,33
 Coordinates=339,10,46,51
 
 []
-Coordinates=71,844,53,51
+Coordinates=51,165,58,51
 Visible=True
 LayerNames=psoVersion
 
@@ -135,9 +135,6 @@ Coordinates=430,907,52,51
 
 [Panel8]
 Coordinates=26,922,47,33
-
-[Button12]
-Coordinates=51,165,58,51
 
 [Label10]
 Coordinates=223,922,52,51

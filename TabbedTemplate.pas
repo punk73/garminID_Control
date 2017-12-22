@@ -63,7 +63,6 @@ type
     Panel8: TPanel;
     Label10: TLabel;
     Label11: TLabel;
-    Button12: TButton;
     Label12: TLabel;
     edtTotalDemand: TEdit;
     Label13: TLabel;
@@ -121,6 +120,9 @@ type
     StyleBook1: TStyleBook;
     Button2: TEllipsesEditButton;
     ImageList1: TImageList;
+    Button12: TButton;
+    Timer1: TTimer;
+    Label6: TLabel;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -171,6 +173,7 @@ type
     procedure TabItem2Click(Sender: TObject);
     procedure TabItem3Click(Sender: TObject);
     procedure TabItem4Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
 
 
 
@@ -625,46 +628,74 @@ end;
 procedure TTabbedForm.Button5Click(Sender: TObject);
 var
   garminId: string;
+  listGarminID:TStringlist;
+  I: Integer;
 begin
+
+  if not FDConnection1.Connected then
+      Exit;
 
   //define variable
   garminId:= Trim( edtGarminId.Text );
-
-  if not FDConnection1.Connected then
-    Exit;
-
-  if (button5.Text='Save') then
-  begin
-    try
-      FDConnection1.ExecSQL('insert into garmines (id) values (:id)'
-      ,[ garminId ] );
-      garminQuery.Refresh;
-    except
-      //ShowMessage('something wrong');
-      on E : Exception do
-        ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+  try
+    
+    listGarminID := TStringList.Create;
+    listGarminID.Clear;
+    //isi garmin id
+    for I := 0 to mainGrid.RowCount-1 do
+    begin
+      listGarminID.Add(mainGrid.Cells[0,I])
     end;
-  end
-  else
-  begin
-    try
-      FDConnection1.ExecSQL('update garmines set id= :id where id= :oldId'
-      ,[ garminId, olderID ] );
-      garminQuery.Refresh;
-    except
-      //ShowMessage('something wrong');
-      on E : Exception do
-        ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+    
+
+    if (button5.Text='Save') then
+    begin
+      try
+        if not isInArray(garminId, listGarminID ) then
+        begin
+          FDConnection1.ExecSQL('insert into garmines (id) values (:id)'
+          ,[ garminId ] );
+          garminQuery.Refresh;
+        end
+        else
+        begin
+          ShowMessage('that garmin id is already exist!');
+          edtGarminId.SetFocus;
+          exit;
+        end;
+        
+      except
+        //ShowMessage('something wrong');
+        on E : Exception do
+        begin
+          ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+          exit;
+        end;
+      end;
+    end
+    else
+    begin
+      try
+        FDConnection1.ExecSQL('update garmines set id= :id where id= :oldId'
+        ,[ garminId, olderID ] );
+        garminQuery.Refresh;
+      except
+        //ShowMessage('something wrong');
+        on E : Exception do
+          ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+      end;
     end;
+
+    refreshGarminCombo;
+    refreshQuery;
+    getGarminId;
+    bersih;
+    nonaktif;
+    ShowMessage('Data Saved!');
+    TabControl1.ActiveTab:= TabItem3;
+  finally
+    listGarminID.Free;
   end;
-
-  refreshGarminCombo;
-  refreshQuery;
-  getGarminId;
-  bersih;
-  nonaktif;
-  ShowMessage('Data Saved!');
-  TabControl1.ActiveTab:= TabItem3;
 end;
 
 procedure TTabbedForm.Button6Click(Sender: TObject);
@@ -1787,6 +1818,11 @@ begin
  // stockQuery.Refresh;
 end;
 
+procedure TTabbedForm.Timer1Timer(Sender: TObject);
+begin
+   label6.Text:= TimeToStr(Time);
+end;
+
 procedure TTabbedForm.updateDemand;
 var
   query: string;
@@ -1801,29 +1837,39 @@ begin
     tmpQuery.Connection:= FDConnection1;
     tmpQuery.SQL.Text:= query;
     tmpQuery.Active:=true;
-    tmpQuery.Open();
-
-    //looping garmin_pso
-    while not (tmpQuery.Eof) do
-    begin
-      //cari tmpQuery['model_number'] di gridModel.
-      index:= cariIndex(tmpQuery['model_number'], AllModelNumber);
-      // jika tmpQuery['demand'] != gridModel[1,I] maka update
-      if not (index= -1) then //jika ketemu
+    try
+      tmpQuery.Open();
+      //looping garmin_pso
+      while not (tmpQuery.Eof) do
       begin
-        //ShowMessage(gridModel.Cells[1, index]+' = '+ IntToStr(tmpQuery['demand']) );
-        if not ( gridModel.Cells[1, index] = tmpQuery['demand'] ) then //jika value nya beda.
+        //cari tmpQuery['model_number'] di gridModel.
+        index:= cariIndex(tmpQuery['model_number'], AllModelNumber);
+        // jika tmpQuery['demand'] != gridModel[1,I] maka update
+        if not (index= -1) then //jika ketemu
         begin
-          //update
-          //ShowMessage(IntToStr(tmpQuery['demand']));
-          total:= strToInt( gridModel.Cells[1, index] );
-          queryUpdate:= 'UPDATE `garmines_pso` SET `demand`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +'';
-          FDConnection1.ExecSQL(queryUpdate);
+          //ShowMessage(gridModel.Cells[1, index]+' = '+ IntToStr(tmpQuery['demand']) );
+          if not ( gridModel.Cells[1, index] = tmpQuery['demand'] ) then //jika value nya beda.
+          begin
+            //update
+            //ShowMessage(IntToStr(tmpQuery['demand']));
+            total:= strToInt( gridModel.Cells[1, index] );
+            queryUpdate:= 'UPDATE `garmines_pso` SET `demand`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +'';
+            try
+              FDConnection1.ExecSQL(queryUpdate);
+            except
+               on E:Exception do
+                  ShowMessage(E.Message);
+            end;
+            
+          end;
+
         end;
 
+        tmpQuery.Next;
       end;
-
-      tmpQuery.Next;
+    except
+      on E:Exception do
+        ShowMessage(E.Message);
     end;
 
   finally
