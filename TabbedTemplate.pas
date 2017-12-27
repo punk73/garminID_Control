@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, ShellApi, FMX.Platform.Win ,System.Generics.Collections, Winapi.Messages,  Vcl.Graphics, System.IOUtils,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB,
   System.SysUtils, System.DateUtils , System.Types, System.StrUtils , System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.TabControl,
   FMX.StdCtrls, FMX.Gestures, System.Rtti, FMX.Grid.Style, FMX.ScrollBox,
@@ -12,7 +12,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef, FireDAC.FMXUI.Wait,
-  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, 
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FMX.Layouts, FMX.ListBox,
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
@@ -211,6 +211,7 @@ type
     procedure pindahFile(paramPath:string);
     procedure finishThread;
     procedure getImage;
+    function DirIsReadOnly(Path:string):Boolean;
   end;
 
 var
@@ -525,6 +526,7 @@ var
   anotherThread: TuploadData;
   //ThreadHandlers: array of THandle;
   arrThread:array of TuploadData;
+  tmpUploadData :TuploadData;
   ThreadHandlers: array of THandle ;
   lineId: string;
 begin
@@ -543,11 +545,13 @@ begin
     setlength(ThreadHandlers, lineGrid.RowCount  );
     setlength( arrThread , lineGrid.RowCount  );
 
-    for I := 0 to lineGrid.RowCount-1 do
+    for I := lineGrid.RowCount-1 downto 0 do
     begin
 
       path:= lineGrid.Cells[2, I] ;
       lineId := lineGrid.Cells[0,I];
+      //path = nama path server + line id
+
 
       //cek apakah file terkait ada.
       //copy ke localfolder;
@@ -555,15 +559,28 @@ begin
       begin
         pindahFile(path);
         //ShowMessage(path);
+      end
+      else
+      begin
+         ShowMessage('Copy file failed : '+ IntToStr(i) + SysErrorMessage(GetLastError) );
+
+         //kurangi length value of array
+         setlength( arrThread , (length(arrThread)-1)  );
+         setlength(ThreadHandlers, (length(ThreadHandlers)-1)  );
+
+         Continue;
       end;
+
 
       //masuk ke file local
       //localPath:= file local
       localPath := ExtractFilePath( ParamStr(0) );
-      localPath:= localPath + ExtractFileName(path);
+      localPath:= localPath + 'DATALOG\' +ExtractFileName(path);
 
       try
         lineGrid.Selected:= I;
+        ShowMessage(inttostr(I));
+
         arrThread[I] := TuploadData.Create(localPath, lineId);  //simpan lewat anotherThread
       finally
 
@@ -571,10 +588,20 @@ begin
 
     end;
 
+    
     //isi thread handlers dengan TuploadThread.handle
-    for i := 0 to Length( arrThread ) - 1 do begin
-      ThreadHandlers[I]:= arrThread[i].Handle;
-    end;
+    {for I := Length( arrThread ) - 1 downto Length( arrThread ) - 1 do begin
+        ThreadHandlers[I]:= arrThread[I].Handle;
+    end; }
+
+     for tmpUploadData in arrThread do
+     begin
+        I:=0;
+        ThreadHandlers[I] := tmpUploadData.Handle;
+        I:=I+1;
+     end;
+
+
 
     WaitForMultipleObjects(lineGrid.RowCount, Pointer(ThreadHandlers) , True, INFINITE);
 
@@ -1086,6 +1113,14 @@ begin
   end;
 end;
 
+function TTabbedForm.DirIsReadOnly(Path: string): Boolean;
+var
+ attrs    : Integer;
+begin
+ attrs  := FileGetAttr(Path);
+ Result :=  ( attrs > 0 ) and ( faReadOnly  > 0 );
+end;
+
 procedure TTabbedForm.duplicateGridCellClick(const Column: TColumn; const Row:
     Integer);
 var
@@ -1234,7 +1269,7 @@ end;
 
 function TTabbedForm.GetDirectoryCount(const DirName: string): Integer;
 begin
-  if DirectoryExists(DirName) then
+  if DirectoryExists(DirName) and DirIsReadOnly(DirName) then
     Result := Length(TDirectory.GetDirectories(DirName))
   else
     Result:=-1;
@@ -1495,7 +1530,7 @@ var
 begin
 
    baseFolder := ExtractFilePath( ParamStr(0) );
-   baseFolder:= StringReplace(baseFolder, 'Win32\debug\', 'DATALOG\', [rfReplaceAll, rfIgnoreCase]);
+   baseFolder:= baseFolder + 'DATALOG\'; //StringReplace(baseFolder, 'Win32\debug\', 'DATALOG\', [rfReplaceAll, rfIgnoreCase]);
 
    if not (DirectoryExists(baseFolder)) then //jika baseFolder tidak ada, maka buat.
     begin
@@ -1508,11 +1543,12 @@ begin
     end;
 
    //ShowMessage(baseFolder);
-    if not CopyFile(PChar( paramPath ),PChar( baseFolder + ExtractFileName(paramPath) ),false) then
+    if not CopyFile(PChar( paramPath ),PChar( baseFolder + ExtractFileName(paramPath)  ),false) then
     begin
       ShowMessage( SysErrorMessage(GetLastError) );
     end;
 
+    //ShowMessage(baseFolder + ExtractFileName(paramPath));
 end;
 
 procedure TTabbedForm.refreshGarminCombo;
@@ -1900,6 +1936,7 @@ begin
         //tmpQuery['stock'] = value lama
         selisih := tmpQuery['stock'] - total ; //selisih = value lama- value baru
 
+        //ShowMessage(inttostr(total));
         //ShowMessage(tmpQuery['path']+''+ );
         if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
         begin
@@ -1922,7 +1959,7 @@ begin
     //select path & stock
     // check path ke getDirectoryCount
     // jika stock != getDirectoryCount
-      //update stock
+    //update stock
 
 
 end;

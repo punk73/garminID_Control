@@ -31,7 +31,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 491.000000000000000000
+        Size.Height = 593.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 279.000000000000000000
           Size.Height = 305.000000000000000000
@@ -52,7 +52,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 508.000000000000000000
+        Size.Height = 610.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 55.000000000000000000
           Size.Height = 377.000000000000000000
@@ -87,7 +87,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 500.000000000000000000
+        Size.Height = 602.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 151.000000000000000000
           Size.Height = 353.000000000000000000
@@ -103,7 +103,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 500.000000000000000000
+        Size.Height = 602.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -128,7 +128,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 500.000000000000000000
+        Size.Height = 602.000000000000000000
         inherited Label12: TLabel
           Position.Y = 392.000000000000000000
         end
@@ -179,9 +179,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       item
       end>
   end
-  inherited Timer1: TTimer [4]
-  end
-  inherited GestureManager1: TGestureManager [5]
+  inherited GestureManager1: TGestureManager
     GestureData = <
       item
         Control = Owner
@@ -193,39 +191,5 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
             GestureID = sgiRight
           end>
       end>
-  end
-  inherited FDConnection1: TFDConnection [6]
-  end
-  inherited modelQuery: TFDQuery [7]
-  end
-  inherited BindingsList1: TBindingsList [8]
-  end
-  inherited stockQuery: TFDQuery [9]
-  end
-  inherited garminQuery: TFDQuery [10]
-  end
-  inherited BindSourceDB2: TBindSourceDB [11]
-  end
-  inherited BindSourceDB3: TBindSourceDB [12]
-  end
-  inherited duplicateQuery: TFDQuery [13]
-  end
-  inherited BindSourceDB4: TBindSourceDB [14]
-  end
-  inherited psoConnection: TFDConnection [15]
-  end
-  inherited psoVersionQuery: TFDQuery [16]
-  end
-  inherited garmines_pso_Query: TFDQuery [17]
-  end
-  inherited lineQuery: TFDQuery [18]
-  end
-  inherited BindSourceDB1: TBindSourceDB [19]
-  end
-  inherited demandQuery: TFDQuery [20]
-  end
-  inherited BindSourceDB5: TBindSourceDB [21]
-  end
-  inherited ImageList1: TImageList [22]
   end
 end

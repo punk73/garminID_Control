@@ -31,7 +31,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 680.000000000000000000
+        Size.Height = 971.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 359.000000000000000000
           Size.Height = 368.000000000000000000
@@ -52,7 +52,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 697.000000000000000000
+        Size.Height = 988.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 135.000000000000000000
           Size.Height = 440.000000000000000000
@@ -87,7 +87,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 689.000000000000000000
+        Size.Height = 980.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 231.000000000000000000
           Size.Height = 416.000000000000000000
@@ -103,7 +103,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 689.000000000000000000
+        Size.Height = 980.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -128,7 +128,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 689.000000000000000000
+        Size.Height = 980.000000000000000000
         inherited Label12: TLabel
           Position.Y = 455.000000000000000000
         end
@@ -175,9 +175,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       item
       end>
   end
-  inherited Timer1: TTimer [4]
-  end
-  inherited GestureManager1: TGestureManager [5]
+  inherited GestureManager1: TGestureManager
     GestureData = <
       item
         Control = Owner
@@ -189,39 +187,5 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
             GestureID = sgiRight
           end>
       end>
-  end
-  inherited FDConnection1: TFDConnection [6]
-  end
-  inherited modelQuery: TFDQuery [7]
-  end
-  inherited BindingsList1: TBindingsList [8]
-  end
-  inherited stockQuery: TFDQuery [9]
-  end
-  inherited garminQuery: TFDQuery [10]
-  end
-  inherited BindSourceDB2: TBindSourceDB [11]
-  end
-  inherited BindSourceDB3: TBindSourceDB [12]
-  end
-  inherited duplicateQuery: TFDQuery [13]
-  end
-  inherited BindSourceDB4: TBindSourceDB [14]
-  end
-  inherited psoConnection: TFDConnection [15]
-  end
-  inherited psoVersionQuery: TFDQuery [16]
-  end
-  inherited garmines_pso_Query: TFDQuery [17]
-  end
-  inherited lineQuery: TFDQuery [18]
-  end
-  inherited BindSourceDB1: TBindSourceDB [19]
-  end
-  inherited demandQuery: TFDQuery [20]
-  end
-  inherited BindSourceDB5: TBindSourceDB [21]
-  end
-  inherited ImageList1: TImageList [22]
   end
 end
