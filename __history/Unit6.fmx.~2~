@@ -1,0 +1,71 @@
+object Form6: TForm6
+  Left = 490
+  Top = 192
+  Caption = 'Form6'
+  ClientHeight = 223
+  ClientWidth = 387
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  Left = 490
+  Top = 192
+  DesignerMasterStyle = 0
+  object Panel1: TPanel
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    ClipParent = True
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 369.000000000000000000
+    Size.Height = 209.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object Button1: TButton
+      Position.X = 104.000000000000000000
+      Position.Y = 104.000000000000000000
+      TabOrder = 1
+      Text = 'Sign In'
+    end
+    object Edit1: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 2
+      Position.X = 104.000000000000000000
+      Position.Y = 32.000000000000000000
+      Size.Width = 169.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Label1: TLabel
+      Position.X = 24.000000000000000000
+      Position.Y = 32.000000000000000000
+      Text = 'Username'
+      TabOrder = 3
+    end
+    object Label2: TLabel
+      Position.X = 24.000000000000000000
+      Position.Y = 64.000000000000000000
+      Text = 'Password'
+      TabOrder = 4
+    end
+    object Edit2: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 5
+      Position.X = 104.000000000000000000
+      Position.Y = 64.000000000000000000
+      Size.Width = 169.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Button2: TButton
+      Position.X = 192.000000000000000000
+      Position.Y = 104.000000000000000000
+      TabOrder = 6
+      Text = 'Sign up'
+    end
+  end
+  object LoginConnection: TFDConnection
+    LoginPrompt = False
+    Left = 56
+    Top = 152
+  end
+end

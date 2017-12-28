@@ -20,8 +20,8 @@ uses
 
 begin
   Application.Initialize;
+  Application.CreateForm(TForm6, Form6);
   Application.CreateForm(TTabbedForm, TabbedForm);
   Application.CreateForm(TDuplicatedForm, DuplicatedForm);
-  Application.CreateForm(TForm6, Form6);
   Application.Run;
 end.

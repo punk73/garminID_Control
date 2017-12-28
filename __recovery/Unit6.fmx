@@ -1,0 +1,108 @@
+object Form6: TForm6
+  Left = 490
+  Top = 192
+  Caption = 'Login Form'
+  ClientHeight = 265
+  ClientWidth = 314
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  Left = 490
+  Top = 192
+  DesignerMasterStyle = 0
+  object Panel1: TPanel
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    ClipParent = True
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 296.000000000000000000
+    Size.Height = 251.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object Button1: TButton
+      Anchors = [akLeft, akTop, akRight]
+      Position.X = 96.000000000000000000
+      Position.Y = 120.000000000000000000
+      Size.Width = 65.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Sign In'
+      OnClick = Button1Click
+    end
+    object Label1: TLabel
+      Position.X = 16.000000000000000000
+      Position.Y = 56.000000000000000000
+      Size.Width = 65.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Username'
+      TabOrder = 2
+    end
+    object Label2: TLabel
+      Position.X = 16.000000000000000000
+      Position.Y = 88.000000000000000000
+      Size.Width = 57.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Password'
+      TabOrder = 3
+    end
+    object edtUsername: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 5
+      Position.X = 88.000000000000000000
+      Position.Y = 56.000000000000000000
+      Size.Width = 193.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object edtPassword: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 6
+      Position.X = 88.000000000000000000
+      Position.Y = 88.000000000000000000
+      Size.Width = 193.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object PasswordEditButton1: TPasswordEditButton
+        CanFocus = False
+        Cursor = crArrow
+        Size.Width = 28.000000000000000000
+        Size.Height = 18.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+      end
+    end
+    object Button2: TButton
+      Anchors = [akLeft, akTop, akRight]
+      Position.X = 176.000000000000000000
+      Position.Y = 120.000000000000000000
+      Size.Width = 65.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Sign up'
+      OnClick = Button2Click
+    end
+  end
+  object LoginConnection: TFDConnection
+    Params.Strings = (
+      'Database=garmin_inventory'
+      'User_Name=root'
+      'Password=JvcSql@123'
+      'Server=136.198.117.48'
+      'DriverID=MySQL')
+    Connected = True
+    LoginPrompt = False
+    Left = 16
+    Top = 232
+  end
+  object FDQuery1: TFDQuery
+    Connection = LoginConnection
+    Left = 48
+    Top = 232
+  end
+end
