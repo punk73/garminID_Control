@@ -1,0 +1,134 @@
+object Form7: TForm7
+  Left = 490
+  Top = 149
+  Caption = 'Form7'
+  ClientHeight = 352
+  ClientWidth = 367
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  Left = 490
+  Top = 149
+  DesignerMasterStyle = 0
+  object Panel1: TPanel
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    ClipParent = True
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 350.000000000000000000
+    Size.Height = 336.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object Button1: TButton
+      Position.X = 120.000000000000000000
+      Position.Y = 184.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Text = 'Save'
+      OnClick = Button1Click
+    end
+    object Label1: TLabel
+      Position.X = 16.000000000000000000
+      Position.Y = 80.000000000000000000
+      Size.Width = 65.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Username'
+      TabOrder = 2
+    end
+    object Label2: TLabel
+      Position.X = 16.000000000000000000
+      Position.Y = 112.000000000000000000
+      Size.Width = 57.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Password'
+      TabOrder = 3
+    end
+    object Button2: TButton
+      Position.X = 224.000000000000000000
+      Position.Y = 184.000000000000000000
+      Size.Width = 89.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Closed'
+      OnClick = Button2Click
+    end
+    object edtUsername: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 6
+      Position.X = 120.000000000000000000
+      Position.Y = 80.000000000000000000
+      Size.Width = 193.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object edtPassword: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 7
+      Password = True
+      Position.X = 120.000000000000000000
+      Position.Y = 112.000000000000000000
+      Size.Width = 193.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      object PasswordEditButton1: TPasswordEditButton
+        CanFocus = False
+        Cursor = crArrow
+        Size.Width = 28.000000000000000000
+        Size.Height = 18.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+      end
+    end
+  end
+  object Label3: TLabel
+    Position.X = 24.000000000000000000
+    Position.Y = 152.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Retype Password'
+    TabOrder = 3
+  end
+  object edtPassword2: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 6
+    Password = True
+    Position.X = 128.000000000000000000
+    Position.Y = 152.000000000000000000
+    Size.Width = 193.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    object PasswordEditButton2: TPasswordEditButton
+      CanFocus = False
+      Cursor = crArrow
+      Size.Width = 28.000000000000000000
+      Size.Height = 18.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+    end
+  end
+  object LoginConnection: TFDConnection
+    Params.Strings = (
+      'Database=garmin_inventory'
+      'User_Name=root'
+      'Password=JvcSql@123'
+      'Server=136.198.117.48'
+      'DriverID=MySQL')
+    Connected = True
+    LoginPrompt = False
+    Left = 24
+    Top = 296
+  end
+  object FDQuery1: TFDQuery
+    Connection = LoginConnection
+    Left = 64
+    Top = 296
+  end
+end

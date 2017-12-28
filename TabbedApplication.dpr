@@ -15,7 +15,8 @@ uses
   Unit3 in 'Unit3.pas',
   Unit4 in 'Unit4.pas' {DuplicatedForm},
   Unit5 in 'Unit5.pas',
-  Unit6 in 'Unit6.pas' {Form6};
+  Unit6 in 'Unit6.pas' {Form6},
+  Unit7 in 'Unit7.pas' {Form7};
 
 {$R *.res}
 
@@ -24,8 +25,9 @@ begin
   begin
     Application.Initialize;
     Application.CreateForm(TTabbedForm, TabbedForm);
-    Application.CreateForm(TDuplicatedForm, DuplicatedForm);
-    Application.Run;
+  Application.CreateForm(TDuplicatedForm, DuplicatedForm);
+  Application.CreateForm(TForm7, Form7);
+  Application.Run;
   end
   else
   begin

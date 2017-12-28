@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.FMXUI.Wait,
   Data.DB, FireDAC.Comp.Client, FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, System.ImageList, FMX.ImgList, FMX.Objects;
+  FireDAC.Comp.DataSet, System.ImageList, FMX.ImgList, FMX.Objects, tabbedtemplate, Unit7 ;
 
 type
   TForm6 = class(TForm)
@@ -24,21 +24,28 @@ type
     edtUsername: TEdit;
     edtPassword: TEdit;
     PasswordEditButton1: TPasswordEditButton;
+    ImageList1: TImageList;
+    Label3: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure edtPasswordKeyUp(Sender: TObject; var Key: Word;
+      var KeyChar: Char; Shift: TShiftState);
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
     procedure bersih;
   public
     { Public declarations }
      class function Execute : boolean;
+
   end;
 
 var
   Form6: TForm6;
+  Form7 : TForm7;
 
 implementation
-uses tabbedtemplate;
+//uses tabbedtemplate, Unit7 ;
 
 {$R *.fmx}
 
@@ -72,6 +79,28 @@ begin
 
   finally
      tmpQuery.Free;
+  end;
+end;
+
+procedure TForm6.Button2Click(Sender: TObject);
+
+begin
+  try
+   Form7 := TForm7.Create(nil);
+   Form7.ShowModal;
+   Form7.edtUsername.SetFocus;
+
+  finally
+    Form7.Free;
+  end;
+end;
+
+procedure TForm6.edtPasswordKeyUp(Sender: TObject; var Key: Word;
+  var KeyChar: Char; Shift: TShiftState);
+begin
+  if Key=13 then
+  begin
+    Button1Click(Self);
   end;
 end;
 
