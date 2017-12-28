@@ -376,21 +376,17 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="TabbedTemplate.pas">
-            <FormDeviceName>iPhone</FormDeviceName>
             <Form>TabbedForm</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="Unit1.pas"/>
         <DCCReference Include="Unit2.pas"/>
         <DCCReference Include="Unit3.pas"/>
         <DCCReference Include="Unit4.pas">
             <Form>DuplicatedForm</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="Unit5.pas"/>
         <DCCReference Include="Unit6.pas">
             <Form>Form6</Form>
-            <FormType>fmx</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

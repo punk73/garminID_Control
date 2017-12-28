@@ -72,6 +72,7 @@ object Form6: TForm6
     object edtPassword: TEdit
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       TabOrder = 7
+      Password = True
       Position.X = 88.000000000000000000
       Position.Y = 112.000000000000000000
       Size.Width = 193.000000000000000000

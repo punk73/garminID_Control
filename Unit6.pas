@@ -31,12 +31,14 @@ type
     procedure bersih;
   public
     { Public declarations }
+     class function Execute : boolean;
   end;
 
 var
   Form6: TForm6;
 
 implementation
+uses tabbedtemplate;
 
 {$R *.fmx}
 
@@ -58,17 +60,29 @@ begin
 
      if tmpQuery.RecordCount <> 0 then
      begin
-       ShowMessage('you are logged in!');
+       //ShowMessage('you are logged in!');
+       //TabbedForm.Show;
+       ModalResult := mrOK;
      end
      else
      begin
-       ShowMessage('username or password is wrong!');
-
+       //ShowMessage('username or password is wrong!');
+       ModalResult := mrAbort;
      end;
 
   finally
      tmpQuery.Free;
   end;
+end;
+
+class function TForm6.Execute: boolean;
+begin
+  with TForm6.Create(nil) do
+   try
+   Result := ShowModal = mrOk;
+   finally
+   Free;
+   end;
 end;
 
 procedure TForm6.FormCreate(Sender: TObject);

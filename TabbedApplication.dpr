@@ -8,6 +8,7 @@ uses
   madListModules,
   System.StartUpCopy,
   FMX.Forms,
+  FMX.Dialogs,
   TabbedTemplate in 'TabbedTemplate.pas' {TabbedForm},
   Unit1 in 'Unit1.pas',
   Unit2 in 'Unit2.pas',
@@ -19,9 +20,16 @@ uses
 {$R *.res}
 
 begin
-  Application.Initialize;
-  Application.CreateForm(TForm6, Form6);
-  Application.CreateForm(TTabbedForm, TabbedForm);
-  Application.CreateForm(TDuplicatedForm, DuplicatedForm);
-  Application.Run;
+  if TForm6.Execute then
+  begin
+    Application.Initialize;
+    Application.CreateForm(TTabbedForm, TabbedForm);
+    Application.CreateForm(TDuplicatedForm, DuplicatedForm);
+    Application.Run;
+  end
+  else
+  begin
+    ShowMessage('username or password is wrong!');
+  end;
+
 end.
