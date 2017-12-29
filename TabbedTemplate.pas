@@ -1814,6 +1814,7 @@ begin
     try
       Form8 := TForm8.Create(nil);
       Form8.modelNumber := modelNumber;
+      Form8.GarminID:= mainGrid.Cells[0, Row];
       Form8.currentStock:= mainGrid.Cells[1, Row];
       Form8.ShowModal;
     finally

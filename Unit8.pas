@@ -28,7 +28,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-     modelNumber, currentStock: string;
+     modelNumber, currentStock, GarminID: string;
   end;
 
 var
