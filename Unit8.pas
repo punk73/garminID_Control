@@ -22,6 +22,7 @@ type
     StringColumn4: TStringColumn;
     psoConnection: TFDConnection;
     FDQuery1: TFDQuery;
+    Label2: TLabel;
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
@@ -80,10 +81,24 @@ begin
         else stock:= '0';
 
         demand:= tmpQueryPSO['demand'];
-        //balance:= tmpQueryPSO[''] ;
-
+        //isi end date
         detailDemandGrid.Cells[0, i] := endDate ;
+        //isi currentStock
+        if i=0 then
+        begin
+          detailDemandGrid.Cells[1,i] := currentStock;
+        end
+        else
+        begin
+          detailDemandGrid.Cells[1,i] := detailDemandGrid.Cells[3,i-1]  ;
+        end;
+
+        //isi demand
         detailDemandGrid.Cells[2, i] := demand ;
+        //isi balance
+        detailDemandGrid.Cells[3, i] := IntToStr( StrToInt(detailDemandGrid.Cells[1,i]) - StrToInt(demand)) ;
+
+
 
         i:= i+1;
         tmpQueryPSO.Next;

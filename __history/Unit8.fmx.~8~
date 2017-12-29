@@ -1,0 +1,59 @@
+object Form8: TForm8
+  Left = 448
+  Top = 149
+  Caption = 'Demand Details'
+  ClientHeight = 344
+  ClientWidth = 556
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  Left = 448
+  Top = 149
+  DesignerMasterStyle = 0
+  object detailDemandGrid: TStringGrid
+    CanFocus = True
+    ClipChildren = True
+    Position.X = 8.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 537.000000000000000000
+    Size.Height = 265.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Viewport.Width = 537.000000000000000000
+    Viewport.Height = 265.000000000000000000
+    object StringColumn1: TStringColumn
+      Header = 'End Date'
+    end
+    object StringColumn2: TStringColumn
+      Header = 'Current Stock'
+    end
+    object StringColumn3: TStringColumn
+      Header = 'Demand'
+    end
+    object StringColumn4: TStringColumn
+      Header = 'Balance'
+    end
+  end
+  object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 16.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 265.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 36.000000000000000000
+    Text = 'Demand Detail'
+    TabOrder = 2
+  end
+  object psoConnection: TFDConnection
+    Left = 400
+    Top = 16
+  end
+  object FDQuery1: TFDQuery
+    Connection = psoConnection
+    Left = 480
+    Top = 16
+  end
+end
