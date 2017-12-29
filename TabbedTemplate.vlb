@@ -71,7 +71,7 @@ Coordinates=296,796,69,36
 Coordinates=666,566,53,58
 
 []
-Coordinates=51,165,58,51
+Coordinates=10,10,139,212
 Visible=True
 LayerNames=psoVersion
 
@@ -161,9 +161,6 @@ Coordinates=10,566,114,58
 
 [stockGarminCombo]
 Coordinates=180,248,128,102
-
-[listModel]
-Coordinates=10,10,139,212
 
 [gridModel]
 Coordinates=89,482,71,58
@@ -285,9 +282,6 @@ Coordinates=150,566,91,58
 [loadingLabel]
 Coordinates=490,650,88,58
 
-[Label19]
-Coordinates=1105,566,60,58
-
 [Label18]
 Coordinates=488,566,60,58
 
@@ -296,9 +290,6 @@ Coordinates=712,650,66,58
 
 [SearchEditButton1]
 Coordinates=773,796,122,36
-
-[edtSearchModel]
-Coordinates=10,650,108,58
 
 [Button2]
 Coordinates=10,734,59,36
@@ -322,4 +313,13 @@ Coordinates=889,650,59,36
 Coordinates=924,21,78,80
 LayerNames=garmin;duplicated
 Visible=True
+
+[edtmodelNumber]
+Coordinates=10,650,113,58
+
+[Form8.FDQuery1]
+Coordinates=490,142,114,58
+
+[listModel]
+Coordinates=0,0,139,212
 

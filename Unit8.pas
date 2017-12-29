@@ -23,6 +23,7 @@ type
     psoConnection: TFDConnection;
     FDQuery1: TFDQuery;
     Label2: TLabel;
+    Label3: TLabel;
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
@@ -104,7 +105,7 @@ begin
         tmpQueryPSO.Next;
       end;
 
-
+      Label2.Text:= GarminID;
     finally
       tmpQueryPSO.Free;
     end;
