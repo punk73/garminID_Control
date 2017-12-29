@@ -138,13 +138,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
         inherited gridModel: TStringGrid
           Size.Width = 0.000000000000000000
           Viewport.Width = 0.000000000000000000
-          Viewport.Height = 153.000000000000000000
-          inherited StringColumn5: TStringColumn
-            Size.Width = 169.000000000000000000
-          end
-          inherited StringColumn6: TStringColumn
-            Size.Width = 94.000000000000000000
-          end
+          Viewport.Height = 161.000000000000000000
         end
         inherited Label9: TLabel
           TextSettings.Font.StyleExt = {00070000000000000004000000}

@@ -77,8 +77,6 @@ type
     Label16: TLabel;
     psoVersionQuery: TFDQuery;
     gridModel: TStringGrid;
-    StringColumn5: TStringColumn;
-    StringColumn6: TStringColumn;
     ComboBox1: TComboBox;
     Label8: TLabel;
     garmines_pso_Query: TFDQuery;
@@ -123,6 +121,9 @@ type
     Label6: TLabel;
     listModel: TListBox;
     btnDeleteModel: TButton;
+    psoQuery: TFDQuery;
+    BindSourceDB6: TBindSourceDB;
+    LinkGridToDataSourceBindSourceDB6: TLinkGridToDataSource;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -193,7 +194,6 @@ type
     procedure showLoading;
     procedure bersih;
     procedure getModelNumber;
-    procedure getPsoVersion;
     procedure getGarminId;
     procedure isiPsoVersion;
     procedure isAvailable(table,id,result: string);
@@ -958,7 +958,9 @@ procedure TTabbedForm.demandGarminComboChange(Sender: TObject);
 var
   total,I: Integer;
   tmpModel: TStringList;
+  modelNumber:string;
   isInArrayResult:Integer;
+  tmpquery: string;
 begin
   if not (demandGarminCombo.ItemIndex = -1) then
   begin
@@ -969,6 +971,10 @@ begin
     listModel.Clear;
     //listModel.Items := GlobalAvailableListModel;
 
+    //deklarasi model number, untuk query in
+    modelNumber:='';
+
+
     //ambil data dari database.
     garmines_pso_Query.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Text+'" group by Model_Number ';
     garmines_pso_Query.Open();
@@ -976,9 +982,11 @@ begin
     while not (garmines_pso_Query.Eof) do
     begin
       //tambahkan hasil query ke listmode lalu diceklis.
-      //listModel.Items.Add(garmines_pso_Query['Model_Number']);
       listModel.Items.Insert(0, garmines_pso_Query['Model_Number'] );
       listModel.ListItems[ listModel.Items.IndexOf(garmines_pso_Query['Model_Number']) ].IsChecked:=true;
+
+      //gabung modelnumber untuk query ke pso
+      modelNumber:= modelNumber + '"'+ garmines_pso_Query['Model_Number'] +'",';
 
       //jika garmines_pso_Query['Model_Number'] ada di array AllModelNumber maka tambahkan ke total.
       isInArrayResult:= cariIndex( garmines_pso_Query['Model_Number'], AllModelNumber );
@@ -992,6 +1000,20 @@ begin
       //listModel.ListItems[I].IsChecked:=false;
       garmines_pso_Query.Next;
       I:=I+1;
+    end;
+
+    Delete(modelNumber, length(modelNumber), 1 );
+    if not (modelNumber='') then
+    begin
+    tmpquery:='select model_no, sum(qty) as Qty from t_file where model_no in (' +modelNumber+ ') and create_time=(select max(create_time) from t_file) group by model_no';
+    //ShowMessage(tmpquery);
+    psoQuery.SQL.Text:= tmpquery ;
+    try
+      psoQuery.Open();
+    except
+      on E:exception do ShowMessage(E.Message);
+    end;
+
     end;
 
     //ShowMessage('changed!~');
@@ -1257,10 +1279,6 @@ begin
     end;
 end;
 
-procedure TTabbedForm.getPsoVersion;
-begin
-
-end;
 
 procedure TTabbedForm.isAvailable(table, id, result: string);
 var
@@ -1405,6 +1423,7 @@ begin
     psoVersionQuery.Active:=true;
     stockQuery.Active:=true;
     modelQuery.Active:=true;
+    psoQuery.Active:=true;
   except
     on E:exception do
       ShowMessage(E.ClassName +' has rised exception of '+ E.Message);
