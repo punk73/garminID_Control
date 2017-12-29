@@ -174,6 +174,7 @@ type
     procedure TabItem3Click(Sender: TObject);
     procedure TabItem4Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure mainGridCellDblClick(const Column: TColumn; const Row: Integer);
 
 
 
@@ -212,6 +213,8 @@ type
     procedure finishThread;
     procedure getImage;
     function DirIsReadOnly(Path:string):Boolean;
+    procedure isiNumber();
+
   end;
 
 var
@@ -224,7 +227,7 @@ var
 
 
 implementation
-    uses Unit1, Unit2,  Unit3, Unit4, Unit5;
+    uses Unit1, Unit2,  Unit3, Unit4, Unit5, Unit8;
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
@@ -1211,6 +1214,7 @@ begin
   { This defines the default active tab at runtime }
   TabControl1.ActiveTab := TabItem1;
   koneksi;
+
   isiPsoVersion;
   getGarminId;
   getModelNumber;
@@ -1436,6 +1440,21 @@ begin
   end;
 end;
 
+procedure TTabbedForm.isiNumber;
+var tmpObject: TStringColumn;
+  I: Integer;
+begin
+  //for I := Low to High do
+  tmpObject := TStringColumn.Create(nil);
+  tmpObject.Header:='Number';
+  for I := 1 to garminGrid.RowCount do
+  begin
+    //tmpObject.inser
+  end;
+
+
+end;
+
 procedure TTabbedForm.isiPsoVersion;
 begin
   //'select distinct create_time from t_file order by create_time desc'
@@ -1649,6 +1668,8 @@ begin
   end;
 end;
 
+
+
 procedure TTabbedForm.listModelItemClick(const Sender: TCustomListBox; const
     Item: TListBoxItem);
 var
@@ -1761,6 +1782,63 @@ begin
   except
    on E: Exception do
     ShowMessage(E.ClassName +' has rised an exceptions '+ E.Message );
+  end;
+
+end;
+
+procedure TTabbedForm.mainGridCellDblClick(const Column: TColumn;
+  const Row: Integer);
+var
+  garminID, modelNumber : string;
+  tmpquery: TFDQuery;
+  tmpQueryPSO :TFDQuery;
+  query: string;
+begin
+  garminID := mainGrid.Cells[0, Row];
+  try
+    tmpquery:=TFDQuery.Create(nil);
+    tmpquery.Connection:= FDConnection1 ;
+    tmpquery.SQL.Text :='select * from garmines_pso where garmines_id="'+garminID+'"';
+    tmpquery.Active:=true;
+    tmpquery.Open();
+    modelNumber:='';
+    while not (tmpquery.Eof) do
+    begin
+      modelNumber := modelNumber + '"'+ tmpquery['Model_Number'] +'",';
+      //ShowMessage(modelNumber);
+      tmpquery.Next;
+    end;
+
+    //hapus koma dibelakang dari var modelnumber
+    Delete(modelNumber, length(modelNumber), 1 );
+
+
+    //ShowMessage(modelNumber);
+    {if not (modelNumber='') then
+    begin
+      try
+        tmpQueryPSO:=TFDQuery.Create(nil);
+        tmpQueryPSO.Connection:= psoConnection ;
+
+        query:='select model_no,sum(qty), month(end_date) from t_file where model_no in '+
+               '('+ modelNumber +') and '+
+               ' create_time=(select max(create_time) from t_file) ' +
+               ' group by month(end_date) ' +
+               ' order by end_date ASC  ';
+
+        tmpQueryPSO.SQL.Text := query;
+        tmpQueryPSO.Active:=true;
+        tmpQueryPSO.Open();
+
+
+
+      finally
+        tmpQueryPSO.Free;
+      end;
+    end;}
+
+  finally
+    tmpquery.Free;
   end;
 
 end;

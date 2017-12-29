@@ -79,11 +79,6 @@ LayerNames=psoVersion
 Coordinates=196,387,91,58
 Visible=True
 
-[garminGrid]
-Coordinates=924,21,78,80
-LayerNames=garmin;duplicated
-Visible=True
-
 [BindingsList1]
 Coordinates=145,152,91,36
 
@@ -322,4 +317,9 @@ Coordinates=222,251,54,36
 
 [Button9]
 Coordinates=889,650,59,36
+
+[garminGrid]
+Coordinates=924,21,78,80
+LayerNames=garmin;duplicated
+Visible=True
 

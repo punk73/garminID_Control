@@ -133,7 +133,7 @@ begin
     edtPassword2.Text:='';
     
     //comeback to previous form
-
+    ModalResult := mrCancel;
 
   except
     on E:exception do
@@ -219,7 +219,7 @@ begin
     edit4.Text:='';
 
     //comeback to previous form
-    //Form6.Show;
+    ModalResult := mrCancel;
 
   except
     on E:exception do
