@@ -1811,31 +1811,14 @@ begin
 
     //hapus koma dibelakang dari var modelnumber
     Delete(modelNumber, length(modelNumber), 1 );
-
-
-    //ShowMessage(modelNumber);
-    {if not (modelNumber='') then
-    begin
-      try
-        tmpQueryPSO:=TFDQuery.Create(nil);
-        tmpQueryPSO.Connection:= psoConnection ;
-
-        query:='select model_no,sum(qty), month(end_date) from t_file where model_no in '+
-               '('+ modelNumber +') and '+
-               ' create_time=(select max(create_time) from t_file) ' +
-               ' group by month(end_date) ' +
-               ' order by end_date ASC  ';
-
-        tmpQueryPSO.SQL.Text := query;
-        tmpQueryPSO.Active:=true;
-        tmpQueryPSO.Open();
-
-
-
-      finally
-        tmpQueryPSO.Free;
-      end;
-    end;}
+    try
+      Form8 := TForm8.Create(nil);
+      Form8.modelNumber := modelNumber;
+      Form8.currentStock:= mainGrid.Cells[1, Row];
+      Form8.ShowModal;
+    finally
+      Form8.Free;
+    end;
 
   finally
     tmpquery.Free;

@@ -14,7 +14,7 @@ uses
 
 type
   TForm8 = class(TForm)
-    StringGrid1: TStringGrid;
+    detailDemandGrid: TStringGrid;
     Label1: TLabel;
     StringColumn1: TStringColumn;
     StringColumn2: TStringColumn;
@@ -22,12 +22,12 @@ type
     StringColumn4: TStringColumn;
     psoConnection: TFDConnection;
     FDQuery1: TFDQuery;
-    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
-    var modelNumber: string;
+     modelNumber, currentStock: string;
   end;
 
 var
@@ -38,35 +38,64 @@ implementation
    uses tabbedTemplate;
 {$R *.fmx}
 
-procedure TForm8.FormCreate(Sender: TObject);
+procedure TForm8.FormShow(Sender: TObject);
 var
   tmpQueryPSO: TFDQuery;
   query: string;
+  endDate: string;
+  stock: string;
+  balance: string;
+  demand: string;
+  i: Integer;
 begin
   psoConnection :=  TabbedForm.psoConnection;
 
   if not (modelNumber='') then
-    begin
-      try
-        tmpQueryPSO:=TFDQuery.Create(nil);
-        tmpQueryPSO.Connection:= psoConnection ;
+  begin
+    try
+      tmpQueryPSO:=TFDQuery.Create(nil);
+      tmpQueryPSO.Connection:= psoConnection ;
 
-        query:='select model_no,sum(qty), month(end_date) from t_file where model_no in '+
-               '('+ modelNumber +') and '+
-               ' create_time=(select max(create_time) from t_file) ' +
-               ' group by month(end_date) ' +
-               ' order by end_date ASC  ';
+      query:='select model_no,sum(qty) as demand, end_date from t_file where model_no in '+
+             '('+ modelNumber +') and '+
+             ' create_time=(select max(create_time) from t_file) ' +
+             ' group by month(end_date) ' +
+             ' order by end_date ASC  ';
 
-        tmpQueryPSO.SQL.Text := query;
-        tmpQueryPSO.Active:=true;
-        tmpQueryPSO.Open();
+      tmpQueryPSO.SQL.Text := query;
+      tmpQueryPSO.Active:=true;
+      tmpQueryPSO.Open();
+      i:= 0;
+      //clear dulu grid nya pakai procedure dari tabbedForm
+      TabbedForm.clearGrid(detailDemandGrid);
 
 
+      while not (tmpQueryPSO.Eof) do
+      begin
+        detailDemandGrid.RowCount := tmpQueryPSO.RecordCount ;
 
-      finally
-        tmpQueryPSO.Free;
+        endDate := tmpQueryPSO['end_date'] ;
+
+        if not (currentStock='') then stock:=currentStock
+        else stock:= '0';
+
+        demand:= tmpQueryPSO['demand'];
+        //balance:= tmpQueryPSO[''] ;
+
+        detailDemandGrid.Cells[0, i] := endDate ;
+        detailDemandGrid.Cells[2, i] := demand ;
+
+        i:= i+1;
+        tmpQueryPSO.Next;
       end;
+
+
+    finally
+      tmpQueryPSO.Free;
     end;
+  end;
+
+    //ShowMessage(modelNumber);
 end;
 
 end.
