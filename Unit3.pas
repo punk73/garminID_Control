@@ -57,7 +57,7 @@ begin
   try
     list:=TStringList.Create;
     list.LoadFromFile(FileName);
-    lastPointer:=0;
+    lastPointer:=1;
 
     //setting parameter untu FDManager. dikunakan oleh TFDConnections
     try

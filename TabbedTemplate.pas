@@ -521,8 +521,7 @@ begin
 
       try
         lineGrid.Selected:= I;
-        ShowMessage(inttostr(I));
-
+        //ShowMessage(inttostr(I));
         arrThread[I] := TuploadData.Create(localPath, lineId);  //simpan lewat anotherThread
       finally
 
@@ -1521,6 +1520,7 @@ begin
     end;
 
    //ShowMessage(baseFolder);
+
     if not CopyFile(PChar( paramPath ),PChar( baseFolder + ExtractFileName(paramPath)  ),false) then
     begin
       ShowMessage( SysErrorMessage(GetLastError) );
