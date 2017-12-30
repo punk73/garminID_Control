@@ -108,7 +108,6 @@ type
     Label18: TLabel;
     loadingLabel: TLabel;
     edtmodelNumber: TEdit;
-    SearchEditButton1: TSearchEditButton;
     demandGarminCombo: TComboEdit;
     stockGarminCombo: TComboEdit;
     Button14: TButton;
@@ -961,7 +960,13 @@ var
   modelNumber:string;
   isInArrayResult:Integer;
   tmpquery: string;
+  tmpfdquery:TFDQuery;
+  Qty: string;
 begin
+  if demandGarminCombo.Text='' then
+  begin
+    demandGarminCombo.Items := AllGarminId;
+  end;
   if not (demandGarminCombo.ItemIndex = -1) then
   begin
     aktif;
@@ -973,7 +978,6 @@ begin
 
     //deklarasi model number, untuk query in
     modelNumber:='';
-
 
     //ambil data dari database.
     garmines_pso_Query.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Text+'" group by Model_Number ';
@@ -988,16 +992,44 @@ begin
       //gabung modelnumber untuk query ke pso
       modelNumber:= modelNumber + '"'+ garmines_pso_Query['Model_Number'] +'",';
 
-      //jika garmines_pso_Query['Model_Number'] ada di array AllModelNumber maka tambahkan ke total.
-      isInArrayResult:= cariIndex( garmines_pso_Query['Model_Number'], AllModelNumber );
-      //jika ketemu di fungsi
-      if (isInArrayResult <> -1) then
-      begin
-        //jika isInArrayResult hasilnya bukan -1 maka ambil return value nya
-        // sebagai index di grid.
-        total:= total+ StrToInt( gridModel.Cells[1, isInArrayResult ] );
+      //buat object tfd query
+      try
+        tmpfdquery := TFDQuery.Create(nil);
+        //setting object query
+        tmpfdquery.Connection:= psoConnection;
+        tmpfdquery.SQL.Text:= 'select model_no, cast( sum( qty ) as unsigned ) as Qty from t_file where model_no="'+ garmines_pso_Query['Model_Number'] +'" and create_time=(select max(create_time) from t_file) group by model_no';
+        tmpfdquery.Active:=true;
+        tmpfdquery.Open();
+        while not (tmpfdquery.Eof ) do
+        begin
+          //ambil dari t_file sum(qty) untuk qty per model number nya
+          Qty := tmpfdquery['Qty'];
+          //total := total + qty;
+          //update demand jika garmines_pso.demand != t_file.qty
+         { if not ( garmines_pso_Query['demand'] = tmpfdquery['Qty'] ) then
+          begin
+            if not (tmpfdquery['Qty'] = '') then
+            begin
+              try
+                tmpquery:='update garmines_pso set demand='+ IntToStr( tmpfdquery['Qty']) +' where id="'+ garmines_pso_Query['id'] +'"';
+                ShowMessage(tmpquery);
+                //FDConnection1.ExecSQL(tmpquery);
+                //demandQuery.Refresh;
+              except
+                on E:exception do
+                  ShowMessage(E.Message);
+              end;
+            end;
+          end; }
+
+          total:= total + StrToInt(Qty);
+          tmpfdquery.Next;
+        end;
+
+      finally
+        tmpfdquery.Free;
       end;
-      //listModel.ListItems[I].IsChecked:=false;
+
       garmines_pso_Query.Next;
       I:=I+1;
     end;
@@ -1127,7 +1159,6 @@ begin
   getGarminId;
   getModelNumber;
   updateStock;
-  sleep(10);
   updateDemand;
   ComboBox1.ItemIndex:=0;
 end;
@@ -1164,6 +1195,7 @@ end;
 procedure TTabbedForm.garminDemandQtyGridCellClick(const Column: TColumn; const
     Row: Integer);
 begin
+  demandGarminCombo.Text:='';
   demandGarminCombo.ItemIndex:= demandGarminCombo.Items.IndexOf( garminDemandQtyGrid.Cells[0, Row] );
   demandGarminComboChange(Self);
   garminDemandQtyGrid.Cells[1, Row] := edtTotalDemand.Text;

@@ -21,6 +21,7 @@ object Form8: TForm8
     Size.Height = 241.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
+    Options = [ColumnResize, ColumnMove, ColLines, RowLines, RowSelect, Tabs, Header, HeaderClick, AutoDisplacement]
     Viewport.Width = 537.000000000000000000
     Viewport.Height = 241.000000000000000000
     object StringColumn1: TStringColumn
