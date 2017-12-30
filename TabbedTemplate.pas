@@ -264,6 +264,20 @@ var
   garminId: string;
   message: Integer;
 begin
+  if demandGarminCombo.ItemIndex=-1 then
+  begin
+    ShowMessage('choose garmin id first!');
+    demandGarminCombo.SetFocus;
+    exit;
+  end;
+
+  if listModel.ItemIndex = -1 then
+  begin
+    ShowMessage('choose model number you want to delete');
+    listModel.SetFocus;
+    exit;
+  end;
+
   modelNumber:= listModel.Selected.Text;
   garminId:=demandGarminCombo.Text;
   query:='delete from garmines_pso where garmines_id="'+garminId+'" and model_number="'+modelNumber+'"';
@@ -369,7 +383,15 @@ procedure TTabbedForm.Button12Click(Sender: TObject);
 var
   query: string;
 begin
-  query:='insert into garmines_pso (garmines_id, model_number ) values ("'+demandGarminCombo.Text+'","'+edtmodelNumber.Text+'")';
+  //error handler
+  if edtmodelNumber.Text='' then
+  begin
+    ShowMessage('you need to fill model number first!');
+    edtmodelNumber.SetFocus;
+    exit;
+  end;
+
+  query:='insert into garmines_pso (garmines_id, model_number, demand ) values ("'+demandGarminCombo.Text+'","'+edtmodelNumber.Text+'", "'+ edtTotalDemand.Text +'")';
   try
     FDConnection1.ExecSQL(query);
     demandQuery.Refresh;
@@ -453,6 +475,7 @@ begin
   if lineGrid.RowCount=0 then
   begin
     ShowMessage('you need to set log file path first!');
+    edtLineName.SetFocus;
     exit;
   end;
 
@@ -821,9 +844,6 @@ begin
   //fungsi ini berulang. I adalah indexnya
   //modelQuery.SQL.Text:= 'select sum(qty) as jml from t_file where create_time=(select max(create_time) from t_file) group by model_no';
   //modelQuery.Open();
-
-
-
   //module main program
   colId := garminQuery['id'];
   colStock := garminQuery['stock'];
@@ -959,6 +979,7 @@ var
   tmpModel: TStringList;
   modelNumber:string;
   isInArrayResult:Integer;
+  queryUpdate:string;
   tmpquery: string;
   tmpfdquery:TFDQuery;
   Qty: string;
@@ -1006,21 +1027,19 @@ begin
           Qty := tmpfdquery['Qty'];
           //total := total + qty;
           //update demand jika garmines_pso.demand != t_file.qty
-         { if not ( garmines_pso_Query['demand'] = tmpfdquery['Qty'] ) then
+          queryUpdate:='';
+         if not ( garmines_pso_Query['demand'] = tmpfdquery['Qty'] ) then
           begin
-            if not (tmpfdquery['Qty'] = '') then
-            begin
-              try
-                tmpquery:='update garmines_pso set demand='+ IntToStr( tmpfdquery['Qty']) +' where id="'+ garmines_pso_Query['id'] +'"';
-                ShowMessage(tmpquery);
-                //FDConnection1.ExecSQL(tmpquery);
-                //demandQuery.Refresh;
-              except
-                on E:exception do
-                  ShowMessage(E.Message);
-              end;
+            try
+              queryUpdate:='update garmines_pso set demand='+  IntToStr( tmpfdquery['Qty'] ) +' where id="'+ IntToStr( garmines_pso_Query['id'] ) +'"';
+              //ShowMessage( queryUpdate );
+              FDConnection1.ExecSQL(queryUpdate);
+              demandQuery.Refresh;
+            except
+              on E:exception do
+                ShowMessage(E.Message);
             end;
-          end; }
+          end;
 
           total:= total + StrToInt(Qty);
           tmpfdquery.Next;
@@ -1249,7 +1268,10 @@ begin
   I:=0;
   clearGrid(mainGrid);
 
-  AllGarminId:= Tstringlist.Create;
+  if not Assigned(AllGarminId) then
+  begin
+    AllGarminId:= Tstringlist.Create;
+  end;
   allGarminId.Clear;
 
   mainGrid.RowCount:= garminQuery.RecordCount;
