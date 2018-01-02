@@ -60,7 +60,7 @@ begin
     lastPointer:=1;
 
     //setting parameter untu FDManager. dikunakan oleh TFDConnections
-    try
+    {try
       oParams := TSTringlist.Create;
 
       //jika ada file.ini, ambil setting dari file tersebut;
@@ -81,44 +81,35 @@ begin
       FDManager.AddConnectionDef('garmin_inventory', 'MySQL', oParams );
     finally
       oParams.Free;
-    end;
+    end;}
 
     //get last pointer
-      //buat object Connection
-      try
+    //buat object Connection
+    try
       oConn:= TFDConnection.Create(nil);
       oConn.ConnectionDefName:= 'garmin_inventory';
-        try
-          oConn.Connected:=true;  //activate oConn
-          oQuery:=TFDQuery.Create(nil);
-          oQuery.Connection:=oConn;
-          oQuery.SQL.Text:='select * from line where id='+lineId;
-          oQuery.Active:=true;
-          oQuery.Open();
-          while not (oQuery.Eof) do
+      try
+        oConn.Connected:=true;  //activate oConn
+        oQuery:=TFDQuery.Create(nil);
+        oQuery.Connection:=oConn;
+        oQuery.SQL.Text:='select * from line where id='+lineId;
+        oQuery.Active:=true;
+        oQuery.Open();
+          {while not (oQuery.Eof) do
           begin
             lastPointer := oQuery['last_pointer'];
-            //update last_pointer
-            try
-              oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count) +' where id='+lineId );
-            except
-              on E:Exception do
-              begin
-                TabbedForm.loadingLabel.Text:= E.Message;
-                TabbedForm.loadingLabel.Visible:=true;
-              end;
-            end;
-
             oQuery.Next;
-          end;
-        finally
-          oQuery.Free;
-        end;
+          end;}
+        lastPointer := oQuery['last_pointer'];
+        oQuery.Close;
       finally
-        oConn.Free;
+        oQuery.Free;
       end;
+    finally
+      oConn.Free;
+    end;
 
-    //I = last pointer
+    //I = last pointer  //looping input data
     for I := lastPointer to list.Count-1 do
     begin
       //input ke db.
@@ -152,6 +143,11 @@ begin
             oConn.Connected:=true;
             query:='insert into datalogs ( Date, Time, Y_Number, Serial_No, Unit_ID_No , LineName ) values ( "'+date+'" , "'+time+'","'+ynumber+'" , "'+serialNumber+'" , "'+unitId+'" , "'+linesName+'" )';
             oConn.ExecSQL(query);
+            Synchronize( procedure
+              begin
+                TabbedForm.sync(list.Count);
+
+              end );
           except
             on E:Exception do
             begin
@@ -169,8 +165,41 @@ begin
       end;
     end;
 
-    TabbedForm.duplicateQuery.Refresh;
-    TabbedForm.loadingLabel.Text:= 'Finish!';
+    //update last pointer
+    //buat object Connection
+    try
+      oConn:= TFDConnection.Create(nil);
+      oConn.ConnectionDefName:= 'garmin_inventory';
+      try
+        oConn.Connected:=true;  //activate oConn
+        oQuery:=TFDQuery.Create(nil);
+        oQuery.Connection:=oConn;
+        oQuery.SQL.Text:='select * from line where id='+lineId;
+        oQuery.Active:=true;
+        oQuery.Open();
+        while not (oQuery.Eof) do
+        begin
+
+          try
+            oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count) +' where id='+lineId );
+          except
+            on E:Exception do
+            begin
+              TabbedForm.loadingLabel.Text:= E.Message;
+              TabbedForm.loadingLabel.Visible:=true;
+            end;
+          end;
+          oQuery.Next;
+        end;
+      finally
+        oQuery.Free;
+      end;
+    finally
+      oConn.Free;
+    end;
+
+    //TabbedForm.duplicateQuery.Refresh;
+    //TabbedForm.loadingLabel.Text:= 'Finish!';
   finally
    list.Free;
   end;

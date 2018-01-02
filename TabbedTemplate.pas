@@ -123,6 +123,7 @@ type
     psoQuery: TFDQuery;
     BindSourceDB6: TBindSourceDB;
     LinkGridToDataSourceBindSourceDB6: TLinkGridToDataSource;
+    ProgressBar1: TProgressBar;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -212,12 +213,15 @@ type
     procedure getImage;
     function DirIsReadOnly(Path:string):Boolean;
     procedure isiNumber();
+    procedure sync(total:Integer);
 
   end;
 
 var
   TabbedForm: TTabbedForm;
   logData, GlobalListModelNumber,GlobalAvailableListModel, AllModelNumber, AllGarminId : TStringList;
+  FCount: Integer;
+  FStartTime: LongWord;
   //GlobalListModelNumber Is model number from table garmines_pso
   //AllModelNumber is model number from pso databases (db mas Alvi) per last create_time
   // dua duanya di isi di getModelNumber
@@ -481,7 +485,11 @@ begin
 
   loadingLabel.Text:='Loading ...';
   loadingLabel.Visible:=true;
-  
+
+  FCount:=0;
+  FStartTime := GetTickCount;
+  FDManager.Active:= true;
+
   try
     //set length untuk arrThread (penampung thread) & array ThreadHandlers (penampung thread.handle)
     setlength(ThreadHandlers, lineGrid.RowCount  );
@@ -522,7 +530,8 @@ begin
       try
         lineGrid.Selected:= I;
         //ShowMessage(inttostr(I));
-        arrThread[I] := TuploadData.Create(localPath, lineId);  //simpan lewat anotherThread
+        //arrThread[I] := TuploadData.Create(localPath, lineId);  //simpan lewat anotherThread
+        TuploadData.Create(localPath, lineId);
       finally
 
       end;
@@ -535,28 +544,30 @@ begin
         ThreadHandlers[I]:= arrThread[I].Handle;
     end; }
 
-     for tmpUploadData in arrThread do
+     {for tmpUploadData in arrThread do
      begin
         I:=0;
         ThreadHandlers[I] := tmpUploadData.Handle;
         I:=I+1;
-     end;
+     end;}
 
+    //WaitForMultipleObjects(lineGrid.RowCount, Pointer(ThreadHandlers) , True, INFINITE);
 
-
-    WaitForMultipleObjects(lineGrid.RowCount, Pointer(ThreadHandlers) , True, INFINITE);
-
-    ShowMessage( SysErrorMessage(GetLastError) );
-    Sleep(100);
-    loadingLabel.Visible:=false;
-    duplicateQuery.Refresh;
-    lineQuery.Refresh;
+    //ShowMessage( SysErrorMessage(GetLastError) );
+      {
+        Sleep(100);
+        loadingLabel.Visible:=false;
+        duplicateQuery.Refresh;
+        lineQuery.Refresh;
+      }
   finally
     //free up threadHandlers
-    for I := 0 to Length(arrThread)-1 do
-    begin
-      arrThread[I].Free;
-    end;
+    //    for I := 0 to Length(arrThread)-1 do
+    //    begin
+    //      arrThread[I].Free;
+    //    end;
+
+    //FDManager.Active:= false;
       
   end;
 
@@ -1850,6 +1861,27 @@ begin
      if (stockGrid.Cells[2,Row] <> edtStocks.Text) then //avoid (BCD)
         //showMessage(stockGrid.Cells[2,Row] +'<>'+ edtStocks.Text);
          stockGrid.Cells[2,Row] := edtStocks.Text;
+
+end;
+
+procedure TTabbedForm.sync(total:Integer);
+begin
+  Inc(FCount);
+  ProgressBar1.Value:= FCount;
+  ProgressBar1.Max:= total;
+
+  if (FCount mod 10) = 0 then
+  begin
+    loadingLabel.Text := IntToStr(FCount) +' From '+ IntToStr(total) ;
+    //ProgressBar1.Value:= ProgressBar1.Value + FCount;
+  end;
+
+  {if FCount = 500 then begin
+    Label14.Text := FloatToStr((GetTickCount - FStartTime) / 1000.0);
+    label14.Visible:=true;
+  end;}
+
+
 
 end;
 
