@@ -91,7 +91,6 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
         inherited garminGrid: TStringGrid
           Size.Width = 151.000000000000000000
           Size.Height = 353.000000000000000000
-          RowCount = 21
           Viewport.Width = 151.000000000000000000
           Viewport.Height = 353.000000000000000000
         end
@@ -182,6 +181,12 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       end>
   end
   inherited stockQuery: TFDQuery
+    Active = True
+  end
+  inherited garminQuery: TFDQuery
+    Active = True
+  end
+  inherited duplicateQuery: TFDQuery
     Active = True
   end
   inherited lineQuery: TFDQuery

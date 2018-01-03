@@ -56,7 +56,6 @@ type
     stockQuery: TFDQuery;
     garminQuery: TFDQuery;
     BindSourceDB2: TBindSourceDB;
-    LinkGridToDataSourceBindSourceDB2: TLinkGridToDataSource;
     BindSourceDB3: TBindSourceDB;
     LinkGridToDataSourceBindSourceDB3: TLinkGridToDataSource;
     TabItem6: TTabItem;
@@ -124,6 +123,9 @@ type
     BindSourceDB6: TBindSourceDB;
     LinkGridToDataSourceBindSourceDB6: TLinkGridToDataSource;
     ProgressBar1: TProgressBar;
+    LinkGridToDataSourceBindSourceDB2: TLinkGridToDataSource;
+    StringColumn1: TStringColumn;
+    StringColumn2: TStringColumn;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -212,7 +214,7 @@ type
     procedure finishThread;
     procedure getImage;
     function DirIsReadOnly(Path:string):Boolean;
-    procedure isiNumber();
+
     procedure sync(i, total:Integer);
 
   end;
@@ -698,7 +700,7 @@ begin
 
   try
     edtPathStock.Text:= StringReplace( edtPathStock.Text, '\','\\', [rfReplaceAll, rfIgnoreCase] );
-    query:='INSERT INTO `stocks`(`garmines_id`, `stock`, `path`) VALUES ("'+stockGarminCombo.Text+'","'+edtStocks.Text+'","'+edtPathStock.Text+'")';
+    query:='INSERT INTO `stocks`(`garmines_id`, `stock`,stock_awal, `path`) VALUES ("'+stockGarminCombo.Text+'","'+edtStocks.Text+'","'+edtStocks.Text+'","'+edtPathStock.Text+'")';
     //ShowMessage(query);
     FDConnection1.ExecSQL(query);
     stockQuery.Refresh;
@@ -1199,9 +1201,9 @@ procedure TTabbedForm.garminGridCellClick(const Column: TColumn; const Row:
     Integer);
 begin
   //ambil data pada row yang di klik, set ke edtgarminid
-  edtGarminId.Text:= garminGrid.Cells[0, Row];
+  edtGarminId.Text:= garminGrid.Cells[1, Row];
   Button5.Text:='Update';
-  olderID:= garminGrid.Cells[0, Row];
+  olderID:= garminGrid.Cells[1, Row];
   edtGarminId.SetFocus;
 end;
 
@@ -1373,21 +1375,6 @@ begin
   end;
 end;
 
-procedure TTabbedForm.isiNumber;
-var tmpObject: TStringColumn;
-  I: Integer;
-begin
-  //for I := Low to High do
-  tmpObject := TStringColumn.Create(nil);
-  tmpObject.Header:='Number';
-  for I := 1 to garminGrid.RowCount do
-  begin
-    //tmpObject.inser
-  end;
-
-
-end;
-
 procedure TTabbedForm.isiPsoVersion;
 begin
   //'select distinct create_time from t_file order by create_time desc'
@@ -1510,8 +1497,11 @@ begin
   stockGarminCombo.Clear;
   demandGarminCombo.Clear;
   try
-    garminQuery.SQL.Text:='select * from garmines';
+    garminQuery.SQL.Text:='SET @rownr=0;select (@rownr:=@rownr+1) as "No", a.* from garmines a';
     garminQuery.Open();
+
+    garminGrid.Columns[0].Width:= 30;
+    garminGrid.Columns[1].Width:= 275;
 
     while not (garminQuery.Eof) do
     begin
@@ -1755,7 +1745,12 @@ begin
       Form8.modelNumber := modelNumber;
       Form8.GarminID:= mainGrid.Cells[0, Row];
       Form8.currentStock:= mainGrid.Cells[1, Row];
-      Form8.allocated_stock:= tmpquery['allocated_stock'];
+
+      if not (tmpquery['allocated_stock'] = null ) then
+        Form8.allocated_stock:= tmpquery['allocated_stock']
+      else
+        Form8.allocated_stock:= '';
+
       Form8.ShowModal;
     finally
       Form8.Free;
@@ -1964,7 +1959,7 @@ var
   tmpQuery: TFDQuery;
   selisih: Integer;
 begin
-    query:='SELECT id,`path`,stock FROM `stocks`';
+    query:='SELECT id,`path`,stock,stock_awal FROM `stocks`';
     total:=0;
     try
       tmpQuery:= TFDQuery.Create(Self);
@@ -1977,13 +1972,13 @@ begin
       begin
         total:= GetDirectoryCount( tmpQuery['path'] ); //Value Baru
         //tmpQuery['stock'] = value lama
-        selisih := tmpQuery['stock'] - total ; //selisih = value lama- value baru
+        selisih := tmpQuery['stock_awal'] - total ; //selisih = value lama- value baru
 
         //ShowMessage(inttostr(total));
         //ShowMessage(tmpQuery['path']+''+ );
         if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
         begin
-          if not (total = tmpQuery['stock']) then
+          if not (total = tmpQuery['stock_awal']) then
           begin
             //update
             queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';

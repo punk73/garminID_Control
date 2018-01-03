@@ -91,7 +91,6 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
         inherited garminGrid: TStringGrid
           Size.Width = 231.000000000000000000
           Size.Height = 416.000000000000000000
-          RowCount = 21
           Viewport.Width = 231.000000000000000000
           Viewport.Height = 416.000000000000000000
         end
@@ -176,6 +175,12 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end>
   end
   inherited stockQuery: TFDQuery
+    Active = True
+  end
+  inherited garminQuery: TFDQuery
+    Active = True
+  end
+  inherited duplicateQuery: TFDQuery
     Active = True
   end
   inherited lineQuery: TFDQuery
