@@ -31,7 +31,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1069.000000000000000000
+        Size.Height = 1103.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 279.000000000000000000
           Size.Height = 305.000000000000000000
@@ -52,7 +52,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1086.000000000000000000
+        Size.Height = 1120.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 55.000000000000000000
           Size.Height = 377.000000000000000000
@@ -87,7 +87,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1078.000000000000000000
+        Size.Height = 1112.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 151.000000000000000000
           Size.Height = 353.000000000000000000
@@ -103,7 +103,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1078.000000000000000000
+        Size.Height = 1112.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -128,7 +128,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1078.000000000000000000
+        Size.Height = 1112.000000000000000000
         inherited Label12: TLabel
           Position.Y = 392.000000000000000000
         end
@@ -180,5 +180,14 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
             GestureID = sgiRight
           end>
       end>
+  end
+  inherited stockQuery: TFDQuery
+    Active = True
+  end
+  inherited lineQuery: TFDQuery
+    Active = True
+  end
+  inherited psoQuery: TFDQuery
+    Active = True
   end
 end

@@ -59,30 +59,6 @@ begin
     list.LoadFromFile(FileName);
     lastPointer:=1;
 
-    //setting parameter untu FDManager. dikunakan oleh TFDConnections
-    {try
-      oParams := TSTringlist.Create;
-
-      //jika ada file.ini, ambil setting dari file tersebut;
-      if FileExists(ExtractFilePath(ParamStr(0)) + 'file.ini' ) then
-      begin
-        oParams.LoadFromFile( ExtractFilePath(ParamStr(0)) + 'file.ini' );
-        oParams.Add('Pooled=True');
-      end
-      else
-      begin
-        oParams.Add('Database=garmin_inventory');
-        oParams.Add('User_Name=root');
-        oParams.Add('Server=136.198.117.48');
-        oParams.Add('Password=JvcSql@123');
-        oParams.Add('Pooled=True');
-      end;
-
-      FDManager.AddConnectionDef('garmin_inventory', 'MySQL', oParams );
-    finally
-      oParams.Free;
-    end;}
-
     //get last pointer
     //buat object Connection
     try
@@ -95,11 +71,6 @@ begin
         oQuery.SQL.Text:='select * from line where id='+lineId;
         oQuery.Active:=true;
         oQuery.Open();
-          {while not (oQuery.Eof) do
-          begin
-            lastPointer := oQuery['last_pointer'];
-            oQuery.Next;
-          end;}
         lastPointer := oQuery['last_pointer'];
         oQuery.Close;
       finally
@@ -109,45 +80,58 @@ begin
       oConn.Free;
     end;
 
-    //I = last pointer  //looping input data
-    for I := lastPointer to list.Count-1 do
-    begin
-      //input ke db.
-      try
-        row:= TStringList.Create;
-        row.Text:= list[I]; //satu baris.
-        row.CommaText := row.Text;
-        row.Delimiter:= ',';
-
-        //deklarasi kolom
-        date:= row[0];
-        time := row[1];
-        ynumber:= row[2];
-        serialNumber:= row[3];
-        unitId:= row[4];
-
-        if row.Count > 5  then //kadang jumlah row > 5 kadang tidak.
-        begin
-          linesName:= row[5];
-        end
-        else
-        begin
-         linesName:='';
-        end;
-
+    try
+    //buat object Connection
+    oConn:= TFDConnection.Create(nil);
+    oConn.ConnectionDefName:= 'garmin_inventory';
+      //I = last pointer  //looping input data
+      //for I := lastPointer to (list.Count-1) do
+      I := lastPointer-1;
+      repeat
+      begin
+        //input ke db.
+        I:=I+1;
         try
-          //buat object Connection
-          oConn:= TFDConnection.Create(nil);
-          oConn.ConnectionDefName:= 'garmin_inventory';
+          row:= TStringList.Create;
+          row.Text:= list[I]; //satu baris.
+          row.CommaText := row.Text;
+          row.Delimiter:= ',';
+
+          //deklarasi kolom
+          date:= row[0];
+          time := row[1];
+          ynumber:= row[2];
+          serialNumber:= row[3];
+          unitId:= row[4];
+
+          if row.Count > 5  then //kadang jumlah row > 5 kadang tidak.
+          begin
+            linesName:= row[5];
+          end
+          else
+          begin
+           linesName:='';
+          end;
+
           try
             oConn.Connected:=true;
             query:='insert into datalogs ( Date, Time, Y_Number, Serial_No, Unit_ID_No , LineName ) values ( "'+date+'" , "'+time+'","'+ynumber+'" , "'+serialNumber+'" , "'+unitId+'" , "'+linesName+'" )';
             oConn.ExecSQL(query);
             Synchronize( procedure
               begin
-                TabbedForm.sync(list.Count);
-
+                TabbedForm.sync(I, (list.Count-1));
               end );
+
+            try
+              oConn.ExecSQL('update line set last_pointer='+ IntToStr(I) +' where id='+lineId );
+            except
+              on E:Exception do
+              begin
+                TabbedForm.loadingLabel.Text:= E.Message;
+                TabbedForm.loadingLabel.Visible:=true;
+              end;
+            end;
+
           except
             on E:Exception do
             begin
@@ -157,17 +141,21 @@ begin
           end;
 
         finally
-          oConn.Free;
+          row.Free;
         end;
 
-      finally
-        row.Free;
+
       end;
+      until I = (list.Count-1) ;
+
+    finally
+     oConn.Free;
     end;
+
 
     //update last pointer
     //buat object Connection
-    try
+    {try
       oConn:= TFDConnection.Create(nil);
       oConn.ConnectionDefName:= 'garmin_inventory';
       try
@@ -196,7 +184,7 @@ begin
       end;
     finally
       oConn.Free;
-    end;
+    end; }
 
     //TabbedForm.duplicateQuery.Refresh;
     //TabbedForm.loadingLabel.Text:= 'Finish!';

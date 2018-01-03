@@ -208,12 +208,12 @@ type
     procedure updateDemand;
     procedure refreshGarminCombo;
     procedure clearGrid(grid: TStringGrid);
-    procedure pindahFile(paramPath:string);
+    procedure pindahFile(paramPath, lineId :string);
     procedure finishThread;
     procedure getImage;
     function DirIsReadOnly(Path:string):Boolean;
     procedure isiNumber();
-    procedure sync(total:Integer);
+    procedure sync(i, total:Integer);
 
   end;
 
@@ -470,9 +470,9 @@ var
   logItem:TStringList;
   anotherThread: TuploadData;
   //ThreadHandlers: array of THandle;
-  arrThread:array of TuploadData;
+  //arrThread:array of TuploadData;
   tmpUploadData :TuploadData;
-  ThreadHandlers: array of THandle ;
+  //ThreadHandlers: array of THandle ;
   lineId: string;
 begin
 
@@ -486,14 +486,14 @@ begin
   loadingLabel.Text:='Loading ...';
   loadingLabel.Visible:=true;
 
+
   FCount:=0;
   FStartTime := GetTickCount;
+  ProgressBar1.Visible:=true;
   FDManager.Active:= true;
 
   try
     //set length untuk arrThread (penampung thread) & array ThreadHandlers (penampung thread.handle)
-    setlength(ThreadHandlers, lineGrid.RowCount  );
-    setlength( arrThread , lineGrid.RowCount  );
 
     for I := lineGrid.RowCount-1 downto 0 do
     begin
@@ -505,19 +505,14 @@ begin
 
       //cek apakah file terkait ada.
       //copy ke localfolder;
-      if FileExists(path) then
+      if FileExists( path ) then
       begin
-        pindahFile(path);
+        pindahFile(path, lineId );
         //ShowMessage(path);
       end
       else
       begin
          ShowMessage('Copy file failed : '+ IntToStr(i) + SysErrorMessage(GetLastError) );
-
-         //kurangi length value of array
-         setlength( arrThread , (length(arrThread)-1)  );
-         setlength(ThreadHandlers, (length(ThreadHandlers)-1)  );
-
          Continue;
       end;
 
@@ -525,12 +520,10 @@ begin
       //masuk ke file local
       //localPath:= file local
       localPath := ExtractFilePath( ParamStr(0) );
-      localPath:= localPath + 'DATALOG\' +ExtractFileName(path);
+      localPath:= localPath + 'DATALOG\' + ExtractFileName( ChangeFileExt( path , '') ) + '_' +lineId+ '.csv' ;
 
       try
         lineGrid.Selected:= I;
-        //ShowMessage(inttostr(I));
-        //arrThread[I] := TuploadData.Create(localPath, lineId);  //simpan lewat anotherThread
         TuploadData.Create(localPath, lineId);
       finally
 
@@ -538,36 +531,7 @@ begin
 
     end;
 
-    
-    //isi thread handlers dengan TuploadThread.handle
-    {for I := Length( arrThread ) - 1 downto Length( arrThread ) - 1 do begin
-        ThreadHandlers[I]:= arrThread[I].Handle;
-    end; }
-
-     {for tmpUploadData in arrThread do
-     begin
-        I:=0;
-        ThreadHandlers[I] := tmpUploadData.Handle;
-        I:=I+1;
-     end;}
-
-    //WaitForMultipleObjects(lineGrid.RowCount, Pointer(ThreadHandlers) , True, INFINITE);
-
-    //ShowMessage( SysErrorMessage(GetLastError) );
-      {
-        Sleep(100);
-        loadingLabel.Visible:=false;
-        duplicateQuery.Refresh;
-        lineQuery.Refresh;
-      }
   finally
-    //free up threadHandlers
-    //    for I := 0 to Length(arrThread)-1 do
-    //    begin
-    //      arrThread[I].Free;
-    //    end;
-
-    //FDManager.Active:= false;
       
   end;
 
@@ -883,11 +847,12 @@ begin
   begin
     query:= 'SELECT *, COUNT(`Unit_ID_No`) AS duplicated_unitID FROM `datalogs` '+
             'GROUP BY `Unit_ID_No` '+
-            'HAVING COUNT(`Unit_ID_No`) > 1';
+            'HAVING COUNT(`Unit_ID_No`) > 1 '+
+            'limit 0,1000';
   end
   else
   begin
-    query:= ' SELECT *, COUNT( concat(`Y_Number`,"",`Serial_No`) ) as duplicatedGarmin FROM `datalogs` GROUP BY concat(`Y_Number`,"",`Serial_No`) HAVING COUNT( concat(`Y_Number`,"",`Serial_No`) ) > 1 ORDER BY `duplicatedGarmin` DESC  ';
+    query:= ' SELECT *, COUNT( concat(`Y_Number`,"",`Serial_No`) ) as duplicatedGarmin FROM `datalogs` GROUP BY concat(`Y_Number`,"",`Serial_No`) HAVING COUNT( concat(`Y_Number`,"",`Serial_No`) ) > 1 ORDER BY `duplicatedGarmin` DESC limit 0,1000  ';
   end;
 
   try
@@ -1189,7 +1154,7 @@ begin
   getModelNumber;
   updateStock;
   updateDemand;
-  ComboBox1.ItemIndex:=0;
+  //ComboBox1.ItemIndex:=0;
 end;
 
 procedure TTabbedForm.FormGesture(Sender: TObject;
@@ -1512,7 +1477,7 @@ begin
 
 end;
 
-procedure TTabbedForm.pindahFile(paramPath:String);
+procedure TTabbedForm.pindahFile(paramPath, lineId :String);
 var
    baseFolder: string;
 begin
@@ -1531,8 +1496,8 @@ begin
     end;
 
    //ShowMessage(baseFolder);
-
-    if not CopyFile(PChar( paramPath ),PChar( baseFolder + ExtractFileName(paramPath)  ),false) then
+    //file bakal jadi filename_lineId.csv
+    if not CopyFile(PChar( paramPath ),PChar( baseFolder + ExtractFileName( ChangeFileExt( paramPath, '') ) + '_' +lineId+ '.csv'  ),false) then
     begin
       ShowMessage( SysErrorMessage(GetLastError) );
     end;
@@ -1864,17 +1829,29 @@ begin
 
 end;
 
-procedure TTabbedForm.sync(total:Integer);
+procedure TTabbedForm.sync(i, total:Integer);
+
 begin
-  Inc(FCount);
+  //Inc(FCount);
+  FCount:= i;
   ProgressBar1.Value:= FCount;
   ProgressBar1.Max:= total;
 
-  if (FCount mod 10) = 0 then
+  //if (FCount mod 10) = 0 then
+  //begin
+  loadingLabel.Text := IntToStr(FCount) +' From '+ IntToStr(total) ;
+  if (FCount = total) then
   begin
-    loadingLabel.Text := IntToStr(FCount) +' From '+ IntToStr(total) ;
-    //ProgressBar1.Value:= ProgressBar1.Value + FCount;
+    FCount:= 0;
+    ProgressBar1.Visible:=false;
+
+
+    loadingLabel.Text := 'Data Up To Date!';
+    ShowMessage('Data Up To Date!');
+    loadingLabel.Visible:= false;
   end;
+
+  //end;
 
   {if FCount = 500 then begin
     Label14.Text := FloatToStr((GetTickCount - FStartTime) / 1000.0);
