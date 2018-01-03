@@ -1733,6 +1733,7 @@ begin
   try
     tmpquery:=TFDQuery.Create(nil);
     tmpquery.Connection:= FDConnection1 ;
+
     tmpquery.SQL.Text :='select * from garmines_pso where garmines_id="'+garminID+'"';
     tmpquery.Active:=true;
     tmpquery.Open();
@@ -1744,6 +1745,9 @@ begin
       tmpquery.Next;
     end;
 
+    tmpquery.SQL.Text :='select * from stocks where garmines_id="'+garminID+'"';
+    tmpquery.Active:=true;
+    tmpquery.Open();
     //hapus koma dibelakang dari var modelnumber
     Delete(modelNumber, length(modelNumber), 1 );
     try
@@ -1751,6 +1755,7 @@ begin
       Form8.modelNumber := modelNumber;
       Form8.GarminID:= mainGrid.Cells[0, Row];
       Form8.currentStock:= mainGrid.Cells[1, Row];
+      Form8.allocated_stock:= tmpquery['allocated_stock'];
       Form8.ShowModal;
     finally
       Form8.Free;
@@ -1870,7 +1875,14 @@ end;
 
 procedure TTabbedForm.TabItem2Click(Sender: TObject);
 begin
+  lineQuery.SQL.Text:='select * from line';
+  try
+    lineQuery.Open();
+  except
+    on E:exception do ShowMessage(E.Message);
+  end;
   lineQuery.Refresh;
+
   duplicateQuery.Refresh;
 end;
 

@@ -24,12 +24,14 @@ type
     FDQuery1: TFDQuery;
     Label2: TLabel;
     Label3: TLabel;
+    StringColumn5: TStringColumn;
+    Label4: TLabel;
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
-     modelNumber, currentStock, GarminID: string;
+     modelNumber, currentStock, GarminID, allocated_stock: string;
   end;
 
 var
@@ -45,7 +47,7 @@ var
   tmpQueryPSO: TFDQuery;
   query: string;
   endDate: string;
-  stock: string;
+  stock, allocatedStock: string;
   balance: string;
   demand: string;
   i: Integer;
@@ -81,6 +83,9 @@ begin
         if not (currentStock='') then stock:=currentStock
         else stock:= '0';
 
+        if not (allocated_stock='') then allocatedStock := allocated_stock
+        else allocatedStock:='0';
+
         demand:= tmpQueryPSO['demand'];
         //isi end date
         detailDemandGrid.Cells[0, i] := endDate ;
@@ -88,16 +93,22 @@ begin
         if i=0 then
         begin
           detailDemandGrid.Cells[1,i] := currentStock;
+          //isi allocated stock
+          detailDemandGrid.Cells[3, i] := allocatedStock ;
         end
         else
         begin
-          detailDemandGrid.Cells[1,i] := detailDemandGrid.Cells[3,i-1]  ;
+          detailDemandGrid.Cells[1,i] := IntToStr( StrToInt( detailDemandGrid.Cells[4,i-1]) )  ;
+          //isi allocated stock
+          detailDemandGrid.Cells[3, i] := '0' ;
         end;
+
+
 
         //isi demand
         detailDemandGrid.Cells[2, i] := demand ;
         //isi balance
-        detailDemandGrid.Cells[3, i] := IntToStr( StrToInt(detailDemandGrid.Cells[1,i]) - StrToInt(demand)) ;
+        detailDemandGrid.Cells[4, i] := IntToStr( StrToInt(detailDemandGrid.Cells[1,i]) - StrToInt(demand) + StrToInt(detailDemandGrid.Cells[3,i]) ) ;
 
 
 

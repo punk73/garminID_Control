@@ -2,7 +2,7 @@ object Form8: TForm8
   Left = 448
   Top = 149
   Caption = 'Demand Details'
-  ClientHeight = 344
+  ClientHeight = 366
   ClientWidth = 556
   Position = Designed
   FormFactor.Width = 320
@@ -34,6 +34,9 @@ object Form8: TForm8
       Header = 'Demand'
     end
     object StringColumn4: TStringColumn
+      Header = 'Allocated Stock'
+    end
+    object StringColumn5: TStringColumn
       Header = 'Balance'
     end
   end
@@ -51,7 +54,7 @@ object Form8: TForm8
   object Label2: TLabel
     Position.X = 72.000000000000000000
     Position.Y = 64.000000000000000000
-    Size.Width = 305.000000000000000000
+    Size.Width = 473.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 5
@@ -61,6 +64,15 @@ object Form8: TForm8
     Position.Y = 64.000000000000000000
     Text = 'Garmin Id :'
     TabOrder = 6
+  end
+  object Label4: TLabel
+    Position.X = 8.000000000000000000
+    Position.Y = 336.000000000000000000
+    Size.Width = 537.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = '*Balance = ( Current Stock - Demand ) + Allocated Stock'
+    TabOrder = 9
   end
   object psoConnection: TFDConnection
     Left = 400
