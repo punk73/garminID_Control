@@ -17,10 +17,21 @@ type
   public
     constructor Create( aFile:string; aLineId:string );
     procedure OnTerminate(Sender: TObject);
+    procedure containThenDelete(substr,fullString:string);
   end;
 
 implementation
   uses TabbedTemplate;
+
+procedure TuploadData.containThenDelete(substr, fullString: string);
+begin
+  if pos(substr, fullString) > 0 then //kalau ada substr di str maka
+  begin
+   delete(fullString, pos(substr, fullString), 2 ); //delete ="
+   delete(fullString, length(fullString) , 1);
+  end;
+
+end;
 
 constructor TuploadData.Create(aFile: string;aLineId:string );
 begin
@@ -85,12 +96,19 @@ begin
     oConn:= TFDConnection.Create(nil);
     oConn.ConnectionDefName:= 'garmin_inventory';
       //I = last pointer  //looping input data
-      //for I := lastPointer to (list.Count-1) do
-      I := lastPointer-1;
-      repeat
+      for I := (lastPointer+1) to (list.Count-1) do
       begin
         //input ke db.
-        I:=I+1;
+
+        if I = (list.Count-1) then
+        begin
+          Synchronize( procedure
+              begin
+                TabbedForm.sync(I, (list.Count-1));
+              end );
+          break;
+        end;
+
         try
           row:= TStringList.Create;
           row.Text:= list[I]; //satu baris.
@@ -103,6 +121,39 @@ begin
           ynumber:= row[2];
           serialNumber:= row[3];
           unitId:= row[4];
+
+          //cek apakah variable mangandung =""
+            if pos('="', date ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(date, pos('="', date), 2 ); //delete ="
+             delete(date, length(date) , 1);
+            end;
+
+            if pos('="', time ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(time, pos('="', time), 2 ); //delete ="
+             delete(time, length(time) , 1);
+            end;
+
+            if pos('="', ynumber ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(ynumber, pos('="', ynumber), 2 ); //delete ="
+             delete(ynumber, length(ynumber) , 1);
+            end;
+
+            if pos('="', serialNumber ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(serialNumber, pos('="', serialNumber), 2 ); //delete ="
+             delete(serialNumber, length(serialNumber) , 1);
+            end;
+
+            if pos('="', unitId ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(unitId, pos('="', unitId), 2 ); //delete ="
+             delete(unitId, length(unitId) , 1);
+            end;
+
+          {error checking end}
 
           if row.Count > 5  then //kadang jumlah row > 5 kadang tidak.
           begin
@@ -128,6 +179,7 @@ begin
               on E:Exception do
               begin
                 TabbedForm.loadingLabel.Text:= E.Message;
+                //TabbedForm.loadingLabel.Width := E.Message.CountChar();
                 TabbedForm.loadingLabel.Visible:=true;
               end;
             end;
@@ -136,6 +188,9 @@ begin
             on E:Exception do
             begin
               TabbedForm.loadingLabel.Text:= E.Message;
+              Synchronize(procedure begin
+                TabbedForm.getError(E.Message);
+              end);
               TabbedForm.loadingLabel.Visible:=true;
             end;
           end;
@@ -144,9 +199,8 @@ begin
           row.Free;
         end;
 
-
       end;
-      until I = (list.Count-1) ;
+
 
     finally
      oConn.Free;

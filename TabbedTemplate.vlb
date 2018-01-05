@@ -71,7 +71,7 @@ Coordinates=296,796,59,33
 Coordinates=666,566,46,51
 
 []
-Coordinates=329,1,136,51
+Coordinates=974,650,88,33
 Visible=True
 LayerNames=psoVersion
 
@@ -86,11 +86,11 @@ Coordinates=145,152,82,33
 Coordinates=909,482,74,51
 
 [stockQuery]
-Coordinates=723,794,71,33
+Coordinates=1063,834,71,33
 Visible=True
 
 [garminQuery]
-Coordinates=1164,530,78,33
+Coordinates=1538,570,78,33
 Visible=True
 
 [Module Settings]
@@ -99,7 +99,7 @@ ActiveLayerNames=stock;"grid demand"
 EditingLayerName=stock
 
 [BindSourceDB2]
-Coordinates=1076,520,92,105
+Coordinates=1450,560,92,69
 Visible=True
 
 [stockGrid]
@@ -108,7 +108,7 @@ Visible=True
 LayerNames=stock
 
 [BindSourceDB3]
-Coordinates=650,230,92,123
+Coordinates=982,824,92,69
 
 [edtGarminId]
 Coordinates=271,482,75,51
@@ -148,7 +148,7 @@ Coordinates=290,440,89,33
 Visible=False
 
 [BindSourceDB4]
-Coordinates=10,376,92,213
+Coordinates=10,376,92,69
 
 [Label16]
 Coordinates=144,650,52,51
@@ -192,7 +192,7 @@ Coordinates=735,376,46,51
 Coordinates=1136,482,53,51
 
 [lineQuery]
-Coordinates=1121,856,61,33
+Coordinates=1423,896,61,33
 Visible=True
 LayerNames="grid demand"
 
@@ -213,7 +213,7 @@ Coordinates=526,65,53,51
 Visible=True
 
 [BindSourceDB1]
-Coordinates=1050,846,92,141
+Coordinates=1352,886,92,69
 
 [edtPathStock]
 Coordinates=1019,482,80,51
@@ -233,30 +233,19 @@ Coordinates=468,482,52,51
 [Popup1]
 Coordinates=10,796,52,33
 
-[StringColumn8]
-Coordinates=95,734,88,33
-
-[StringColumn10]
-Coordinates=642,734,93,33
-
-[StringColumn7]
-Coordinates=974,650,88,33
-
-[StringColumn9]
-Coordinates=1102,734,88,33
-
 [mainGrid]
-Coordinates=724,482,59,51
+Coordinates=780,0,59,51
+Visible=True
 
 [demandQuery]
-Coordinates=1357,794,83,33
+Coordinates=1753,834,83,33
 Visible=True
 
 [Label17]
 Coordinates=649,376,52,51
 
 [BindSourceDB5]
-Coordinates=1264,784,92,69
+Coordinates=1660,824,92,69
 
 [garminDemandQtyGrid]
 Coordinates=801,259,127,51
@@ -318,11 +307,11 @@ Coordinates=0,0,116,177
 Coordinates=135,196,91,51
 
 [psoQuery]
-Coordinates=929,192,62,33
+Coordinates=1233,232,62,33
 Visible=True
 
 [BindSourceDB6]
-Coordinates=857,182,92,105
+Coordinates=1161,222,92,69
 
 [ProgressBar1]
 Coordinates=352,1,81,51
@@ -339,4 +328,23 @@ Coordinates=46,196,88,33
 
 [StringColumn2]
 Coordinates=329,71,88,33
+
+[Edit1]
+Coordinates=352,78,40,51
+
+[Label19]
+Coordinates=0,0,52,51
+
+[SearchEditButton1]
+Coordinates=352,267,107,33
+
+[Panel7]
+Coordinates=352,155,47,33
+
+[MainQuery]
+Coordinates=1011,120,67,33
+Visible=True
+
+[BindSourceDB7]
+Coordinates=934,110,92,159
 

@@ -1,0 +1,192 @@
+inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
+  ClientHeight = 615
+  ClientWidth = 400
+  DesignerMasterStyle = 0
+  inherited HeaderToolBar: TToolBar
+    Size.Width = 400.000000000000000000
+    Size.Height = 48.000000000000000000
+    inherited ToolBarLabel: TLabel
+      Size.Width = 400.000000000000000000
+      Size.Height = 48.000000000000000000
+    end
+  end
+  inherited TabControl1: TTabControl
+    Size.Width = 400.000000000000000000
+    Size.Height = 567.000000000000000000
+    Sizes = (
+      400s
+      518s
+      400s
+      518s
+      400s
+      518s
+      400s
+      518s
+      400s
+      518s)
+    inherited TabItem1: TTabItem
+      ImageIndex = 1
+      Size.Width = 79.000000000000000000
+      ExplicitSize.cx = 50.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel1: TPanel
+        Size.Width = 0.000000000000000000
+        Size.Height = 2426.000000000000000000
+        inherited mainGrid: TStringGrid
+          Size.Width = 359.000000000000000000
+          Size.Height = 368.000000000000000000
+          Viewport.Width = 359.000000000000000000
+          Viewport.Height = 368.000000000000000000
+          inherited StringColumn7: TStringColumn
+            Size.Width = 209.000000000000000000
+          end
+        end
+      end
+      inherited Panel3: TPanel
+        Size.Width = 0.000000000000000000
+      end
+    end
+    inherited TabItem2: TTabItem
+      Size.Width = 79.000000000000000000
+      ExplicitSize.cx = 50.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel2: TPanel
+        Size.Width = 0.000000000000000000
+        Size.Height = 2443.000000000000000000
+        inherited duplicateGrid: TStringGrid
+          Size.Width = 135.000000000000000000
+          Size.Height = 440.000000000000000000
+          Viewport.Width = 135.000000000000000000
+          Viewport.Height = 440.000000000000000000
+        end
+        inherited Panel6: TPanel
+          Position.X = 150.000000000000000000
+          Size.Height = 472.000000000000000000
+          inherited edtDupPath: TEdit
+            inherited Button2: TEllipsesEditButton
+              Size.Height = 50.000000000000000000
+            end
+          end
+          inherited lineGrid: TStringGrid
+            Size.Height = 320.000000000000000000
+            Viewport.Width = 209.000000000000000000
+            Viewport.Height = 320.000000000000000000
+          end
+          inherited Button11: TButton
+            Position.Y = 439.000000000000000000
+          end
+        end
+        inherited loadingLabel: TLabel
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+        end
+      end
+    end
+    inherited TabItem3: TTabItem
+      Size.Width = 79.000000000000000000
+      ExplicitSize.cx = 158.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel4: TPanel
+        Size.Width = 0.000000000000000000
+        Size.Height = 2435.000000000000000000
+        inherited garminGrid: TStringGrid
+          Size.Width = 231.000000000000000000
+          Size.Height = 416.000000000000000000
+          Viewport.Width = 231.000000000000000000
+          Viewport.Height = 416.000000000000000000
+        end
+      end
+    end
+    inherited TabItem4: TTabItem
+      Size.Width = 79.000000000000000000
+      ExplicitSize.cx = 158.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel5: TPanel
+        Size.Width = 0.000000000000000000
+        Size.Height = 2435.000000000000000000
+        inherited edtPathStock: TEdit
+          inherited Button9: TEllipsesEditButton
+            Size.Height = 50.000000000000000000
+          end
+        end
+        inherited stockGrid: TStringGrid
+          Size.Width = 0.000000000000000000
+          Size.Height = 423.000000000000000000
+          Viewport.Width = 0.000000000000000000
+          Viewport.Height = 423.000000000000000000
+        end
+        inherited listPath: TListBox
+          Size.Height = 328.000000000000000000
+          Viewport.Width = 281.000000000000000000
+          Viewport.Height = 328.000000000000000000
+        end
+      end
+    end
+    inherited TabItem6: TTabItem
+      Size.Width = 83.000000000000000000
+      ExplicitSize.cx = 132.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      inherited Panel8: TPanel
+        Size.Width = 0.000000000000000000
+        Size.Height = 2435.000000000000000000
+        inherited Label12: TLabel
+          Position.Y = 455.000000000000000000
+        end
+        inherited edtTotalDemand: TEdit
+          Position.Y = 455.000000000000000000
+        end
+        inherited gridModel: TStringGrid
+          Size.Width = 0.000000000000000000
+          Viewport.Width = 0.000000000000000000
+          Viewport.Height = 161.000000000000000000
+        end
+        inherited Label9: TLabel
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+        end
+        inherited garminDemandQtyGrid: TStringGrid
+          Size.Width = 0.000000000000000000
+          Size.Height = 256.000000000000000000
+          RowCount = 3
+          Viewport.Width = 0.000000000000000000
+          Viewport.Height = 256.000000000000000000
+        end
+        inherited listModel: TListBox
+          Viewport.Width = 217.000000000000000000
+          Viewport.Height = 233.000000000000000000
+        end
+      end
+    end
+  end
+  inherited StyleBook1: TStyleBook
+    Styles = <
+      item
+      end>
+  end
+  inherited GestureManager1: TGestureManager
+    GestureData = <
+      item
+        Control = Owner
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end>
+      end>
+  end
+  inherited stockQuery: TFDQuery
+    Active = True
+  end
+  inherited garminQuery: TFDQuery
+    Active = True
+  end
+  inherited duplicateQuery: TFDQuery
+    Active = True
+  end
+  inherited lineQuery: TFDQuery
+    Active = True
+  end
+  inherited psoQuery: TFDQuery
+    Active = True
+  end
+end

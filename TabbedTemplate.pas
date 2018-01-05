@@ -8,7 +8,7 @@ uses
   System.SysUtils, System.DateUtils , System.Types, System.StrUtils , System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.TabControl,
   FMX.StdCtrls, FMX.Gestures, System.Rtti, FMX.Grid.Style, FMX.ScrollBox,
-  FMX.Grid, FMX.Controls.Presentation, FMX.Edit, FMX.Ani, FireDAC.Stan.Intf,
+  FMX.Grid, FMX.Controls.Presentation, FMX.Edit, FMX.Ani, FireDAC.Stan.Intf, FireDAC.Stan.ExprFuncs,
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef, FireDAC.FMXUI.Wait,
@@ -94,10 +94,6 @@ type
     CalloutPanel1: TCalloutPanel;
     Label15: TLabel;
     mainGrid: TStringGrid;
-    StringColumn7: TStringColumn;
-    StringColumn8: TStringColumn;
-    StringColumn9: TStringColumn;
-    StringColumn10: TStringColumn;
     garminDemandQtyGrid: TStringGrid;
     Label17: TLabel;
     demandQuery: TFDQuery;
@@ -124,8 +120,13 @@ type
     LinkGridToDataSourceBindSourceDB6: TLinkGridToDataSource;
     ProgressBar1: TProgressBar;
     LinkGridToDataSourceBindSourceDB2: TLinkGridToDataSource;
-    StringColumn1: TStringColumn;
-    StringColumn2: TStringColumn;
+    Panel7: TPanel;
+    Label19: TLabel;
+    Edit1: TEdit;
+    SearchEditButton1: TSearchEditButton;
+    MainQuery: TFDQuery;
+    BindSourceDB7: TBindSourceDB;
+    LinkGridToDataSourceBindSourceDB7: TLinkGridToDataSource;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -177,6 +178,9 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure mainGridCellDblClick(const Column: TColumn; const Row: Integer);
     procedure btnDeleteModelClick(Sender: TObject);
+    procedure Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
+      Shift: TShiftState);
+
 
 
 
@@ -216,6 +220,7 @@ type
     function DirIsReadOnly(Path:string):Boolean;
 
     procedure sync(i, total:Integer);
+    procedure getError(message:string);
 
   end;
 
@@ -357,7 +362,7 @@ procedure TTabbedForm.Button11Click(Sender: TObject);
 var
   query: string;
   message: Integer;
-  path, localPath :string;
+  path, localPath,lineId :string;
 begin
   //ShowMessage( lineGrid.Selected.ToString);
   message:= MessageDlg('Delete Data ?', TMsgDlgType.mtConfirmation , mbOkCancel , 0 );
@@ -369,13 +374,15 @@ begin
       FDConnection1.ExecSQL(query);
 
       path:=  lineGrid.Cells[2, lineGrid.Selected ];
+      lineId:= lineGrid.Cells[0 , lineGrid.Selected ];
+
       localPath := ExtractFilePath( ParamStr(0) );
-      localPath:= StringReplace(localPath, 'Win32\debug\', 'DATALOG\'+ ExtractFileName(path) , [rfReplaceAll, rfIgnoreCase]);
+      localPath:= localPath + 'DATALOG\' + ExtractFileName( ChangeFileExt( path, '') ) + '_' +lineId+ '.csv' ; //StringReplace(localPath, 'Win32\debug\', 'DATALOG\'+ ExtractFileName(path) , [rfReplaceAll, rfIgnoreCase]);
 
       //ShowMessage(localPath + ' ' + path);
       if DeleteFile(localPath) then
-      ShowMessage('Data Deleted!')
-      else ShowMessage('Data not Deleted! '+ SysErrorMessage(GetLastError) );
+      ShowMessage('Data Deleted!');
+      //else ShowMessage('Data not Deleted! '+ SysErrorMessage(GetLastError) );
 
       lineQuery.Refresh;
     except
@@ -397,6 +404,16 @@ begin
     exit;
   end;
 
+  if (demandGarminCombo.Text='') then
+  begin
+    ShowMessage('you need to choose garmin id first!');
+    demandGarminCombo.SetFocus;
+    exit;
+  end;
+
+
+  //end Error handler
+
   query:='insert into garmines_pso (garmines_id, model_number, demand ) values ("'+demandGarminCombo.Text+'","'+edtmodelNumber.Text+'", "'+ edtTotalDemand.Text +'")';
   try
     FDConnection1.ExecSQL(query);
@@ -405,7 +422,14 @@ begin
     demandGarminComboChange(Self);
     edtmodelNumber.Text:='';
   except
-    on E: exception do ShowMessage(E.Message);
+    on E: exception do
+    begin
+      ShowMessage(E.Message);
+      demandGarminCombo.Text:='';
+      edtmodelNumber.Text:='';
+      demandGarminCombo.SetFocus;
+      exit;
+    end;
   end;
   ShowMessage('Data Saved!');
 
@@ -514,7 +538,7 @@ begin
       end
       else
       begin
-         ShowMessage('Copy file failed : '+ IntToStr(i) + SysErrorMessage(GetLastError) );
+         ShowMessage('Copy "'+ path +'" failed : '+ SysErrorMessage(GetLastError) );
          Continue;
       end;
 
@@ -964,6 +988,8 @@ begin
   if demandGarminCombo.Text='' then
   begin
     demandGarminCombo.Items := AllGarminId;
+    listModel.Clear;
+    edtTotalDemand.Text:='';
   end;
   if not (demandGarminCombo.ItemIndex = -1) then
   begin
@@ -1110,6 +1136,22 @@ begin
   DuplicatedForm.ShowModal;
 end;
 
+procedure TTabbedForm.Edit1KeyUp(Sender: TObject; var Key: Word;
+  var KeyChar: Char; Shift: TShiftState);
+var
+  FilterValue: string;
+begin
+  FilterValue:= 'id LIKE ''/'+edit1.Text+'%'' ESCAPE ''/''';
+  //ShowMessage(FilterValue);
+  with MainQuery do begin
+    Filtered := False;
+    OnFilterRecord := nil;
+    Filter := FilterValue;
+    Filtered := True;
+  end;
+
+end;
+
 procedure TTabbedForm.edtDupPathChangeTracking(Sender: TObject);
 begin
   if (edtLineName.Text <> '') and (edtDupPath.Text <> '') then
@@ -1215,13 +1257,18 @@ begin
     Result:=-1;
 end;
 
+procedure TTabbedForm.getError(message: string);
+begin
+  ShowMessage(message);
+end;
+
 procedure TTabbedForm.getGarminId;
 var
   I: Integer;
   query: string;
 begin
 
-  query:='SELECT  garmines.id, ' +
+  {query:='SELECT  garmines.id, ' +
           ' ifnull( s.total_stock, 0 ) as stock , '+
           'ifnull( s.total_allocated, 0 ) as allocated_stock, ' +
           ' ifnull( d.total_demand,0) as demand ' +
@@ -1236,14 +1283,15 @@ begin
             ' SELECT garmines_id, ifnull( SUM( garmines_pso.demand ) ,0) as total_demand '+
               ' FROM garmines_pso '+
               ' GROUP BY garmines_pso.garmines_id '+
-          ' ) as d ON garmines.id = d.garmines_id ';
+          ' ) as d ON garmines.id = d.garmines_id '; }
 
+  query:= 'SET @rownr=0;select (@rownr:=@rownr+1) as "No", a.* from garmines a;';
   garminQuery.SQL.Text:=query;
   garminQuery.Open();
-  garminQuery.Refresh;
+  //garminQuery.Refresh;
   garminQuery.First;
   I:=0;
-  clearGrid(mainGrid);
+  //clearGrid(mainGrid);
 
   if not Assigned(AllGarminId) then
   begin
@@ -1251,12 +1299,12 @@ begin
   end;
   allGarminId.Clear;
 
-  mainGrid.RowCount:= garminQuery.RecordCount;
+  //mainGrid.RowCount:= garminQuery.RecordCount;
 
   while not (garminQuery.Eof) do
   begin
     allGarminId.Add( garminQuery['id'] );  //global garmin Id
-    isiMainGrid(I);
+    //isiMainGrid(I);
     garminQuery.Next;
     I:=I+1;
   end;
@@ -1440,6 +1488,7 @@ begin
     stockQuery.Active:=true;
     modelQuery.Active:=true;
     psoQuery.Active:=true;
+    MainQuery.Active:=true;
   except
     on E:exception do
       ShowMessage(E.ClassName +' has rised exception of '+ E.Message);

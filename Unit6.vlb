@@ -13,3 +13,6 @@ Visible=False
 [TabbedForm.demandQuery]
 Visible=False
 
+[TabbedForm.psoQuery]
+Visible=False
+
