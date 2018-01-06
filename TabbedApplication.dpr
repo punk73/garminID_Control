@@ -22,14 +22,15 @@ uses
 {$R *.res}
 
 begin
+
   if TForm6.Execute then
   begin
     Application.Initialize;
     Application.CreateForm(TTabbedForm, TabbedForm);
-  Application.CreateForm(TDuplicatedForm, DuplicatedForm);
-  Application.CreateForm(TForm7, Form7);
-  Application.CreateForm(TForm8, Form8);
-  Application.Run;
+    Application.CreateForm(TDuplicatedForm, DuplicatedForm);
+    Application.CreateForm(TForm7, Form7);
+    Application.CreateForm(TForm8, Form8);
+    Application.Run;
   end
   else
   begin

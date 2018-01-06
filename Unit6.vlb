@@ -16,3 +16,6 @@ Visible=False
 [TabbedForm.psoQuery]
 Visible=False
 
+[TabbedForm.MainQuery]
+Visible=False
+

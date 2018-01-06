@@ -1,0 +1,1 @@
+select * from garmines_pso where garmines_id='16AM_EU-Low_010-D4878-30'

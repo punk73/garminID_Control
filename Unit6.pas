@@ -21,11 +21,11 @@ type
     Button2: TButton;
     LoginConnection: TFDConnection;
     FDQuery1: TFDQuery;
-    edtUsername: TEdit;
     edtPassword: TEdit;
     PasswordEditButton1: TPasswordEditButton;
     ImageList1: TImageList;
     Label3: TLabel;
+    edtUsername: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure edtPasswordKeyUp(Sender: TObject; var Key: Word;
@@ -108,9 +108,9 @@ class function TForm6.Execute: boolean;
 begin
   with TForm6.Create(nil) do
    try
-   Result := ShowModal = mrOk;
+    Result := ShowModal = mrOk;
    finally
-   Free;
+    Free;
    end;
 end;
 
@@ -132,6 +132,9 @@ begin
       end;
     end;
     LoginConnection.Connected:=true;
+
+    //CreateCaret(Edit1.Handle, 0, 1, 15);
+    //ShowCaret(Edit1.Handle);
   except
     on E:exception do
     ShowMessage(E.ClassName +' has rised exception of '+ E.Message);

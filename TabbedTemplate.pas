@@ -500,6 +500,7 @@ var
   tmpUploadData :TuploadData;
   //ThreadHandlers: array of THandle ;
   lineId: string;
+  loadingStatus: integer;
 begin
 
   if lineGrid.RowCount=0 then
@@ -509,13 +510,16 @@ begin
     exit;
   end;
 
-  loadingLabel.Text:='Loading ...';
-  loadingLabel.Visible:=true;
+  if ProgressBar1.Visible=true then
+  begin
+    //someprocess still happening, can't run another.
+    exit;
+  end;
 
+  loadingStatus:=0; //false
 
   FCount:=0;
   FStartTime := GetTickCount;
-  ProgressBar1.Visible:=true;
   FDManager.Active:= true;
 
   try
@@ -534,6 +538,7 @@ begin
       if FileExists( path ) then
       begin
         pindahFile(path, lineId );
+        loadingStatus:=1; //muncul loading status kalau ada min stu thread yg jalan
         //ShowMessage(path);
       end
       else
@@ -542,6 +547,13 @@ begin
          Continue;
       end;
 
+      if ( loadingStatus<>0) then
+      begin
+        //tampilan
+        //loadingLabel.Text:='Loading ...';
+        loadingLabel.Visible:=true;
+        ProgressBar1.Visible:=true;
+      end;
 
       //masuk ke file local
       //localPath:= file local
@@ -1006,33 +1018,33 @@ begin
     //ambil data dari database.
     garmines_pso_Query.SQL.Text:= 'select * from garmines_pso where garmines_id="'+demandGarminCombo.Text+'" group by Model_Number ';
     garmines_pso_Query.Open();
+    try
+      tmpfdquery := TFDQuery.Create(nil);
+      while not (garmines_pso_Query.Eof) do
+      begin
+        //tambahkan hasil query ke listmode lalu diceklis.
+        listModel.Items.Insert(0, garmines_pso_Query['Model_Number'] );
+        listModel.ListItems[ listModel.Items.IndexOf(garmines_pso_Query['Model_Number']) ].IsChecked:=true;
 
-    while not (garmines_pso_Query.Eof) do
-    begin
-      //tambahkan hasil query ke listmode lalu diceklis.
-      listModel.Items.Insert(0, garmines_pso_Query['Model_Number'] );
-      listModel.ListItems[ listModel.Items.IndexOf(garmines_pso_Query['Model_Number']) ].IsChecked:=true;
+        //gabung modelnumber untuk query ke pso
+        modelNumber:= modelNumber + '"'+ garmines_pso_Query['Model_Number'] +'",';
 
-      //gabung modelnumber untuk query ke pso
-      modelNumber:= modelNumber + '"'+ garmines_pso_Query['Model_Number'] +'",';
+        //buat object tfd query
 
-      //buat object tfd query
-      try
-        tmpfdquery := TFDQuery.Create(nil);
-        //setting object query
-        tmpfdquery.Connection:= psoConnection;
-        tmpfdquery.SQL.Text:= 'select model_no, cast( sum( qty ) as unsigned ) as Qty from t_file where model_no="'+ garmines_pso_Query['Model_Number'] +'" and create_time=(select max(create_time) from t_file) group by model_no';
-        tmpfdquery.Active:=true;
-        tmpfdquery.Open();
-        while not (tmpfdquery.Eof ) do
-        begin
-          //ambil dari t_file sum(qty) untuk qty per model number nya
-          Qty := tmpfdquery['Qty'];
-          //total := total + qty;
-          //update demand jika garmines_pso.demand != t_file.qty
-          queryUpdate:='';
-         if not ( garmines_pso_Query['demand'] = tmpfdquery['Qty'] ) then
+          //setting object query
+          tmpfdquery.Connection:= psoConnection;
+          tmpfdquery.SQL.Text:= 'select model_no, cast( sum( qty ) as unsigned ) as Qty from t_file where model_no="'+ garmines_pso_Query['Model_Number'] +'" and create_time=(select max(create_time) from t_file) group by model_no';
+          tmpfdquery.Active:=true;
+          tmpfdquery.Open();
+          while not (tmpfdquery.Eof ) do
           begin
+            //ambil dari t_file sum(qty) untuk qty per model number nya
+            Qty := tmpfdquery['Qty'];
+            //total := total + qty;
+            //update demand jika garmines_pso.demand != t_file.qty
+            queryUpdate:='';
+           if not ( garmines_pso_Query['demand'] = tmpfdquery['Qty'] ) then
+           begin
             try
               queryUpdate:='update garmines_pso set demand='+  IntToStr( tmpfdquery['Qty'] ) +' where id="'+ IntToStr( garmines_pso_Query['id'] ) +'"';
               //ShowMessage( queryUpdate );
@@ -1042,18 +1054,17 @@ begin
               on E:exception do
                 ShowMessage(E.Message);
             end;
+           end;
+
+            total:= total + StrToInt(Qty);
+            tmpfdquery.Next;
           end;
 
-          total:= total + StrToInt(Qty);
-          tmpfdquery.Next;
-        end;
-
-      finally
-        tmpfdquery.Free;
+        garmines_pso_Query.Next;
+        I:=I+1;
       end;
-
-      garmines_pso_Query.Next;
-      I:=I+1;
+    finally
+      tmpfdquery.Free;
     end;
 
     Delete(modelNumber, length(modelNumber), 1 );
@@ -1141,15 +1152,25 @@ procedure TTabbedForm.Edit1KeyUp(Sender: TObject; var Key: Word;
 var
   FilterValue: string;
 begin
-  FilterValue:= 'id LIKE ''/'+edit1.Text+'%'' ESCAPE ''/''';
-  //ShowMessage(FilterValue);
-  with MainQuery do begin
-    Filtered := False;
-    OnFilterRecord := nil;
-    Filter := FilterValue;
-    Filtered := True;
-  end;
+  //mainGrid.Selected:= -1;
 
+  FilterValue:= 'id LIKE ''/'+edit1.Text+'%'' ESCAPE ''/''';
+  if edit1.Text='' then
+  begin
+    MainQuery.Filtered:= False;
+    MainQuery.OnFilterRecord:= nil;
+
+  end
+  else
+  begin
+     //ShowMessage(FilterValue);
+    with MainQuery do begin
+      Filtered := False;
+      OnFilterRecord := nil;
+      Filter := FilterValue;
+      Filtered := True;
+    end;
+  end;
 end;
 
 procedure TTabbedForm.edtDupPathChangeTracking(Sender: TObject);
@@ -1893,8 +1914,6 @@ begin
   begin
     FCount:= 0;
     ProgressBar1.Visible:=false;
-
-
     loadingLabel.Text := 'Data Up To Date!';
     ShowMessage('Data Up To Date!');
     loadingLabel.Visible:= false;
@@ -1983,9 +2002,20 @@ begin
                on E:Exception do
                   ShowMessage(E.Message);
             end;
-            
           end;
-
+        end
+        else //jika ga ketemu, update model terkait jadi 0
+        begin
+          //update
+          //ShowMessage(IntToStr(tmpQuery['demand']));
+          total:= 0;//strToInt( gridModel.Cells[1, index] );
+          queryUpdate:= 'UPDATE `garmines_pso` SET `demand`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +'';
+          try
+            FDConnection1.ExecSQL(queryUpdate);
+          except
+             on E:Exception do
+                ShowMessage(E.Message);
+          end;
         end;
 
         tmpQuery.Next;
