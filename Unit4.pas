@@ -24,7 +24,9 @@ type
     BindSourceDB1: TBindSourceDB;
     BindingsList1: TBindingsList;
     LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource;
+    btnDelete: TButton;
     procedure FormShow(Sender: TObject);
+    procedure btnDeleteClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,6 +40,38 @@ var
 implementation
 uses TabbedTemplate ;
 {$R *.fmx}
+
+procedure TDuplicatedForm.btnDeleteClick(Sender: TObject);
+var
+  id: string;
+  query: string;
+  message: Integer;
+begin
+  //error handler
+  if ( detailGrid.Selected = -1) then
+  begin
+    ShowMessage('you need to choose the data first!');
+    detailGrid.SetFocus;
+    exit;
+  end;
+
+  //end error handler
+   message:= MessageDlg('Delete Data? this cannot be undo, do it with caution ', TMsgDlgType.mtConfirmation , mbOkCancel , 0 );
+   if message = mrOk then
+   begin
+     //ambil detailGrid selected
+     id := detailGrid.Cells[0, detailGrid.Selected];
+     query:='delete from datalogs where id="'+id+'"';
+     try
+       DuplicateConnection.ExecSQL(query);
+       duplicateQuery.Refresh;
+     except
+       on E:exception do
+        ShowMessage(E.Message);
+     end;
+   end;
+
+end;
 
 procedure TDuplicatedForm.FormShow(Sender: TObject);
 var

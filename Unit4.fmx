@@ -37,11 +37,18 @@ object DuplicatedForm: TDuplicatedForm
     Text = 'Duplicated Detail'
     TabOrder = 1
   end
+  object btnDelete: TButton
+    Position.X = 520.000000000000000000
+    Position.Y = 336.000000000000000000
+    TabOrder = 7
+    Text = 'Delete'
+    OnClick = btnDeleteClick
+  end
   object duplicateQuery: TFDQuery
     Connection = DuplicateConnection
     SQL.Strings = (
       'select * from datalogs limit 0,10')
-    Left = 208
+    Left = 392
     Top = 16
   end
   object DuplicateConnection: TFDConnection

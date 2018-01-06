@@ -127,6 +127,7 @@ type
     MainQuery: TFDQuery;
     BindSourceDB7: TBindSourceDB;
     LinkGridToDataSourceBindSourceDB7: TLinkGridToDataSource;
+    btnTruncate: TButton;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -180,6 +181,7 @@ type
     procedure btnDeleteModelClick(Sender: TObject);
     procedure Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
+    procedure btnTruncateClick(Sender: TObject);
 
 
 
@@ -304,6 +306,45 @@ begin
       on E:exception do ShowMessage(E.Message);
     end;
   end;
+end;
+
+procedure TTabbedForm.btnTruncateClick(Sender: TObject);
+var
+  message: Integer;
+  query: string;
+  I: Integer;
+begin
+  //error handler
+
+  //message box
+  message:= MessageDlg('Clear Data? This will delete all your datalogs and set last pointer back to 0, use it with caution! ', TMsgDlgType.mtConfirmation , mbOkCancel , 0 );
+  if message = mrOk then
+  begin
+    query:='TRUNCATE datalogs';
+    //truncate datalogs
+    try
+    FDConnection1.ExecSQL(query);
+    except
+      on E:exception do ShowMessage(E.Message);
+    end;
+    //set last pointer back to zero
+    for I := 0 to lineGrid.RowCount-1 do
+    begin
+      query:= 'update line set last_pointer=0 where id='+ lineGrid.Cells[ 0 ,I];
+      try
+        FDConnection1.ExecSQL(query);
+      except
+         on E:exception do ShowMessage(E.Message);
+      end;
+    end;
+
+    TabItem2Click(Self);
+
+    ShowMessage('Datalogs Duplicate Checker Clear!');
+  end;
+  //delete
+
+
 end;
 
 procedure TTabbedForm.Button10Click(Sender: TObject);
@@ -1900,16 +1941,24 @@ begin
 end;
 
 procedure TTabbedForm.sync(i, total:Integer);
-
+var highestTotal:integer ;
 begin
   //Inc(FCount);
+  ProgressBar1.Visible:=true;
+  loadingLabel.Visible:= true;
+
+  if highestTotal < total then
+  begin
+    highestTotal:=total;
+  end;
+
   FCount:= i;
   ProgressBar1.Value:= FCount;
-  ProgressBar1.Max:= total;
+  ProgressBar1.Max:= highestTotal;
 
   //if (FCount mod 10) = 0 then
   //begin
-  loadingLabel.Text := IntToStr(FCount) +' From '+ IntToStr(total) ;
+  loadingLabel.Text := IntToStr(FCount) +' From '+ IntToStr(highestTotal) ;
   if (FCount = total) then
   begin
     FCount:= 0;
@@ -1917,6 +1966,7 @@ begin
     loadingLabel.Text := 'Data Up To Date!';
     ShowMessage('Data Up To Date!');
     loadingLabel.Visible:= false;
+    TabItem2Click(Self);
   end;
 
   //end;
