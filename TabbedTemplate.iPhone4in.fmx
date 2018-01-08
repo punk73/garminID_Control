@@ -31,7 +31,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1307.000000000000000000
+        Size.Height = 1477.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 279.000000000000000000
           Size.Height = 305.000000000000000000
@@ -57,11 +57,11 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1324.000000000000000000
+        Size.Height = 1494.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 55.000000000000000000
           Size.Height = 377.000000000000000000
-          RowCount = 38
+          RowCount = 1000
           Viewport.Width = 55.000000000000000000
           Viewport.Height = 377.000000000000000000
         end
@@ -94,7 +94,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1316.000000000000000000
+        Size.Height = 1486.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 151.000000000000000000
           Size.Height = 353.000000000000000000
@@ -110,7 +110,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1316.000000000000000000
+        Size.Height = 1486.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -135,7 +135,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1316.000000000000000000
+        Size.Height = 1486.000000000000000000
         inherited Label12: TLabel
           Position.Y = 392.000000000000000000
         end
@@ -144,7 +144,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
         end
         inherited gridModel: TStringGrid
           Size.Width = 0.000000000000000000
-          RowCount = 502
+          RowCount = 764
           Viewport.Width = 0.000000000000000000
           Viewport.Height = 161.000000000000000000
         end
@@ -176,7 +176,9 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       item
       end>
   end
-  inherited GestureManager1: TGestureManager
+  inherited PopupMenu1: TPopupMenu [5]
+  end
+  inherited GestureManager1: TGestureManager [6]
     GestureData = <
       item
         Control = Owner
@@ -189,19 +191,51 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
           end>
       end>
   end
-  inherited garminQuery: TFDQuery
+  inherited FDConnection1: TFDConnection [7]
+  end
+  inherited modelQuery: TFDQuery [8]
+  end
+  inherited BindingsList1: TBindingsList [9]
+  end
+  inherited stockQuery: TFDQuery [10]
+  end
+  inherited garminQuery: TFDQuery [11]
     Active = True
   end
-  inherited duplicateQuery: TFDQuery
+  inherited BindSourceDB2: TBindSourceDB [12]
+  end
+  inherited BindSourceDB3: TBindSourceDB [13]
+  end
+  inherited duplicateQuery: TFDQuery [14]
     Active = True
   end
-  inherited lineQuery: TFDQuery
+  inherited BindSourceDB4: TBindSourceDB [15]
+  end
+  inherited psoConnection: TFDConnection [16]
+  end
+  inherited psoVersionQuery: TFDQuery [17]
+  end
+  inherited garmines_pso_Query: TFDQuery [18]
+  end
+  inherited lineQuery: TFDQuery [19]
     Active = True
   end
-  inherited psoQuery: TFDQuery
+  inherited BindSourceDB1: TBindSourceDB [20]
+  end
+  inherited demandQuery: TFDQuery [21]
+  end
+  inherited BindSourceDB5: TBindSourceDB [22]
+  end
+  inherited ImageList1: TImageList [23]
+  end
+  inherited psoQuery: TFDQuery [24]
     Active = True
   end
-  inherited MainQuery: TFDQuery
+  inherited BindSourceDB6: TBindSourceDB [25]
+  end
+  inherited MainQuery: TFDQuery [26]
     Active = True
+  end
+  inherited BindSourceDB7: TBindSourceDB [27]
   end
 end

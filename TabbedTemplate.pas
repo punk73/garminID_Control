@@ -128,6 +128,8 @@ type
     BindSourceDB7: TBindSourceDB;
     LinkGridToDataSourceBindSourceDB7: TLinkGridToDataSource;
     btnTruncate: TButton;
+    PopupMenu1: TPopupMenu;
+    MenuItem1: TMenuItem;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -148,8 +150,6 @@ type
     procedure demandGarminComboChange(Sender: TObject);
     procedure demandGarminComboKeyUp(Sender: TObject; var Key: Word; var KeyChar:
         Char; Shift: TShiftState);
-
-    procedure duplicateGridCellClick(const Column: TColumn; const Row: Integer);
     procedure edtDupPathChangeTracking(Sender: TObject);
     procedure edtGarminIdChangeTracking(Sender: TObject);
     procedure edtLineNameChangeTracking(Sender: TObject);
@@ -182,6 +182,9 @@ type
     procedure Edit1KeyUp(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure btnTruncateClick(Sender: TObject);
+    procedure duplicateGridCellDblClick(const Column: TColumn;
+      const Row: Integer);
+    procedure MenuItem1Click(Sender: TObject);
 
 
 
@@ -542,6 +545,7 @@ var
   //ThreadHandlers: array of THandle ;
   lineId: string;
   loadingStatus: integer;
+  lineName: string;
 begin
 
   if lineGrid.RowCount=0 then
@@ -571,6 +575,7 @@ begin
 
       path:= lineGrid.Cells[2, I] ;
       lineId := lineGrid.Cells[0,I];
+      lineName:= lineGrid.Cells[1,I];
       //path = nama path server + line id
 
 
@@ -603,7 +608,7 @@ begin
 
       try
         lineGrid.Selected:= I;
-        TuploadData.Create(localPath, lineId);
+        TuploadData.Create(localPath, lineId, lineName );
       finally
 
       end;
@@ -645,6 +650,10 @@ procedure TTabbedForm.Button4Click(Sender: TObject);
 begin
   updateStock;
   getGarminId;
+  mainGrid.Selected:=-1;
+  //Sleep(10);
+  MainQuery.Close;
+  MainQuery.Open();
 end;
 
 procedure TTabbedForm.Button5Click(Sender: TObject);
@@ -1169,8 +1178,8 @@ begin
  Result :=  ( attrs > 0 ) and ( faReadOnly  > 0 );
 end;
 
-procedure TTabbedForm.duplicateGridCellClick(const Column: TColumn; const Row:
-    Integer);
+procedure TTabbedForm.duplicateGridCellDblClick(const Column: TColumn;
+  const Row: Integer);
 var
   unitId: string;
   serialNumber: string;
@@ -1196,22 +1205,30 @@ begin
   //mainGrid.Selected:= -1;
 
   FilterValue:= 'id LIKE ''/'+edit1.Text+'%'' ESCAPE ''/''';
+
   if edit1.Text='' then
   begin
-    MainQuery.Filtered:= False;
-    MainQuery.OnFilterRecord:= nil;
-
+    mainGrid.Selected:=-1;
+    with MainQuery do begin
+      Filtered:= false;
+      OnFilterRecord:=nil;
+      Close;
+      Open();
+    end;
   end
   else
   begin
      //ShowMessage(FilterValue);
-    with MainQuery do begin
-      Filtered := False;
-      OnFilterRecord := nil;
-      Filter := FilterValue;
-      Filtered := True;
-    end;
+    MainQuery.Filtered := False;
+    MainQuery.OnFilterRecord := nil;
+    MainQuery.Filter := FilterValue;
+    mainGrid.Selected:=-1;
+    MainQuery.Filtered := True;
+    MainQuery.Close;
+    mainQuery.Open();
+
   end;
+
 end;
 
 procedure TTabbedForm.edtDupPathChangeTracking(Sender: TObject);
@@ -1873,6 +1890,11 @@ begin
 
 end;
 
+procedure TTabbedForm.MenuItem1Click(Sender: TObject);
+begin
+  ShowMessage('Copy!');
+end;
+
 procedure TTabbedForm.stockGarminComboChange(Sender: TObject);
 var
   query: string;
@@ -1942,6 +1964,7 @@ end;
 
 procedure TTabbedForm.sync(i, total:Integer);
 var highestTotal:integer ;
+  currentLoadingValue: integer;
 begin
   //Inc(FCount);
   ProgressBar1.Visible:=true;
@@ -1952,10 +1975,17 @@ begin
     highestTotal:=total;
   end;
 
-  FCount:= i;
-  ProgressBar1.Value:= FCount;
-  ProgressBar1.Max:= highestTotal;
+  if currentLoadingValue < i then
+  begin
+    currentLoadingValue:= i;
+  end;
 
+  FCount:= currentLoadingValue;
+  if FCount mod 10 = 0 then
+  begin
+    ProgressBar1.Value:=  FCount;
+    ProgressBar1.Max:= total;
+  end;
   //if (FCount mod 10) = 0 then
   //begin
   loadingLabel.Text := IntToStr(FCount) +' From '+ IntToStr(highestTotal) ;
@@ -1984,6 +2014,10 @@ procedure TTabbedForm.TabItem1Click(Sender: TObject);
 begin
   updateStock;
   getGarminId;
+  mainGrid.Selected:=-1;
+  MainQuery.Close;
+  MainQuery.Open();
+
 end;
 
 procedure TTabbedForm.TabItem2Click(Sender: TObject);
@@ -1996,7 +2030,9 @@ begin
   end;
   lineQuery.Refresh;
 
-  duplicateQuery.Refresh;
+  duplicateQuery.Close;
+  duplicateQuery.Open();
+  //duplicateQuery.Refresh;
 end;
 
 procedure TTabbedForm.TabItem3Click(Sender: TObject);

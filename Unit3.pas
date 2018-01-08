@@ -9,13 +9,13 @@ type
   TuploadData = class(TThread)
   private
     { Private declarations }
-     FileName, lineId :string;
+     FileName, lineId, lineName :string;
 
   protected
     procedure Execute; override;
     procedure uploadData;
   public
-    constructor Create( aFile:string; aLineId:string );
+    constructor Create( aFile:string; aLineId:string; aLineName:string );
     procedure OnTerminate(Sender: TObject);
     procedure containThenDelete(substr,fullString:string);
   end;
@@ -33,11 +33,11 @@ begin
 
 end;
 
-constructor TuploadData.Create(aFile: string;aLineId:string );
+constructor TuploadData.Create(aFile: string;aLineId:string; aLineName:string );
 begin
   FileName:=aFile;
   lineId := aLineId;
-
+  lineName:= aLineName;
   inherited Create(false);
 
 end;
@@ -153,15 +153,25 @@ begin
              delete(unitId, length(unitId) , 1);
             end;
 
+            if date = 'date' then begin
+              Continue;
+            end;
+
+
           {error checking end}
 
           if row.Count > 5  then //kadang jumlah row > 5 kadang tidak.
           begin
             linesName:= row[5];
+            if pos('="', linesName ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(linesName, pos('="', linesName), 2 ); //delete ="
+             delete(linesName, length(linesName) , 1);    //delete " terkahir
+            end;
           end
           else
           begin
-           linesName:='';
+           linesName:= 'FA'+lineName;
           end;
 
           try
@@ -170,7 +180,7 @@ begin
             oConn.ExecSQL(query);
             Synchronize( procedure
               begin
-                TabbedForm.sync(I, (list.Count-1));
+                TabbedForm.sync(I, (list.Count-1) );
               end );
 
             try
@@ -189,7 +199,7 @@ begin
             begin
               TabbedForm.loadingLabel.Text:= E.Message;
               Synchronize(procedure begin
-                TabbedForm.getError(E.Message);
+                TabbedForm.getError(E.Message + ' happend in line id : ' + lineId  );
               end);
               TabbedForm.loadingLabel.Visible:=true;
             end;
