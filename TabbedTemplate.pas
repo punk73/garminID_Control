@@ -128,8 +128,6 @@ type
     BindSourceDB7: TBindSourceDB;
     LinkGridToDataSourceBindSourceDB7: TLinkGridToDataSource;
     btnTruncate: TButton;
-    PopupMenu1: TPopupMenu;
-    MenuItem1: TMenuItem;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -184,7 +182,6 @@ type
     procedure btnTruncateClick(Sender: TObject);
     procedure duplicateGridCellDblClick(const Column: TColumn;
       const Row: Integer);
-    procedure MenuItem1Click(Sender: TObject);
 
 
 
@@ -1888,11 +1885,6 @@ begin
     tmpquery.Free;
   end;
 
-end;
-
-procedure TTabbedForm.MenuItem1Click(Sender: TObject);
-begin
-  ShowMessage('Copy!');
 end;
 
 procedure TTabbedForm.stockGarminComboChange(Sender: TObject);

@@ -26,7 +26,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       518s)
     inherited TabItem1: TTabItem
       ImageIndex = 1
-      Size.Width = 79.000000000000000000
+      Size.Width = 80.000000000000000000
       ExplicitSize.cx = 50.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
@@ -52,7 +52,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end
     end
     inherited TabItem2: TTabItem
-      Size.Width = 79.000000000000000000
+      Size.Width = 80.000000000000000000
       ExplicitSize.cx = 50.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
@@ -89,7 +89,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end
     end
     inherited TabItem3: TTabItem
-      Size.Width = 79.000000000000000000
+      Size.Width = 80.000000000000000000
       ExplicitSize.cx = 158.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
@@ -105,7 +105,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end
     end
     inherited TabItem4: TTabItem
-      Size.Width = 79.000000000000000000
+      Size.Width = 80.000000000000000000
       ExplicitSize.cx = 158.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
@@ -131,7 +131,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end
     end
     inherited TabItem6: TTabItem
-      Size.Width = 83.000000000000000000
+      Size.Width = 80.000000000000000000
       ExplicitSize.cx = 132.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
@@ -171,9 +171,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       item
       end>
   end
-  inherited PopupMenu1: TPopupMenu [5]
-  end
-  inherited GestureManager1: TGestureManager [6]
+  inherited GestureManager1: TGestureManager
     GestureData = <
       item
         Control = Owner
@@ -186,52 +184,22 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
           end>
       end>
   end
-  inherited FDConnection1: TFDConnection [7]
-  end
-  inherited modelQuery: TFDQuery [8]
-  end
-  inherited BindingsList1: TBindingsList [9]
-  end
-  inherited stockQuery: TFDQuery [10]
+  inherited stockQuery: TFDQuery
     Active = True
   end
-  inherited garminQuery: TFDQuery [11]
+  inherited garminQuery: TFDQuery
     Active = True
   end
-  inherited BindSourceDB2: TBindSourceDB [12]
-  end
-  inherited BindSourceDB3: TBindSourceDB [13]
-  end
-  inherited duplicateQuery: TFDQuery [14]
+  inherited duplicateQuery: TFDQuery
     Active = True
   end
-  inherited BindSourceDB4: TBindSourceDB [15]
-  end
-  inherited psoConnection: TFDConnection [16]
-  end
-  inherited psoVersionQuery: TFDQuery [17]
-  end
-  inherited garmines_pso_Query: TFDQuery [18]
-  end
-  inherited lineQuery: TFDQuery [19]
+  inherited lineQuery: TFDQuery
     Active = True
   end
-  inherited BindSourceDB1: TBindSourceDB [20]
-  end
-  inherited demandQuery: TFDQuery [21]
-  end
-  inherited BindSourceDB5: TBindSourceDB [22]
-  end
-  inherited ImageList1: TImageList [23]
-  end
-  inherited psoQuery: TFDQuery [24]
+  inherited psoQuery: TFDQuery
     Active = True
   end
-  inherited BindSourceDB6: TBindSourceDB [25]
-  end
-  inherited MainQuery: TFDQuery [26]
+  inherited MainQuery: TFDQuery
     Active = True
-  end
-  inherited BindSourceDB7: TBindSourceDB [27]
   end
 end
