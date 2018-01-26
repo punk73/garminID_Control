@@ -2009,6 +2009,7 @@ begin
   mainGrid.Selected:=-1;
   MainQuery.Close;
   MainQuery.Open();
+  //MainQuery.Refresh;
 
 end;
 
@@ -2022,9 +2023,9 @@ begin
   end;
   lineQuery.Refresh;
 
-  duplicateQuery.Close;
-  duplicateQuery.Open();
-  //duplicateQuery.Refresh;
+  //  duplicateQuery.Close;
+  //  duplicateQuery.Open();
+  duplicateQuery.Refresh;
 end;
 
 procedure TTabbedForm.TabItem3Click(Sender: TObject);
