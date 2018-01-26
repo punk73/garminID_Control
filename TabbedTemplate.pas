@@ -759,7 +759,7 @@ procedure TTabbedForm.Button7Click(Sender: TObject);
 var
   query: string;
 begin
-  //error handling
+    //error handling
   if (stockGarminCombo.ItemIndex=-1) then
   begin
     ShowMessage('You need to choose garmin Id first !');
@@ -780,6 +780,8 @@ begin
     exit;
   end;
 
+  //hitung jumlah folder dari saat mau save jg.
+  edtStocks.Text:= IntToStr( GetDirectoryCount(edtPathStock.Text) );
 
   try
     edtPathStock.Text:= StringReplace( edtPathStock.Text, '\','\\', [rfReplaceAll, rfIgnoreCase] );
@@ -933,11 +935,12 @@ begin
     query:= 'SELECT *, COUNT(`Unit_ID_No`) AS duplicated_unitID FROM `datalogs` '+
             'GROUP BY `Unit_ID_No` '+
             'HAVING COUNT(`Unit_ID_No`) > 1 '+
+            'ORDER BY `duplicatedGarmin` DESC, `Date` DESC' +
             'limit 0,1000';
   end
   else
   begin
-    query:= ' SELECT *, COUNT( concat(`Y_Number`,"",`Serial_No`) ) as duplicatedGarmin FROM `datalogs` GROUP BY concat(`Y_Number`,"",`Serial_No`) HAVING COUNT( concat(`Y_Number`,"",`Serial_No`) ) > 1 ORDER BY `duplicatedGarmin` DESC limit 0,1000  ';
+    query:= ' SELECT *, COUNT( concat(`Y_Number`,"",`Serial_No`) ) as duplicatedGarmin FROM `datalogs` GROUP BY concat(`Y_Number`,"",`Serial_No`) HAVING COUNT( concat(`Y_Number`,"",`Serial_No`) ) > 1 ORDER BY `duplicatedGarmin` DESC, `Date` DESC limit 0,1000  ';
   end;
 
   try
@@ -2113,9 +2116,10 @@ end;
 procedure TTabbedForm.updateStock;
 var
   query, queryUpdate: string;
-  total, I,Code: Integer;
+  total,stock_awal, I,Code: Integer;
   tmpQuery: TFDQuery;
   selisih: Integer;
+  path: string;
 begin
     query:='SELECT id,`path`,stock,stock_awal FROM `stocks`';
     total:=0;
@@ -2128,15 +2132,17 @@ begin
 
       while not (tmpQuery.Eof) do
       begin
-        total:= GetDirectoryCount( tmpQuery['path'] ); //Value Baru
+        path := tmpQuery['path'];
+        stock_awal := tmpQuery['stock_awal'];
+        total:= GetDirectoryCount( path ); //Value Baru
         //tmpQuery['stock'] = value lama
-        selisih := tmpQuery['stock_awal'] - total ; //selisih = value lama- value baru
+        selisih := stock_awal - total ; //selisih = value lama- value baru
 
         //ShowMessage(inttostr(total));
         //ShowMessage(tmpQuery['path']+''+ );
         if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
         begin
-          if not (total = tmpQuery['stock_awal']) then
+          if not (total = stock_awal ) then
           begin
             //update
             queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';
