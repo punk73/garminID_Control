@@ -26,12 +26,12 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       518s)
     inherited TabItem1: TTabItem
       ImageIndex = 1
-      Size.Width = 80.000000000000000000
+      Size.Width = 79.000000000000000000
       ExplicitSize.cx = 50.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 3590.000000000000000000
+        Size.Height = 3784.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 359.000000000000000000
           Size.Height = 368.000000000000000000
@@ -52,16 +52,16 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end
     end
     inherited TabItem2: TTabItem
-      Size.Width = 80.000000000000000000
+      Size.Width = 79.000000000000000000
       ExplicitSize.cx = 50.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 3607.000000000000000000
+        Size.Height = 3801.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 135.000000000000000000
           Size.Height = 440.000000000000000000
-          RowCount = 1000
+          RowCount = 952
           Viewport.Width = 135.000000000000000000
           Viewport.Height = 440.000000000000000000
         end
@@ -89,12 +89,12 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end
     end
     inherited TabItem3: TTabItem
-      Size.Width = 80.000000000000000000
+      Size.Width = 79.000000000000000000
       ExplicitSize.cx = 158.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 3599.000000000000000000
+        Size.Height = 3793.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 231.000000000000000000
           Size.Height = 416.000000000000000000
@@ -105,12 +105,12 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end
     end
     inherited TabItem4: TTabItem
-      Size.Width = 80.000000000000000000
+      Size.Width = 79.000000000000000000
       ExplicitSize.cx = 158.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 3599.000000000000000000
+        Size.Height = 3793.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -131,12 +131,12 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end
     end
     inherited TabItem6: TTabItem
-      Size.Width = 80.000000000000000000
+      Size.Width = 83.000000000000000000
       ExplicitSize.cx = 132.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 3599.000000000000000000
+        Size.Height = 3793.000000000000000000
         inherited Label12: TLabel
           Position.Y = 455.000000000000000000
         end
@@ -145,7 +145,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
         end
         inherited gridModel: TStringGrid
           Size.Width = 0.000000000000000000
-          RowCount = 764
+          RowCount = 800
           Viewport.Width = 0.000000000000000000
           Viewport.Height = 161.000000000000000000
         end

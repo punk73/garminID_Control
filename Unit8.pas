@@ -60,11 +60,11 @@ begin
       tmpQueryPSO:=TFDQuery.Create(nil);
       tmpQueryPSO.Connection:= psoConnection ;
 
-      query:='select model_no,sum(qty) as demand, end_date from t_file where model_no in '+
+      query:='select model_no,sum(qty) as demand, DATE_FORMAT(start_date, "%m-%Y") as start_date from t_file where model_no in '+
              '('+ modelNumber +') and '+
              ' create_time=(select max(create_time) from t_file) ' +
-             ' group by month(end_date) ' +
-             ' order by end_date ASC  ';
+             ' group by month(start_date) ' +
+             ' order by start_date ASC  ';
 
       tmpQueryPSO.SQL.Text := query;
       tmpQueryPSO.Active:=true;
@@ -78,7 +78,7 @@ begin
       begin
         detailDemandGrid.RowCount := tmpQueryPSO.RecordCount ;
 
-        endDate := tmpQueryPSO['end_date'] ;
+        endDate := tmpQueryPSO['start_date'] ;
 
         if not (currentStock='') then stock:=currentStock
         else stock:= '0';
