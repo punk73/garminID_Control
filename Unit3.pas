@@ -64,6 +64,7 @@ var
   oQuery:TFDQuery;
   oParams: TStringList;
   date, time, ynumber, serialNumber, unitId, linesName:string;
+  fileLength: Integer;
 begin
   try
     list:=TStringList.Create;
@@ -96,15 +97,16 @@ begin
     oConn:= TFDConnection.Create(nil);
     oConn.ConnectionDefName:= 'garmin_inventory';
       //I = last pointer  //looping input data
-      for I := (lastPointer+1) to (list.Count-1) do
+      fileLength := list.Count-1;
+      for I := (lastPointer+1) to (fileLength) do
       begin
         //input ke db.
 
-        if I = (list.Count-1) then
+        if I = (fileLength) then
         begin
           Synchronize( procedure
               begin
-                TabbedForm.sync(I, (list.Count-1));
+                TabbedForm.sync(I, (fileLength));
               end );
           break;
         end;

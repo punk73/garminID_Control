@@ -317,7 +317,7 @@ begin
   //error handler
 
   //message box
-  message:= MessageDlg('Clear Data? This will delete all your datalogs and set last pointer back to 0, use it with caution! ', TMsgDlgType.mtConfirmation , mbOkCancel , 0 );
+  message:= MessageDlg('Clear Data? This will delete all your datalogs, use it with caution! ', TMsgDlgType.mtConfirmation , mbOkCancel , 0 );
   if message = mrOk then
   begin
     query:='TRUNCATE datalogs';
@@ -327,15 +327,21 @@ begin
     except
       on E:exception do ShowMessage(E.Message);
     end;
-    //set last pointer back to zero
-    for I := 0 to lineGrid.RowCount-1 do
+
+    message := MessageDlg('Set Pointer back to Zero ?', TMsgDlgType.mtConfirmation , mbYesNo , 0 );
+    if message = mrOk then
     begin
-      query:= 'update line set last_pointer=0 where id='+ lineGrid.Cells[ 0 ,I];
-      try
-        FDConnection1.ExecSQL(query);
-      except
-         on E:exception do ShowMessage(E.Message);
+      //set last pointer back to zero
+      for I := 0 to lineGrid.RowCount-1 do
+      begin
+        query:= 'update line set last_pointer=0 where id='+ lineGrid.Cells[ 0 ,I];
+        try
+          FDConnection1.ExecSQL(query);
+        except
+           on E:exception do ShowMessage(E.Message);
+        end;
       end;
+
     end;
 
     TabItem2Click(Self);
@@ -565,7 +571,6 @@ begin
   FDManager.Active:= true;
 
   try
-    //set length untuk arrThread (penampung thread) & array ThreadHandlers (penampung thread.handle)
 
     for I := lineGrid.RowCount-1 downto 0 do
     begin
@@ -935,16 +940,17 @@ begin
     query:= 'SELECT *, COUNT(`Unit_ID_No`) AS duplicated_unitID FROM `datalogs` '+
             'GROUP BY `Unit_ID_No` '+
             'HAVING COUNT(`Unit_ID_No`) > 1 '+
-            'ORDER BY `duplicatedGarmin` DESC, `Date` DESC' +
-            'limit 0,1000';
+            'ORDER BY `duplicated_unitID` DESC, `Date` DESC ' +
+            'limit 0,100';
   end
   else
   begin
-    query:= ' SELECT *, COUNT( concat(`Y_Number`,"",`Serial_No`) ) as duplicatedGarmin FROM `datalogs` GROUP BY concat(`Y_Number`,"",`Serial_No`) HAVING COUNT( concat(`Y_Number`,"",`Serial_No`) ) > 1 ORDER BY `duplicatedGarmin` DESC, `Date` DESC limit 0,1000  ';
+    query:= ' SELECT *, COUNT( concat(`Y_Number`,"",`Serial_No`) ) as duplicatedGarmin FROM `datalogs` GROUP BY concat(`Y_Number`,"",`Serial_No`) HAVING COUNT( concat(`Y_Number`,"",`Serial_No`) ) > 1 ORDER BY `duplicatedGarmin` DESC, `Date` DESC  limit 0,100  ';
   end;
 
   try
     duplicateQuery.SQL.Text:= query;
+    duplicateQuery.Close;
     duplicateQuery.Open();
     //update grid otomatis karena sudah di bind Visualy
   Except
