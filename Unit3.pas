@@ -106,7 +106,7 @@ begin
         begin
           Synchronize( procedure
               begin
-                TabbedForm.sync(I, (fileLength));
+                TabbedForm.sync(I, (fileLength), lineName );
               end );
           break;
         end;
@@ -182,7 +182,7 @@ begin
             oConn.ExecSQL(query);
             Synchronize( procedure
               begin
-                TabbedForm.sync(I, (list.Count-1) );
+                TabbedForm.sync(I, (list.Count-1), lineName );
               end );
 
             try

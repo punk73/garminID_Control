@@ -223,7 +223,7 @@ type
     procedure getImage;
     function DirIsReadOnly(Path:string):Boolean;
 
-    procedure sync(i, total:Integer);
+    procedure sync(i, total:Integer; lineName: string );
     procedure getError(message:string);
 
   end;
@@ -331,7 +331,7 @@ begin
     end;
 
     message := MessageDlg('Set Pointer back to Zero ?', TMsgDlgType.mtConfirmation , mbYesNo , 0 );
-    if message = mrOk then
+    if message = mrYes then
     begin
       //set last pointer back to zero
       for I := 0 to lineGrid.RowCount-1 do
@@ -601,8 +601,8 @@ begin
       begin
         //tampilan
         //loadingLabel.Text:='Loading ...';
-        loadingLabel.Visible:=true;
-        ProgressBar1.Visible:=true;
+        //loadingLabel.Visible:=true;
+        //ProgressBar1.Visible:=true;
       end;
 
       //masuk ke file local
@@ -1966,12 +1966,15 @@ begin
 
 end;
 
-procedure TTabbedForm.sync(i, total:Integer);
+procedure TTabbedForm.sync(i, total:Integer; lineName: string );
 var highestTotal:integer ;
   currentLoadingValue: integer;
+  array_line_name : TStringList;
+  array_progress_bar : array of TProgressBar;
+  count: Integer;
 begin
   //Inc(FCount);
-  ProgressBar1.Visible:=true;
+  {ProgressBar1.Visible:=true;
   loadingLabel.Visible:= true;
 
   if highestTotal < total then
@@ -1990,8 +1993,7 @@ begin
     ProgressBar1.Value:=  FCount;
     ProgressBar1.Max:= total;
   end;
-  //if (FCount mod 10) = 0 then
-  //begin
+
   loadingLabel.Text := IntToStr(FCount) +' From '+ IntToStr(highestTotal) ;
   if (FCount = total) then
   begin
@@ -2001,14 +2003,52 @@ begin
     ShowMessage('Data Up To Date!' );
     loadingLabel.Visible:= false;
     TabItem2Click(Self);
+  end;}
+
+  //buat array
+  array_line_name := TStringList.Create;
+
+
+  //jika current state == max state.
+  if (i = total) then
+  begin
+    count:= cariIndex(lineName, array_line_name );
+    if not (count=-1) then // jika index tidak ditemukan makan langsung data updated!
+    begin
+      array_progress_bar[ count ].Visible:=False;
+    end;
+    ShowMessage('Date Updated!');
+    exit;
   end;
 
-  //end;
+  //cek, apakah line-name sudah ada dalam aray atau belum
+  if not (isInArray( lineName , array_line_name )) then
+  begin
 
-  {if FCount = 500 then begin
-    Label14.Text := FloatToStr((GetTickCount - FStartTime) / 1000.0);
-    label14.Visible:=true;
-  end;}
+    //jika ya, buat progress bar based on line-name dan is current state & max state.
+    array_line_name.Add(lineName);
+    count := ( array_line_name.Count - 1 );
+    SetLength(array_progress_bar, length(array_progress_bar)+1 );
+    array_progress_bar[ count ] := TProgressBar.Create(Self);
+    array_progress_bar[ count ].Max := total;
+    array_progress_bar[ count ].Value := i;
+    array_progress_bar[ count ].Visible:=True;
+
+
+  end
+  else
+  begin
+    count:= cariIndex(lineName, array_line_name );
+    if not (count = -1) then
+    begin
+      array_progress_bar[ count ].Max := total;
+      array_progress_bar[ count ].Value := i;
+    end;
+  end;
+
+
+
+
 
 
 

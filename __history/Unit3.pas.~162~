@@ -1,0 +1,263 @@
+unit Unit3;
+
+interface
+
+uses
+  System.Classes, FireDac.comp.client, System.sysUtils;
+
+type
+  TuploadData = class(TThread)
+  private
+    { Private declarations }
+     FileName, lineId, lineName :string;
+
+  protected
+    procedure Execute; override;
+    procedure uploadData;
+  public
+    constructor Create( aFile:string; aLineId:string; aLineName:string );
+    procedure OnTerminate(Sender: TObject);
+    procedure containThenDelete(substr,fullString:string);
+  end;
+
+implementation
+  uses TabbedTemplate;
+
+procedure TuploadData.containThenDelete(substr, fullString: string);
+begin
+  if pos(substr, fullString) > 0 then //kalau ada substr di str maka
+  begin
+   delete(fullString, pos(substr, fullString), 2 ); //delete ="
+   delete(fullString, length(fullString) , 1);
+  end;
+
+end;
+
+constructor TuploadData.Create(aFile: string;aLineId:string; aLineName:string );
+begin
+  FileName:=aFile;
+  lineId := aLineId;
+  lineName:= aLineName;
+  inherited Create(false);
+
+end;
+
+procedure TuploadData.Execute;
+begin
+  { Place thread code here }
+    uploadData;
+end;
+
+
+
+procedure TuploadData.OnTerminate(Sender: TObject);
+begin
+  FreeAndNil(Self);
+end;
+
+procedure TuploadData.uploadData;
+var
+  list, row: TStringList;
+  I, lastPointer: Integer;
+  query: string;
+  oConn:TFDConnection;
+  oQuery:TFDQuery;
+  oParams: TStringList;
+  date, time, ynumber, serialNumber, unitId, linesName:string;
+  fileLength: Integer;
+begin
+  try
+    list:=TStringList.Create;
+    list.LoadFromFile(FileName);
+    lastPointer:=1;
+
+    //get last pointer
+    //buat object Connection
+    try
+      oConn:= TFDConnection.Create(nil);
+      oConn.ConnectionDefName:= 'garmin_inventory';
+      try
+        oConn.Connected:=true;  //activate oConn
+        oQuery:=TFDQuery.Create(nil);
+        oQuery.Connection:=oConn;
+        oQuery.SQL.Text:='select * from line where id='+lineId;
+        oQuery.Active:=true;
+        oQuery.Open();
+        lastPointer := oQuery['last_pointer'];
+        oQuery.Close;
+      finally
+        oQuery.Free;
+      end;
+    finally
+      oConn.Free;
+    end;
+
+    try
+    //buat object Connection
+    oConn:= TFDConnection.Create(nil);
+    oConn.ConnectionDefName:= 'garmin_inventory';
+      //I = last pointer  //looping input data
+      fileLength := list.Count-1;
+      for I := (lastPointer+1) to (fileLength) do
+      begin
+        //input ke db.
+
+        if I = (fileLength) then
+        begin
+          Synchronize( procedure
+              begin
+                TabbedForm.sync(I, (fileLength));
+              end );
+          break;
+        end;
+
+        try
+          row:= TStringList.Create;
+          row.Text:= list[I]; //satu baris.
+          row.CommaText := row.Text;
+          row.Delimiter:= ',';
+
+          //deklarasi kolom
+          date:= row[0];
+          time := row[1];
+          ynumber:= row[2];
+          serialNumber:= row[3];
+          unitId:= row[4];
+
+          //cek apakah variable mangandung =""
+            if pos('="', date ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(date, pos('="', date), 2 ); //delete ="
+             delete(date, length(date) , 1);
+            end;
+
+            if pos('="', time ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(time, pos('="', time), 2 ); //delete ="
+             delete(time, length(time) , 1);
+            end;
+
+            if pos('="', ynumber ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(ynumber, pos('="', ynumber), 2 ); //delete ="
+             delete(ynumber, length(ynumber) , 1);
+            end;
+
+            if pos('="', serialNumber ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(serialNumber, pos('="', serialNumber), 2 ); //delete ="
+             delete(serialNumber, length(serialNumber) , 1);
+            end;
+
+            if pos('="', unitId ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(unitId, pos('="', unitId), 2 ); //delete ="
+             delete(unitId, length(unitId) , 1);
+            end;
+
+            if date = 'date' then begin
+              Continue;
+            end;
+
+
+          {error checking end}
+
+          if row.Count > 5  then //kadang jumlah row > 5 kadang tidak.
+          begin
+            linesName:= row[5];
+            if pos('="', linesName ) > 0 then //kalau ada substr di str maka
+            begin
+             delete(linesName, pos('="', linesName), 2 ); //delete ="
+             delete(linesName, length(linesName) , 1);    //delete " terkahir
+            end;
+          end
+          else
+          begin
+           linesName:= 'FA'+lineName;
+          end;
+
+          try
+            oConn.Connected:=true;
+            query:='insert into datalogs ( Date, Time, Y_Number, Serial_No, Unit_ID_No , LineName ) values ( "'+date+'" , "'+time+'","'+ynumber+'" , "'+serialNumber+'" , "'+unitId+'" , "'+linesName+'" )';
+            oConn.ExecSQL(query);
+            Synchronize( procedure
+              begin
+                TabbedForm.sync(I, (list.Count-1) );
+              end );
+
+            try
+              oConn.ExecSQL('update line set last_pointer='+ IntToStr(I) +' where id='+lineId );
+            except
+              on E:Exception do
+              begin
+                TabbedForm.loadingLabel.Text:= E.Message;
+                //TabbedForm.loadingLabel.Width := E.Message.CountChar();
+                TabbedForm.loadingLabel.Visible:=true;
+              end;
+            end;
+
+          except
+            on E:Exception do
+            begin
+              TabbedForm.loadingLabel.Text:= E.Message;
+              Synchronize(procedure begin
+                TabbedForm.getError(E.Message + ' happend in line id : ' + lineId  );
+              end);
+              TabbedForm.loadingLabel.Visible:=true;
+            end;
+          end;
+
+        finally
+          row.Free;
+        end;
+
+      end;
+
+
+    finally
+     oConn.Free;
+    end;
+
+
+    //update last pointer
+    //buat object Connection
+    {try
+      oConn:= TFDConnection.Create(nil);
+      oConn.ConnectionDefName:= 'garmin_inventory';
+      try
+        oConn.Connected:=true;  //activate oConn
+        oQuery:=TFDQuery.Create(nil);
+        oQuery.Connection:=oConn;
+        oQuery.SQL.Text:='select * from line where id='+lineId;
+        oQuery.Active:=true;
+        oQuery.Open();
+        while not (oQuery.Eof) do
+        begin
+
+          try
+            oConn.ExecSQL('update line set last_pointer='+ IntToStr(list.Count) +' where id='+lineId );
+          except
+            on E:Exception do
+            begin
+              TabbedForm.loadingLabel.Text:= E.Message;
+              TabbedForm.loadingLabel.Visible:=true;
+            end;
+          end;
+          oQuery.Next;
+        end;
+      finally
+        oQuery.Free;
+      end;
+    finally
+      oConn.Free;
+    end; }
+
+    //TabbedForm.duplicateQuery.Refresh;
+    //TabbedForm.loadingLabel.Text:= 'Finish!';
+  finally
+   list.Free;
+  end;
+
+end;
+
+end.
