@@ -31,7 +31,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1681.000000000000000000
+        Size.Height = 1715.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 279.000000000000000000
           Size.Height = 305.000000000000000000
@@ -60,7 +60,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1698.000000000000000000
+        Size.Height = 1732.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 55.000000000000000000
           Size.Height = 377.000000000000000000
@@ -97,7 +97,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1690.000000000000000000
+        Size.Height = 1724.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 151.000000000000000000
           Size.Height = 353.000000000000000000
@@ -113,7 +113,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1690.000000000000000000
+        Size.Height = 1724.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -138,7 +138,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 1690.000000000000000000
+        Size.Height = 1724.000000000000000000
         inherited Label12: TLabel
           Position.Y = 392.000000000000000000
         end
@@ -147,7 +147,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
         end
         inherited gridModel: TStringGrid
           Size.Width = 0.000000000000000000
-          RowCount = 800
+          RowCount = 815
           Viewport.Width = 0.000000000000000000
           Viewport.Height = 161.000000000000000000
         end

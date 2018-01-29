@@ -17,7 +17,7 @@ uses
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
   JvBackgrounds, FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit,
-  System.ImageList, FMX.ImgList;
+  System.ImageList, FMX.ImgList, FMX.WebBrowser, FMX.Objects, FMX.GifUtils;
 
 type
   TTabbedForm = class(TForm)
@@ -130,6 +130,9 @@ type
     btnTruncate: TButton;
     Label20: TLabel;
     Label21: TLabel;
+    Image1: TImage;
+    FloatAnimation1: TFloatAnimation;
+
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -189,8 +192,10 @@ type
 
 
   private
+    FGifPlayer : TGifPlayer;
     procedure getSelectedListModel;
     procedure isiMainGrid(I: Integer);
+
     { Private declarations }
   public
     { Public declarations }
@@ -225,6 +230,8 @@ type
 
     procedure sync(i, total:Integer; lineName: string );
     procedure getError(message:string);
+    procedure loadGif;
+
 
   end;
 
@@ -565,6 +572,14 @@ begin
     //someprocess still happening, can't run another.
     exit;
   end;
+
+  if (Image1.Visible = True) then
+  begin
+    //kalau loading masih ada, ga bs di klik.
+    TabItem2Click(Self);
+    Exit;
+  end;
+
 
   loadingStatus:=0; //false
 
@@ -1285,7 +1300,8 @@ begin
   getModelNumber;
   updateStock;
   updateDemand;
-  //ComboBox1.ItemIndex:=0;
+  loadGif;
+
 end;
 
 procedure TTabbedForm.FormGesture(Sender: TObject;
@@ -1848,6 +1864,15 @@ begin
 
 end;
 
+procedure TTabbedForm.loadGif;
+begin
+  FGifPlayer := TGifPlayer.Create(Self);
+  FGifPlayer.Image := Image1;
+  FGifPlayer.LoadFromFile('loading.gif');
+  FGifPlayer.Play;
+  Image1.Visible:=False;
+end;
+
 procedure TTabbedForm.mainGridCellDblClick(const Column: TColumn;
   const Row: Integer);
 var
@@ -1973,37 +1998,7 @@ var highestTotal:integer ;
   array_progress_bar : array of TProgressBar;
   count: Integer;
 begin
-  //Inc(FCount);
-  {ProgressBar1.Visible:=true;
-  loadingLabel.Visible:= true;
 
-  if highestTotal < total then
-  begin
-    highestTotal:=total;
-  end;
-
-  if currentLoadingValue < i then
-  begin
-    currentLoadingValue:= i;
-  end;
-
-  FCount:= currentLoadingValue;
-  if FCount mod 10 = 0 then
-  begin
-    ProgressBar1.Value:=  FCount;
-    ProgressBar1.Max:= total;
-  end;
-
-  loadingLabel.Text := IntToStr(FCount) +' From '+ IntToStr(highestTotal) ;
-  if (FCount = total) then
-  begin
-    FCount:= 0;
-    ProgressBar1.Visible:=false;
-    loadingLabel.Text := 'Data Up To Date!';
-    ShowMessage('Data Up To Date!' );
-    loadingLabel.Visible:= false;
-    TabItem2Click(Self);
-  end;}
 
   //buat array
   array_line_name := TStringList.Create;
@@ -2018,11 +2013,12 @@ begin
       array_progress_bar[ count ].Visible:=False;
     end;
     ShowMessage('Date Updated!');
+    Image1.Visible:= False;
     exit;
   end;
 
   //cek, apakah line-name sudah ada dalam aray atau belum
-  if not (isInArray( lineName , array_line_name )) then
+  {if not (isInArray( lineName , array_line_name )) then
   begin
 
     //jika ya, buat progress bar based on line-name dan is current state & max state.
@@ -2044,7 +2040,9 @@ begin
       array_progress_bar[ count ].Max := total;
       array_progress_bar[ count ].Value := i;
     end;
-  end;
+  end; }
+
+  Image1.Visible := True; //kalau masih ada proses, mucul loading.
 
 
 
