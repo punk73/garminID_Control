@@ -26,6 +26,8 @@ type
     Label3: TLabel;
     StringColumn5: TStringColumn;
     Label4: TLabel;
+    Label5: TLabel;
+    psoVersionLabel: TLabel;
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
@@ -60,7 +62,7 @@ begin
       tmpQueryPSO:=TFDQuery.Create(nil);
       tmpQueryPSO.Connection:= psoConnection ;
 
-      query:='select model_no,sum(qty) as demand, DATE_FORMAT(start_date, "%m-%Y") as start_date from t_file where model_no in '+
+      query:='select model_no, create_time ,sum(qty) as demand, DATE_FORMAT(start_date, "%m-%Y") as start_date from t_file where model_no in '+
              '('+ modelNumber +') and '+
              ' create_time=(select max(create_time) from t_file) ' +
              ' group by month(start_date) ' +
@@ -115,7 +117,7 @@ begin
         i:= i+1;
         tmpQueryPSO.Next;
       end;
-
+      psoVersionLabel.Text := tmpQueryPSO['create_time'];
       Label2.Text:= GarminID;
     finally
       tmpQueryPSO.Free;

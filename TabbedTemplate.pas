@@ -128,6 +128,8 @@ type
     BindSourceDB7: TBindSourceDB;
     LinkGridToDataSourceBindSourceDB7: TLinkGridToDataSource;
     btnTruncate: TButton;
+    Label20: TLabel;
+    Label21: TLabel;
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
@@ -1514,6 +1516,7 @@ begin
   psoVersionQuery.SQL.Text:='select max(create_time) as version from t_file';
   psoVersionQuery.Open();
   Label9.Text:= psoVersionQuery['version'];
+  Label21.Text:= psoVersionQuery['version'];
 
 end;
 
