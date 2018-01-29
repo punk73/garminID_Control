@@ -1995,7 +1995,7 @@ begin
     FCount:= 0;
     ProgressBar1.Visible:=false;
     loadingLabel.Text := 'Data Up To Date!';
-    ShowMessage('Data Up To Date!' );
+    ShowMessage('Data Up To Date!');
     loadingLabel.Visible:= false;
     TabItem2Click(Self);
   end;
