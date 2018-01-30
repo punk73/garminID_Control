@@ -17,7 +17,8 @@ uses
   Unit5 in 'Unit5.pas',
   Unit6 in 'Unit6.pas' {Form6},
   Unit7 in 'Unit7.pas' {Form7},
-  Unit8 in 'Unit8.pas' {Form8};
+  Unit8 in 'Unit8.pas' {Form8},
+  FMX.GifUtils in 'FMX.GifUtils.pas';
 
 {$R *.res}
 
@@ -27,10 +28,10 @@ begin
   begin
     Application.Initialize;
     Application.CreateForm(TTabbedForm, TabbedForm);
-    Application.CreateForm(TDuplicatedForm, DuplicatedForm);
-    Application.CreateForm(TForm7, Form7);
-    Application.CreateForm(TForm8, Form8);
-    Application.Run;
+  Application.CreateForm(TDuplicatedForm, DuplicatedForm);
+  Application.CreateForm(TForm7, Form7);
+  Application.CreateForm(TForm8, Form8);
+  Application.Run;
   end
   else
   begin

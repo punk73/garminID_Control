@@ -25,7 +25,7 @@ object Form8: TForm8
     Viewport.Width = 517.000000000000000000
     Viewport.Height = 216.000000000000000000
     object StringColumn1: TStringColumn
-      Header = 'End Date'
+      Header = 'Start Date'
     end
     object StringColumn2: TStringColumn
       Header = 'Current Stock'
