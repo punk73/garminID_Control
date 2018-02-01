@@ -1885,7 +1885,7 @@ begin
   try
     tmpquery:=TFDQuery.Create(nil);
     tmpquery.Connection:= FDConnection1 ;
-
+    //ambil model number
     tmpquery.SQL.Text :='select * from garmines_pso where garmines_id="'+garminID+'"';
     tmpquery.Active:=true;
     tmpquery.Open();
@@ -1897,16 +1897,16 @@ begin
       tmpquery.Next;
     end;
 
-    tmpquery.SQL.Text :='select * from stocks where garmines_id="'+garminID+'"';
+    tmpquery.SQL.Text :='select sum(allocated_stock) as allocated_stock from stocks where garmines_id="'+garminID+'"';
     tmpquery.Active:=true;
     tmpquery.Open();
     //hapus koma dibelakang dari var modelnumber
     Delete(modelNumber, length(modelNumber), 1 );
     try
       Form8 := TForm8.Create(nil);
-      Form8.modelNumber := modelNumber;
+      Form8.modelNumber := modelNumber; //data ini berupa "model1, model2, model3" dst
       Form8.GarminID:= mainGrid.Cells[0, Row];
-      Form8.currentStock:= mainGrid.Cells[1, Row];
+      Form8.currentStock:= mainGrid.Cells[1, Row]; //current stock refer ke grid row, jd uda sum.
 
       if not (tmpquery['allocated_stock'] = null ) then
         Form8.allocated_stock:= tmpquery['allocated_stock']
@@ -1994,61 +1994,21 @@ end;
 procedure TTabbedForm.sync(i, total:Integer; lineName: string );
 var highestTotal:integer ;
   currentLoadingValue: integer;
-  array_line_name : TStringList;
-  array_progress_bar : array of TProgressBar;
+  //  array_line_name : TStringList;
+  //  array_progress_bar : array of TProgressBar;
   count: Integer;
 begin
-
-
-  //buat array
-  array_line_name := TStringList.Create;
-
 
   //jika current state == max state.
   if (i = total) then
   begin
-    count:= cariIndex(lineName, array_line_name );
-    if not (count=-1) then // jika index tidak ditemukan makan langsung data updated!
-    begin
-      array_progress_bar[ count ].Visible:=False;
-    end;
-    ShowMessage('Date Updated!');
+    ShowMessage( 'Line ' + lineName + ' Updated!' );
+    duplicateQuery.refresh;
     Image1.Visible:= False;
     exit;
   end;
 
-  //cek, apakah line-name sudah ada dalam aray atau belum
-  {if not (isInArray( lineName , array_line_name )) then
-  begin
-
-    //jika ya, buat progress bar based on line-name dan is current state & max state.
-    array_line_name.Add(lineName);
-    count := ( array_line_name.Count - 1 );
-    SetLength(array_progress_bar, length(array_progress_bar)+1 );
-    array_progress_bar[ count ] := TProgressBar.Create(Self);
-    array_progress_bar[ count ].Max := total;
-    array_progress_bar[ count ].Value := i;
-    array_progress_bar[ count ].Visible:=True;
-
-
-  end
-  else
-  begin
-    count:= cariIndex(lineName, array_line_name );
-    if not (count = -1) then
-    begin
-      array_progress_bar[ count ].Max := total;
-      array_progress_bar[ count ].Value := i;
-    end;
-  end; }
-
   Image1.Visible := True; //kalau masih ada proses, mucul loading.
-
-
-
-
-
-
 
 end;
 
