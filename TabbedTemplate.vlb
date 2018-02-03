@@ -1,74 +1,74 @@
 ﻿[Panel2]
-Coordinates=95,796,47,33
+Coordinates=95,796,54,36
 
 [ToolBarLabel]
-Coordinates=824,566,80,51
+Coordinates=824,566,91,58
 
 [TabControl1]
-Coordinates=896,734,74,33
+Coordinates=896,734,85,36
 
 [TabItem1]
-Coordinates=921,796,59,33
+Coordinates=921,796,69,36
 
 [HeaderToolBar]
-Coordinates=90,858,88,33
+Coordinates=90,858,102,36
 
 [FDConnection1]
-Coordinates=479,1,90,33
+Coordinates=479,1,104,36
 
 [TabItem2]
-Coordinates=326,734,59,33
+Coordinates=326,734,69,36
 
 [GestureManager1]
-Coordinates=479,56,101,33
+Coordinates=479,56,118,36
 
 [Panel1]
-Coordinates=1016,796,47,33
+Coordinates=1016,796,54,36
 
 [Button4]
-Coordinates=186,482,53,51
+Coordinates=186,482,59,58
 
 [Label4]
-Coordinates=10,482,46,51
+Coordinates=10,482,53,58
 
 [Label5]
-Coordinates=1026,566,46,51
+Coordinates=1026,566,53,58
 
 [Panel5]
-Coordinates=10,858,47,33
+Coordinates=10,858,54,36
 
 [Button7]
-Coordinates=639,482,53,51
+Coordinates=639,482,59,58
 
 [Label2]
-Coordinates=399,376,46,51
+Coordinates=399,376,53,58
 
 [Button5]
-Coordinates=1058,376,53,51
+Coordinates=1058,376,59,58
 
 [TabItem3]
-Coordinates=1007,734,59,33
+Coordinates=1007,734,69,36
 
 [Panel4]
-Coordinates=391,796,47,33
+Coordinates=391,796,54,36
 
 [Panel3]
-Coordinates=597,796,47,33
+Coordinates=597,796,54,36
 
 [Button6]
-Coordinates=554,482,53,51
+Coordinates=554,482,59,58
 
 [Label7]
-Coordinates=745,566,46,51
+Coordinates=745,566,53,58
 
 [Button8]
-Coordinates=804,650,53,51
+Coordinates=804,650,59,58
 
 [TabItem4]
-Coordinates=296,796,59,33
+Coordinates=296,796,69,36
 
 [Label3]
-Coordinates=666,566,46,51
+Coordinates=666,566,53,58
 
 []
 Coordinates=46,196,88,33
@@ -76,21 +76,21 @@ Visible=True
 LayerNames=psoVersion
 
 [duplicateGrid]
-Coordinates=196,387,80,51
+Coordinates=196,387,91,58
 Visible=True
 
 [BindingsList1]
-Coordinates=145,152,82,33
+Coordinates=145,152,91,36
 
 [modelQuery]
-Coordinates=909,482,74,51
+Coordinates=909,482,84,58
 
 [stockQuery]
-Coordinates=1322,864,71,33
+Coordinates=1500,884,79,36
 Visible=True
 
 [garminQuery]
-Coordinates=1736,590,78,33
+Coordinates=1530,530,89,36
 Visible=True
 
 [Module Settings]
@@ -99,100 +99,100 @@ ActiveLayerNames=stock;"grid demand"
 EditingLayerName=stock
 
 [BindSourceDB2]
-Coordinates=1637,580,92,69
+Coordinates=1650,490,106,124
 Visible=True
 
 [stockGrid]
-Coordinates=520,259,62,51
+Coordinates=1080,700,69,58
 Visible=True
 LayerNames=stock
 
 [BindSourceDB3]
-Coordinates=1233,854,92,123
+Coordinates=1270,620,106,80
 
 [edtGarminId]
-Coordinates=271,482,75,51
+Coordinates=271,482,85,58
 
 [OpenDialog1]
-Coordinates=661,87,77,33
+Coordinates=661,87,89,36
 
 [Label11]
-Coordinates=402,566,52,51
+Coordinates=402,566,60,58
 
 [Button3]
-Coordinates=941,566,53,51
+Coordinates=941,566,59,58
 
 [Label12]
-Coordinates=893,376,52,51
+Coordinates=893,376,60,58
 
 [Label14]
-Coordinates=382,482,52,51
+Coordinates=382,482,60,58
 
 [Panel8]
-Coordinates=1100,650,47,33
+Coordinates=1100,650,54,36
 
 [Label10]
-Coordinates=1143,376,52,51
+Coordinates=1143,376,60,58
 
 [Label6]
-Coordinates=814,376,46,51
+Coordinates=814,376,53,58
 
 [TabItem6]
-Coordinates=421,734,59,33
+Coordinates=421,734,69,36
 
 [Label13]
-Coordinates=313,376,52,51
+Coordinates=313,376,60,58
 
 [duplicateQuery]
-Coordinates=290,440,89,33
+Coordinates=290,440,101,36
 Visible=False
 
 [BindSourceDB4]
-Coordinates=10,376,92,69
+Coordinates=10,376,106,80
 
 [Label16]
-Coordinates=144,650,52,51
+Coordinates=144,650,60,58
 
 [psoConnection]
-Coordinates=423,795,89,33
+Coordinates=423,795,100,36
 
 [psoVersionQuery]
-Coordinates=10,566,100,51
+Coordinates=10,566,114,58
 
 [stockGarminCombo]
-Coordinates=180,248,112,87
+Coordinates=180,248,128,102
 
 [gridModel]
-Coordinates=440,190,63,51
+Coordinates=440,190,71,58
 Visible=True
 
 [edtTotalDemand]
-Coordinates=267,566,95,51
+Coordinates=267,566,109,58
 
 [garmines_pso_Query]
-Coordinates=230,650,119,51
+Coordinates=230,650,137,58
 Visible=True
 
 [Label8]
-Coordinates=478,376,46,51
+Coordinates=478,376,53,58
 
 [ComboBox1]
-Coordinates=611,10,84,123
+Coordinates=611,10,101,146
 
 [Panel6]
-Coordinates=1096,796,47,33
+Coordinates=1096,796,54,36
 
 [Label9]
-Coordinates=979,376,46,51
+Coordinates=979,376,53,58
 
 [Label1]
-Coordinates=735,376,46,51
+Coordinates=735,376,53,58
 
 [Button1]
-Coordinates=1136,482,53,51
+Coordinates=1136,482,59,58
 
 [lineQuery]
-Coordinates=1583,916,61,33
+Coordinates=1743,936,70,36
 Visible=True
 LayerNames="grid demand"
 
@@ -203,118 +203,118 @@ Coordinates=209,844,66,58
 Coordinates=278,649,139,212
 
 [Button10]
-Coordinates=817,482,58,51
+Coordinates=817,482,66,58
 
 [Button11]
-Coordinates=574,566,58,51
+Coordinates=574,566,66,58
 
 [lineGrid]
-Coordinates=526,65,53,51
+Coordinates=526,65,59,58
 Visible=True
 
 [BindSourceDB1]
-Coordinates=1503,906,92,69
+Coordinates=1663,926,106,80
 
 [edtPathStock]
-Coordinates=1019,482,80,51
+Coordinates=1019,482,91,58
 
 [edtStocks]
-Coordinates=393,650,63,51
+Coordinates=393,650,71,58
 
 [listPath]
-Coordinates=175,10,116,177
+Coordinates=175,10,139,212
 
 [CalloutPanel1]
-Coordinates=175,796,82,33
+Coordinates=175,796,95,36
 
 [Label15]
-Coordinates=468,482,52,51
+Coordinates=468,482,60,58
 
 [Popup1]
-Coordinates=10,796,52,33
+Coordinates=10,796,59,36
 
 [mainGrid]
-Coordinates=970,200,59,51
+Coordinates=970,200,67,58
 Visible=True
 
 [demandQuery]
-Coordinates=1963,854,83,33
+Coordinates=2173,874,95,36
 Visible=True
 
 [Label17]
-Coordinates=649,376,52,51
+Coordinates=649,376,60,58
 
 [BindSourceDB5]
-Coordinates=1858,844,92,69
+Coordinates=2068,864,106,80
 
 [garminDemandQtyGrid]
-Coordinates=801,259,127,51
+Coordinates=801,259,146,58
 Visible=True
 
 [edtDupPath]
-Coordinates=604,650,72,51
+Coordinates=604,650,82,58
 
 [demandGarminCombo]
-Coordinates=10,248,125,87
+Coordinates=10,248,144,102
 Visible=True
 LayerNames=manage_Demand.GarminID
 
 [edtLineName]
-Coordinates=150,566,79,51
+Coordinates=150,566,91,58
 
 [loadingLabel]
-Coordinates=490,650,77,51
+Coordinates=490,650,88,58
 
 [Label18]
-Coordinates=488,566,52,51
+Coordinates=488,566,60,58
 
 [Button14]
-Coordinates=712,650,58,51
+Coordinates=712,650,66,58
 
 [Button2]
-Coordinates=10,734,53,33
+Coordinates=10,734,59,36
 
 [StyleBook1]
-Coordinates=128,347,70,33
+Coordinates=128,347,79,36
 
 [ImageList1]
-Coordinates=211,466,68,33
+Coordinates=211,466,77,36
 
 [Button12]
-Coordinates=557,376,58,51
+Coordinates=557,376,66,58
 
 [Timer1]
-Coordinates=222,251,48,33
+Coordinates=222,251,54,36
 
 [Button9]
-Coordinates=889,650,53,33
+Coordinates=889,650,59,36
 
 [garminGrid]
-Coordinates=1280,540,69,51
+Coordinates=1780,540,78,58
 LayerNames=garmin;duplicated
 Visible=True
 
 [edtmodelNumber]
-Coordinates=10,650,99,51
+Coordinates=10,650,113,58
 
 [Form8.FDQuery1]
 Coordinates=490,142,97,51
 
 [listModel]
-Coordinates=0,0,116,177
+Coordinates=0,0,139,212
 
 [btnDeleteModel]
-Coordinates=135,196,91,51
+Coordinates=135,196,105,58
 
 [psoQuery]
-Coordinates=1393,252,62,33
+Coordinates=1553,272,70,36
 Visible=True
 
 [BindSourceDB6]
-Coordinates=1313,242,92,69
+Coordinates=1473,262,106,80
 
 [ProgressBar1]
-Coordinates=352,1,81,51
+Coordinates=352,1,93,58
 
 [DuplicatedForm.duplicateQuery]
 Visible=False
@@ -324,23 +324,23 @@ Coordinates=329,108,170,33
 Coordinates=625,286,174,69
 
 [Edit1]
-Coordinates=352,78,40,51
+Coordinates=352,78,44,58
 
 [Label19]
-Coordinates=0,0,52,51
+Coordinates=0,0,60,58
 
 [SearchEditButton1]
-Coordinates=352,267,107,33
+Coordinates=352,267,122,36
 
 [Panel7]
-Coordinates=352,155,47,33
+Coordinates=352,155,54,36
 
 [MainQuery]
-Coordinates=1349,160,67,33
+Coordinates=1523,180,77,36
 Visible=True
 
 [BindSourceDB7]
-Coordinates=1272,150,92,159
+Coordinates=1436,170,106,80
 
 [ProgressColumn4]
 Coordinates=329,207,103,33
@@ -374,4 +374,25 @@ Coordinates=549,175,88,33
 
 [StringColumn7]
 Coordinates=985,1,88,33
+
+[FloatAnimation1]
+Coordinates=352,322,108,36
+
+[Label20]
+Coordinates=352,1,60,58
+
+[MenuItem1]
+Coordinates=512,142,78,36
+
+[PopupMenu1]
+Coordinates=549,197,90,36
+
+[Label21]
+Coordinates=244,388,60,58
+
+[btnTruncate]
+Coordinates=155,388,83,58
+
+[Image1]
+Coordinates=352,155,57,58
 

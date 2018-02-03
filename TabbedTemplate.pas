@@ -1392,7 +1392,8 @@ var
   query: string;
 begin
 
-  {query:='SELECT  garmines.id, ' +
+  {
+          query:='SELECT  garmines.id, ' +
           ' ifnull( s.total_stock, 0 ) as stock , '+
           'ifnull( s.total_allocated, 0 ) as allocated_stock, ' +
           ' ifnull( d.total_demand,0) as demand ' +
@@ -1407,7 +1408,8 @@ begin
             ' SELECT garmines_id, ifnull( SUM( garmines_pso.demand ) ,0) as total_demand '+
               ' FROM garmines_pso '+
               ' GROUP BY garmines_pso.garmines_id '+
-          ' ) as d ON garmines.id = d.garmines_id '; }
+          ' ) as d ON garmines.id = d.garmines_id ';
+  }
 
   query:= 'SET @rownr=0;select (@rownr:=@rownr+1) as "No", a.* from garmines a;';
   garminQuery.SQL.Text:=query;
@@ -2236,7 +2238,9 @@ begin
       begin
         path := tmpQuery['path'];
         stock_awal := tmpQuery['stock_awal'];
+        Application.ProcessMessages; //agar program tetap listen terhadap event
         total:= GetDirectoryCount( path ); //Value Baru
+        Application.ProcessMessages; //agar program tetap listen terhadap event
         //tmpQuery['stock'] = value lama
         selisih := stock_awal - total ; //selisih = value lama- value baru
         allocated_stock := tmpQuery['allocated_stock'];
@@ -2257,18 +2261,10 @@ begin
 
         tmpQuery.Next;
       end;
+
     finally
       tmpQuery.Free;
     end;
-
-    //stockQuery.Open();
-    //stockQuery.Refresh;
-    //select path & stock
-    // check path ke getDirectoryCount
-    // jika stock != getDirectoryCount
-    //update stock
-
-
 end;
 
 procedure TTabbedForm.validasiLogFile;

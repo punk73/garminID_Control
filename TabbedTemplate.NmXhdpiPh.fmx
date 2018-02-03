@@ -31,7 +31,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 4948.000000000000000000
+        Size.Height = 5045.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 359.000000000000000000
           Size.Height = 368.000000000000000000
@@ -60,7 +60,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 4965.000000000000000000
+        Size.Height = 5062.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 135.000000000000000000
           Size.Height = 440.000000000000000000
@@ -97,11 +97,10 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 4957.000000000000000000
+        Size.Height = 5054.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 231.000000000000000000
           Size.Height = 416.000000000000000000
-          RowCount = 21
           Viewport.Width = 231.000000000000000000
           Viewport.Height = 416.000000000000000000
         end
@@ -113,7 +112,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 4957.000000000000000000
+        Size.Height = 5054.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -139,7 +138,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 4957.000000000000000000
+        Size.Height = 5054.000000000000000000
         inherited Label12: TLabel
           Position.Y = 455.000000000000000000
         end
@@ -188,9 +187,6 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       end>
   end
   inherited stockQuery: TFDQuery
-    Active = True
-  end
-  inherited garminQuery: TFDQuery
     Active = True
   end
   inherited duplicateQuery: TFDQuery
