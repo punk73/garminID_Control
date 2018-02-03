@@ -1948,10 +1948,12 @@ var
   value : string;
 begin
   //ambil value selected listbox
-  value := listpath.selected.text;
-
-  if TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, Svc) then
-    Svc.SetClipboard(value);
+  if not (listPath.ItemIndex = -1) then
+  begin
+    value := listpath.selected.text;
+    if TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, Svc) then
+      Svc.SetClipboard(value);
+  end;
 
   //copy to clipboard
 end;
