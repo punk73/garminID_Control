@@ -17,7 +17,8 @@ uses
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
   JvBackgrounds, FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit,
-  System.ImageList, FMX.ImgList, FMX.WebBrowser, FMX.Objects, FMX.GifUtils;
+  System.ImageList, FMX.ImgList, FMX.WebBrowser, FMX.Objects, FMX.GifUtils,
+  FMX.Platform, FMX.Surfaces;
 
 type
   TTabbedForm = class(TForm)
@@ -132,6 +133,8 @@ type
     Label21: TLabel;
     Image1: TImage;
     FloatAnimation1: TFloatAnimation;
+    PopupMenu1: TPopupMenu;
+    MenuItem1: TMenuItem;
 
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -188,6 +191,8 @@ type
     procedure duplicateGridCellDblClick(const Column: TColumn;
       const Row: Integer);
     procedure listPathEnter(Sender: TObject);
+    procedure listPathExit(Sender: TObject);
+    procedure MenuItem1Click(Sender: TObject);
 
 
 
@@ -1830,7 +1835,13 @@ end;
 
 procedure TTabbedForm.listPathEnter(Sender: TObject);
 begin
-  listPath.Selected.Text;
+  // listPath.Selected.Text;
+  Popup1.IsOpen := True;
+end;
+
+procedure TTabbedForm.listPathExit(Sender: TObject);
+begin
+  Popup1.IsOpen := True;
 end;
 
 procedure TTabbedForm.listPathItemClick(const Sender: TCustomListBox; const
@@ -1929,6 +1940,20 @@ begin
     tmpquery.Free;
   end;
 
+end;
+
+procedure TTabbedForm.MenuItem1Click(Sender: TObject);
+var
+  Svc: IFMXClipboardService;
+  value : string;
+begin
+  //ambil value selected listbox
+  value := listpath.selected.text;
+
+  if TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, Svc) then
+    Svc.SetClipboard(value);
+
+  //copy to clipboard
 end;
 
 procedure TTabbedForm.stockGarminComboChange(Sender: TObject);
