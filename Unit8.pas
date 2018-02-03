@@ -33,7 +33,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-     modelNumber, currentStock, GarminID, allocated_stock: string;
+     modelNumber, globalPsoVersion,  currentStock, GarminID, allocated_stock: string;
   end;
 
 var
@@ -53,6 +53,7 @@ var
   balance: string;
   demand: string;
   i: Integer;
+  psoVersion: Variant;
 begin
   psoConnection :=  TabbedForm.psoConnection;
 
@@ -105,19 +106,20 @@ begin
           detailDemandGrid.Cells[3, i] := '0' ;
         end;
 
-
-
         //isi demand
         detailDemandGrid.Cells[2, i] := demand ;
         //isi balance
         detailDemandGrid.Cells[4, i] := IntToStr( StrToInt(detailDemandGrid.Cells[1,i]) - StrToInt(demand) + StrToInt(detailDemandGrid.Cells[3,i]) ) ;
 
-
-
         i:= i+1;
         tmpQueryPSO.Next;
       end;
-      psoVersionLabel.Text := tmpQueryPSO['create_time'];
+
+      psoVersion := tmpQueryPSO['create_time'];
+      if psoVersion = null then psoVersion := globalPsoVersion; //jika psoVersion lokal null, ambil dari global.
+
+
+      psoVersionLabel.Text := psoVersion;
       Label2.Text:= GarminID;
     finally
       tmpQueryPSO.Free;

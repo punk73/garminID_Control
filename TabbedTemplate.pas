@@ -187,6 +187,7 @@ type
     procedure btnTruncateClick(Sender: TObject);
     procedure duplicateGridCellDblClick(const Column: TColumn;
       const Row: Integer);
+    procedure listPathEnter(Sender: TObject);
 
 
 
@@ -1827,6 +1828,11 @@ begin
   end;
 end;
 
+procedure TTabbedForm.listPathEnter(Sender: TObject);
+begin
+  listPath.Selected.Text;
+end;
+
 procedure TTabbedForm.listPathItemClick(const Sender: TCustomListBox; const
     Item: TListBoxItem);
 var
@@ -1906,6 +1912,7 @@ begin
       Form8 := TForm8.Create(nil);
       Form8.modelNumber := modelNumber; //data ini berupa "model1, model2, model3" dst
       Form8.GarminID:= mainGrid.Cells[0, Row];
+      Form8.globalPsoVersion := Label21.Text;
       Form8.currentStock:= mainGrid.Cells[1, Row]; //current stock refer ke grid row, jd uda sum.
 
       if not (tmpquery['allocated_stock'] = null ) then
@@ -2125,10 +2132,10 @@ var
   query, queryUpdate: string;
   total,stock_awal, I,Code: Integer;
   tmpQuery: TFDQuery;
-  selisih: Integer;
+  selisih, allocated_stock: Integer;
   path: string;
 begin
-    query:='SELECT id,`path`,stock,stock_awal FROM `stocks`';
+    query:='SELECT id,`path`,stock,stock_awal,allocated_stock FROM `stocks`';
     total:=0;
     try
       tmpQuery:= TFDQuery.Create(Self);
@@ -2144,16 +2151,19 @@ begin
         total:= GetDirectoryCount( path ); //Value Baru
         //tmpQuery['stock'] = value lama
         selisih := stock_awal - total ; //selisih = value lama- value baru
-
+        allocated_stock := tmpQuery['allocated_stock'];
         //ShowMessage(inttostr(total));
         //ShowMessage(tmpQuery['path']+''+ );
-        if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
+        if not ( allocated_stock = selisih  ) then
         begin
-          if not (total = stock_awal ) then
+          if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
           begin
-            //update
-            queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';
-            FDConnection1.ExecSQL(queryUpdate);
+            if not (total = stock_awal ) then
+            begin
+              //update
+              queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';
+              FDConnection1.ExecSQL(queryUpdate);
+            end;
           end;
         end;
 
