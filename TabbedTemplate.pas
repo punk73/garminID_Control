@@ -193,6 +193,7 @@ type
     procedure listPathEnter(Sender: TObject);
     procedure listPathExit(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
+    procedure SearchEditButton1Click(Sender: TObject);
 
 
 
@@ -1230,10 +1231,24 @@ procedure TTabbedForm.Edit1KeyUp(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
 var
   FilterValue: string;
+  value: string;
+  i: Integer;
+const chars = ['0'..'9', 'a'..'z', 'A'..'Z'];
 begin
   //mainGrid.Selected:= -1;
+  value := edit1.Text;
+  value := value.Trim; //hilangkan white space
+  for i := 1 to Length(value) do
+  begin
+    if not (value[i] in CHARS) then
+    begin
+      //  ShowMessage('not valid value');
+      KeyChar := #0; key:=0;
+      Exit;
+    end;
+  end;
 
-  FilterValue:= 'id LIKE ''/'+edit1.Text+'%'' ESCAPE ''/''';
+  FilterValue:= 'id LIKE ''/'+value+'%'' ESCAPE ''/''';
 
   if edit1.Text='' then
   begin
@@ -1679,6 +1694,52 @@ begin
   demandQuery.Refresh;
   stockQuery.Refresh;
   garmines_pso_Query.Refresh;
+end;
+
+procedure TTabbedForm.SearchEditButton1Click(Sender: TObject);
+var
+  FilterValue: string;
+  value: string;
+  i: Integer;
+  const CHARS = ['0'..'9', 'a'..'z', 'A'..'Z'];
+begin
+  //mainGrid.Selected:= -1;
+  value := edit1.Text;
+  value := value.Trim; //hilangkan white space
+  for i := 1 to Length(value) do
+  begin
+    if not (value[i] in CHARS) then
+    begin
+      //  ShowMessage('not valid value');
+      Exit;
+    end;
+  end;
+  //ambil value editbutton
+  //search
+  FilterValue:= 'id LIKE ''/'+edit1.Text+'%'' ESCAPE ''/''';
+
+  if edit1.Text='' then
+  begin
+    mainGrid.Selected:=-1;
+    with MainQuery do begin
+      Filtered:= false;
+      OnFilterRecord:=nil;
+      Close;
+      Open();
+    end;
+  end
+  else
+  begin
+     //ShowMessage(FilterValue);
+    MainQuery.Filtered := False;
+    MainQuery.OnFilterRecord := nil;
+    MainQuery.Filter := FilterValue;
+    mainGrid.Selected:=-1;
+    MainQuery.Filtered := True;
+    MainQuery.Close;
+    mainQuery.Open();
+
+  end;
 end;
 
 procedure TTabbedForm.SelectFileInExplorer(const Fn: string);
