@@ -135,6 +135,7 @@ type
     FloatAnimation1: TFloatAnimation;
     PopupMenu1: TPopupMenu;
     MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
 
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -194,6 +195,7 @@ type
     procedure listPathExit(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
     procedure SearchEditButton1Click(Sender: TObject);
+    procedure MenuItem2Click(Sender: TObject);
 
 
 
@@ -254,7 +256,7 @@ var
 
 
 implementation
-    uses Unit1, Unit2,  Unit3, Unit4, Unit5, Unit8;
+    uses Unit1, Unit2,  Unit3, Unit4, Unit5, Unit8, Unit9;
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
@@ -2019,6 +2021,27 @@ begin
   end;
 
   //copy to clipboard
+end;
+
+procedure TTabbedForm.MenuItem2Click(Sender: TObject);
+var
+  garmines_id: string;
+begin
+  //get garmines id
+  garmines_id := stockGarminCombo.Text;
+  if not (garmines_id = '') then
+  begin
+    try
+      //instantiate form9
+      Form9 := TForm9.Create(Self);
+      //pass garmines id to form9 GraminID
+      Form9.GarminID := garmines_id;
+      //showModal form9
+      Form9.ShowModal;
+    finally
+      Form9.Free;
+    end;
+  end;
 end;
 
 procedure TTabbedForm.stockGarminComboChange(Sender: TObject);

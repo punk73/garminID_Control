@@ -28,7 +28,9 @@ type
     Label4: TLabel;
     Label5: TLabel;
     psoVersionLabel: TLabel;
+    Button1: TButton;
     procedure FormShow(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -39,10 +41,23 @@ type
 var
   Form8: TForm8;
 
-
 implementation
-   uses tabbedTemplate;
+   uses tabbedTemplate, Unit9;
 {$R *.fmx}
+
+procedure TForm8.Button1Click(Sender: TObject);
+begin
+  try
+    //isi form9.garmines_id;
+    Form9 := TForm9.Create(nil);
+    Form9.GarminID := GarminID;
+    Form9.ShowModal;
+
+  finally
+    Form9.Free;
+  end;
+  //instantiate Form9;
+end;
 
 procedure TForm8.FormShow(Sender: TObject);
 var

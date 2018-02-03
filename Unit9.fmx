@@ -1,0 +1,88 @@
+object Form9: TForm9
+  Left = 320
+  Top = 128
+  Caption = 'Stock Details'
+  ClientHeight = 371
+  ClientWidth = 557
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnClose = FormClose
+  OnShow = FormShow
+  Left = 320
+  Top = 128
+  DesignerMasterStyle = 0
+  object detailStockGrid: TStringGrid
+    CanFocus = True
+    ClipChildren = True
+    Position.X = 8.000000000000000000
+    Position.Y = 88.000000000000000000
+    Size.Width = 537.000000000000000000
+    Size.Height = 273.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    RowCount = 0
+    Options = [ColumnResize, ColumnMove, ColLines, RowLines, RowSelect, Tabs, Header, HeaderClick, AutoDisplacement]
+    Viewport.Width = 533.000000000000000000
+    Viewport.Height = 248.000000000000000000
+  end
+  object Label1: TLabel
+    StyledSettings = [Family, Style, FontColor]
+    Position.X = 8.000000000000000000
+    Position.Y = 16.000000000000000000
+    Size.Width = 273.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 36.000000000000000000
+    Text = 'Stock Detail'
+    TabOrder = 2
+  end
+  object Label2: TLabel
+    Position.X = 72.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 233.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+  end
+  object Label3: TLabel
+    Position.X = 8.000000000000000000
+    Position.Y = 64.000000000000000000
+    Text = 'Garmin Id :'
+    TabOrder = 5
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'ConnectionDef=garmin_inventory')
+    Connected = True
+    LoginPrompt = False
+    Left = 368
+    Top = 24
+  end
+  object FDQuery1: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      'select * from stocks')
+    Left = 432
+    Top = 24
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = FDQuery1
+    ScopeMappings = <>
+    Left = 328
+    Top = 24
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 20
+    Top = 5
+    object LinkGridToDataSourceBindSourceDB1: TLinkGridToDataSource
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      GridControl = detailStockGrid
+      Columns = <>
+    end
+  end
+end

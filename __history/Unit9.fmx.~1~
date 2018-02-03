@@ -1,0 +1,14 @@
+object Form9: TForm9
+  Left = 320
+  Top = 128
+  Caption = 'Form9'
+  ClientHeight = 480
+  ClientWidth = 640
+  Position = Designed
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  Left = 320
+  Top = 128
+  DesignerMasterStyle = 0
+end
