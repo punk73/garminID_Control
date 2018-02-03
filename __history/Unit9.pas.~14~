@@ -56,7 +56,7 @@ begin
   try
     FDConnection1.Connected:=True;
     FDQuery1.Connection:= FDConnection1;
-    FDQuery1.SQL.Text:='select path, stock_awal, allocated_stock, stock from stocks where garmines_id="'+ GarminID +'"';
+    FDQuery1.SQL.Text:='select * from stocks where garmines_id="'+ GarminID +'"';
     FDQuery1.Active:=True;
   finally
 
