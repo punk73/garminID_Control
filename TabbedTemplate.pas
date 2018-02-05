@@ -136,6 +136,9 @@ type
     PopupMenu1: TPopupMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
+    Image2: TImage;
+    FloatAnimation2: TFloatAnimation;
+    Button13: TButton;
 
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -180,7 +183,6 @@ type
     procedure stockGridCellClick(const Column: TColumn; const Row: Integer);
     procedure TabItem1Click(Sender: TObject);
     procedure SelectFileInExplorer(const Fn: string);
-    procedure TabItem2Click(Sender: TObject);
     procedure TabItem3Click(Sender: TObject);
     procedure TabItem4Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -196,6 +198,9 @@ type
     procedure MenuItem1Click(Sender: TObject);
     procedure SearchEditButton1Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
+    procedure duplicateQueryBeforeOpen(DataSet: TDataSet);
+    procedure duplicateQueryAfterOpen(DataSet: TDataSet);
+    procedure Button13Click(Sender: TObject);
 
 
 
@@ -204,6 +209,7 @@ type
     FGifPlayer : TGifPlayer;
     procedure getSelectedListModel;
     procedure isiMainGrid(I: Integer);
+    procedure duplicateQueryRefresh;
 
     { Private declarations }
   public
@@ -239,7 +245,7 @@ type
 
     procedure sync(i, total:Integer; lineName: string );
     procedure getError(message:string);
-    procedure loadGif;
+    procedure loadGif(image : TImage);
 
 
   end;
@@ -362,7 +368,8 @@ begin
 
     end;
 
-    TabItem2Click(Self);
+    //TabItem2Click(Self);
+    Button13Click(Self);
 
     ShowMessage('Datalogs Duplicate Checker Clear!');
   end;
@@ -500,6 +507,21 @@ begin
 
 end;
 
+procedure TTabbedForm.Button13Click(Sender: TObject);
+begin
+  if not (Image1.Visible=True) then
+  begin
+    lineQuery.SQL.Text:='select * from line';
+    try
+      lineQuery.Open();
+    except
+      on E:exception do ShowMessage(E.Message);
+    end;
+    lineQuery.Refresh;
+    duplicateQueryRefresh;
+  end;
+end;
+
 procedure TTabbedForm.Button14Click(Sender: TObject);
 var
   I: Integer;
@@ -585,7 +607,7 @@ begin
   if (Image1.Visible = True) then
   begin
     //kalau loading masih ada, ga bs di klik.
-    TabItem2Click(Self);
+    Button13Click(Self);
     Exit;
   end;
 
@@ -595,6 +617,7 @@ begin
   FCount:=0;
   FStartTime := GetTickCount;
   FDManager.Active:= true;
+  Image1.Visible := True;
 
   try
 
@@ -676,12 +699,17 @@ end;
 
 procedure TTabbedForm.Button4Click(Sender: TObject);
 begin
-  updateStock;
-  getGarminId;
-  mainGrid.Selected:=-1;
-  //Sleep(10);
-  MainQuery.Close;
-  MainQuery.Open();
+  if not (Image2.Visible=True) then
+  begin
+    Image2.Visible:= True;
+    updateStock;
+    getGarminId;
+    mainGrid.Selected:=-1;
+    //Sleep(10);
+    MainQuery.Close;
+    MainQuery.Open();
+    Image2.Visible:= False;
+  end;
 end;
 
 procedure TTabbedForm.Button5Click(Sender: TObject);
@@ -1229,6 +1257,20 @@ begin
   DuplicatedForm.ShowModal;
 end;
 
+procedure TTabbedForm.duplicateQueryAfterOpen(DataSet: TDataSet);
+begin
+  BindSourceDB4.DataSet:= duplicateQuery;
+  duplicateQuery.ResourceOptions.CmdExecMode := amBlocking;
+  duplicateQuery.AfterOpen:=nil; //restore, tdnya ga ada. jd ga ada lagi.
+  Image1.Visible:=False;
+end;
+
+procedure TTabbedForm.duplicateQueryBeforeOpen(DataSet: TDataSet);
+begin
+  Image1.Visible:=True;
+  BindSourceDB4.DataSet:= nil;
+end;
+
 procedure TTabbedForm.Edit1KeyUp(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
 var
@@ -1323,7 +1365,9 @@ begin
   getModelNumber;
   updateStock;
   updateDemand;
-  loadGif;
+  loadGif(Image1);  //loading di menu duplication checker
+  loadGif(Image2);  // loading di menu main grid
+
 
 end;
 
@@ -1609,6 +1653,7 @@ begin
     end;
 
     garmines_pso_Query.Active:=true;
+
     duplicateQuery.Active:=true;
     garminQuery.Active:=true;
     lineQuery.Active:=true;
@@ -1946,13 +1991,52 @@ begin
 
 end;
 
-procedure TTabbedForm.loadGif;
+procedure TTabbedForm.loadGif( image: TImage );
 begin
   FGifPlayer := TGifPlayer.Create(Self);
-  FGifPlayer.Image := Image1;
+  FGifPlayer.Image := image;
   FGifPlayer.LoadFromFile('loading.gif');
   FGifPlayer.Play;
   Image1.Visible:=False;
+
+end;
+
+procedure TTabbedForm.duplicateQueryRefresh;
+var
+  query: string;
+begin
+  //  duplicateQuery.Close;
+  //  duplicateQuery.Open();
+  //duplicateQuery.ResourceOptions.CmdExecMode := amAsync; //set biar asy
+  //  duplicateQuery.Refresh;
+  if not (image1.Visible = True) then
+  begin
+    image1.Visible := True; //show loading
+    duplicateQuery.ResourceOptions.CmdExecMode := amAsync;
+    if ComboBox1.Selected.Text='Unit ID' then
+    begin
+      query:= 'SELECT *, COUNT(`Unit_ID_No`) AS duplicated_unitID FROM `datalogs` '+
+              'GROUP BY `Unit_ID_No` '+
+              'HAVING COUNT(`Unit_ID_No`) > 1 '+
+              'ORDER BY `duplicated_unitID` DESC, `Date` DESC ' +
+              'limit 0,100';
+    end
+    else
+    begin
+      query:= ' SELECT *, COUNT( concat(`Y_Number`,"",`Serial_No`) ) as duplicatedGarmin FROM `datalogs` GROUP BY concat(`Y_Number`,"",`Serial_No`) HAVING COUNT( concat(`Y_Number`,"",`Serial_No`) ) > 1 ORDER BY `duplicatedGarmin` DESC, `Date` DESC  limit 0,100  ';
+    end;
+    duplicateQuery.SQL.Text:= query;
+
+    //if (Image1.Visible=false) then //error handler supaya ga ada event ganda
+    duplicateQuery.BeforeOpen := duplicateQueryBeforeOpen;
+
+    //if (Image1.Visible=True) then  //error handler supaya ga ada event ganda
+    duplicateQuery.AfterOpen := duplicateQueryAfterOpen;
+    duplicateQuery.FetchOptions.Mode := fmAll;
+    duplicateQuery.Open;
+
+  end;
+
 end;
 
 procedure TTabbedForm.mainGridCellDblClick(const Column: TColumn;
@@ -2124,6 +2208,7 @@ begin
   begin
     ShowMessage( 'Line ' + lineName + ' Updated!' );
     duplicateQuery.refresh;
+    // duplicateQueryRefresh;
     Image1.Visible:= False;
     exit;
   end;
@@ -2134,28 +2219,16 @@ end;
 
 procedure TTabbedForm.TabItem1Click(Sender: TObject);
 begin
-  updateStock;
-  getGarminId;
-  mainGrid.Selected:=-1;
-  MainQuery.Close;
-  MainQuery.Open();
+  {
+    updateStock;
+    getGarminId;
+    mainGrid.Selected:=-1;
+    MainQuery.Close;
+    MainQuery.Open();
+  }
   //MainQuery.Refresh;
+  //Button4Click(nil);    //tombol refresh
 
-end;
-
-procedure TTabbedForm.TabItem2Click(Sender: TObject);
-begin
-  lineQuery.SQL.Text:='select * from line';
-  try
-    lineQuery.Open();
-  except
-    on E:exception do ShowMessage(E.Message);
-  end;
-  lineQuery.Refresh;
-
-  //  duplicateQuery.Close;
-  //  duplicateQuery.Open();
-  duplicateQuery.Refresh;
 end;
 
 procedure TTabbedForm.TabItem3Click(Sender: TObject);
@@ -2257,13 +2330,14 @@ begin
       tmpQuery.Active:=true;
       tmpQuery.Open();
 
+
       while not (tmpQuery.Eof) do
       begin
         path := tmpQuery['path'];
         stock_awal := tmpQuery['stock_awal'];
-        Application.ProcessMessages; //agar program tetap listen terhadap event
+          Application.ProcessMessages; //agar program tetap listen terhadap event
         total:= GetDirectoryCount( path ); //Value Baru
-        Application.ProcessMessages; //agar program tetap listen terhadap event
+          Application.ProcessMessages; //agar program tetap listen terhadap event
         //tmpQuery['stock'] = value lama
         selisih := stock_awal - total ; //selisih = value lama- value baru
         allocated_stock := tmpQuery['allocated_stock'];
