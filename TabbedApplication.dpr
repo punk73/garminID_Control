@@ -29,11 +29,11 @@ begin
   begin
     Application.Initialize;
     Application.CreateForm(TTabbedForm, TabbedForm);
-  Application.CreateForm(TDuplicatedForm, DuplicatedForm);
-  Application.CreateForm(TForm7, Form7);
-  Application.CreateForm(TForm8, Form8);
-  Application.CreateForm(TForm9, Form9);
-  Application.Run;
+    Application.CreateForm(TDuplicatedForm, DuplicatedForm);
+    Application.CreateForm(TForm7, Form7);
+    Application.CreateForm(TForm8, Form8);
+    Application.CreateForm(TForm9, Form9);
+    Application.Run;
   end
   else
   begin
