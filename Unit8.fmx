@@ -21,7 +21,7 @@ object Form8: TForm8
     Size.Height = 241.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    Options = [ColumnResize, ColumnMove, ColLines, RowLines, RowSelect, Tabs, Header, HeaderClick, AutoDisplacement]
+    Options = [ColumnResize, ColLines, RowLines, Tabs, Header, HeaderClick, AutoDisplacement]
     Viewport.Width = 517.000000000000000000
     Viewport.Height = 216.000000000000000000
     object StringColumn1: TStringColumn
@@ -94,6 +94,8 @@ object Form8: TForm8
   end
   object Button1: TButton
     Anchors = [akTop, akRight]
+    Images = TabbedForm.ImageList1
+    ImageIndex = 5
     Position.X = 352.000000000000000000
     Position.Y = 336.000000000000000000
     Size.Width = 192.000000000000000000

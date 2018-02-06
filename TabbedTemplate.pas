@@ -139,6 +139,17 @@ type
     Image2: TImage;
     FloatAnimation2: TFloatAnimation;
     Button13: TButton;
+    StringColumn1: TStringColumn;
+    StringColumn2: TStringColumn;
+    StringColumn3: TStringColumn;
+    StringColumn4: TStringColumn;
+    StringColumn5: TStringColumn;
+    StringColumn6: TStringColumn;
+    StringColumn7: TStringColumn;
+    StringColumn8: TStringColumn;
+    StringColumn9: TStringColumn;
+    StringColumn10: TStringColumn;
+    StringColumn11: TStringColumn;
 
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -817,6 +828,9 @@ end;
 procedure TTabbedForm.Button7Click(Sender: TObject);
 var
   query: string;
+  listPathItems : TStringList;
+  I: Integer;
+  path: string;
 begin
     //error handling
   if (stockGarminCombo.ItemIndex=-1) then
@@ -838,6 +852,29 @@ begin
     edtPathStock.SetFocus;
     exit;
   end;
+
+  //error handler
+  try
+    listPathItems := TStringList.Create;
+    path := edtPathStock.Text;
+    listPathItems.Clear; //kosongkan listpathitems
+    for I := 0 to listPath.Items.Count-1 do
+    begin
+      listPathItems.Add(listPath.Items[I] );
+    end;
+
+    if isInArray( path , listPathItems ) then //jika sudah ada di listpath, error
+    begin
+      //jika path nya sudah ada pada listpath, exit;
+      ShowMessage('Path Already Exist!!');
+      listPath.SetFocus;
+      exit;
+    end;
+
+  finally
+    listPathItems.Free;
+  end;
+
 
   //hitung jumlah folder dari saat mau save jg.
   edtStocks.Text:= IntToStr( GetDirectoryCount(edtPathStock.Text) );
@@ -1277,7 +1314,7 @@ var
   FilterValue: string;
   value: string;
   i: Integer;
-const chars = ['0'..'9', 'a'..'z', 'A'..'Z'];
+const chars = ['0'..'9', 'a'..'z', 'A'..'Z', '_', '-'];
 begin
   //mainGrid.Selected:= -1;
   value := edit1.Text;
