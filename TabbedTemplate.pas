@@ -528,6 +528,7 @@ var
   list:TStringList;
   garminID, stock, demand, balance, rowContent,path:string;
   reportName: string;
+  allocated_stock: string;
 begin
   getGarminId;
   try
@@ -538,8 +539,14 @@ begin
       garminID:= mainGrid.Cells[0,I];
       stock:= mainGrid.Cells[1,I];
       demand:=mainGrid.Cells[2,I];
-      balance:=mainGrid.Cells[3,I];
-      rowContent := garminId +','+ stock +','+ demand +','+ balance;
+      allocated_stock:=mainGrid.Cells[3,I];
+      balance:=mainGrid.Cells[4,I];
+      if (I=0) then
+      begin
+        rowContent:= 'ID, Stock, Demand, Allocated stock, Balance';
+        list.Add(rowContent);
+      end;
+      rowContent := garminId +','+ stock +','+ demand +','+ allocated_stock +','+ balance;
       //isi tstringlist
       list.Add(rowContent);
     end;
