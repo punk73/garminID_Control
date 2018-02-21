@@ -16,7 +16,7 @@ uses
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FMX.Layouts, FMX.ListBox,
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
-  JvBackgrounds, FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit,
+  FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit,
   System.ImageList, FMX.ImgList, FMX.WebBrowser, FMX.Objects, FMX.GifUtils,
   FMX.Platform, FMX.Surfaces;
 
@@ -139,7 +139,6 @@ type
     Image2: TImage;
     FloatAnimation2: TFloatAnimation;
     Button13: TButton;
-    btnlogout: TButton;
 
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -202,7 +201,6 @@ type
     procedure duplicateQueryBeforeOpen(DataSet: TDataSet);
     procedure duplicateQueryAfterOpen(DataSet: TDataSet);
     procedure Button13Click(Sender: TObject);
-    procedure btnlogoutClick(Sender: TObject);
 
 
 
@@ -264,7 +262,7 @@ var
 
 
 implementation
-    uses Unit1, Unit2,  Unit3, Unit4, Unit5, Unit6, Unit8, Unit9;
+    uses Unit1, Unit2,  Unit3, Unit4, Unit5, Unit8, Unit9;
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
@@ -332,22 +330,6 @@ begin
       on E:exception do ShowMessage(E.Message);
     end;
   end;
-end;
-
-procedure TTabbedForm.btnlogoutClick(Sender: TObject);
-var Form6 : TForm6;
-begin
-  try
-    //create password form
-    Form6 := TForm6.Create(Self);
-    Form6.ShowModal;
-    //destroy this
-    Self.Hide;
-
-  finally
-    Form6.Free;
-  end;
-
 end;
 
 procedure TTabbedForm.btnTruncateClick(Sender: TObject);
