@@ -16,7 +16,7 @@ uses
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FMX.Layouts, FMX.ListBox,
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
-  JvBackgrounds, FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit,
+  FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit,
   System.ImageList, FMX.ImgList, FMX.WebBrowser, FMX.Objects, FMX.GifUtils,
   FMX.Platform, FMX.Surfaces;
 
@@ -139,17 +139,6 @@ type
     Image2: TImage;
     FloatAnimation2: TFloatAnimation;
     Button13: TButton;
-    StringColumn1: TStringColumn;
-    StringColumn2: TStringColumn;
-    StringColumn3: TStringColumn;
-    StringColumn4: TStringColumn;
-    StringColumn5: TStringColumn;
-    StringColumn6: TStringColumn;
-    StringColumn7: TStringColumn;
-    StringColumn8: TStringColumn;
-    StringColumn9: TStringColumn;
-    StringColumn10: TStringColumn;
-    StringColumn11: TStringColumn;
 
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
