@@ -78,7 +78,7 @@ begin
       tmpQueryPSO:=TFDQuery.Create(nil);
       tmpQueryPSO.Connection:= psoConnection ;
 
-      query:='select model_no, create_time ,sum(qty) as demand, DATE_FORMAT(start_date, "%m-%Y") as start_date from t_file where model_no in '+
+      query:='select model_no, create_time ,sum(qty) as demand, DATE_FORMAT(start_date, "%Y-%m") as start_date from t_file where model_no in '+
              '('+ modelNumber +') and '+
              ' create_time=(select max(create_time) from t_file) ' +
              ' group by month(start_date) ' +

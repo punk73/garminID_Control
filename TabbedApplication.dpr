@@ -1,11 +1,6 @@
 program TabbedApplication;
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   System.StartUpCopy,
   FMX.Forms,
   FMX.Dialogs,
@@ -19,7 +14,8 @@ uses
   Unit7 in 'Unit7.pas' {Form7},
   Unit8 in 'Unit8.pas' {Form8},
   FMX.GifUtils in 'FMX.GifUtils.pas',
-  Unit9 in 'Unit9.pas' {Form9};
+  Unit9 in 'Unit9.pas' {Form9},
+  Unit10 in 'Unit10.pas';
 
 {$R *.res}
 

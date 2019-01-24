@@ -401,6 +401,7 @@
             <Form>Form9</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="Unit10.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -416,8 +417,8 @@
     <ItemGroup>
         <Reference Include="libmysql.dll">
             <AssemblyName/>
-            <HintPath>libmysql.dll</HintPath>
             <AssemblyTag>libmysql</AssemblyTag>
+            <HintPath>libmysql.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ProjectExtensions>
@@ -503,14 +504,14 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png" Configuration="Debug" Class="File">
+                <DeployFile LocalName="$(BDS)\bin\dbxadapter.dll" Configuration="Release" Class="File">
                     <Platform Name="Win32">
-                        <RemoteDir>Assest\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\dbxadapter.dll" Configuration="Release" Class="File">
+                <DeployFile LocalName="$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png" Configuration="Debug" Class="File">
                     <Platform Name="Win32">
+                        <RemoteDir>Assest\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
