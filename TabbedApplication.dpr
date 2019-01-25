@@ -21,27 +21,20 @@ uses
 
 begin
 
-//  if TForm6.Execute then
-//  begin
-//    Application.Initialize;
-//    Application.CreateForm(TTabbedForm, TabbedForm);
-//  Application.CreateForm(TDuplicatedForm, DuplicatedForm);
-//  Application.CreateForm(TForm7, Form7);
-//  Application.CreateForm(TForm8, Form8);
-//  Application.CreateForm(TForm9, Form9);
-//  Application.Run;
-//  end
-//  else
-//  begin
-//    ShowMessage('username or password is wrong!');
-//  end;
-
-  Application.Initialize;
-  Application.CreateForm(TTabbedForm, TabbedForm);
+  if TForm6.Execute then
+  begin
+    Application.Initialize;
+    Application.CreateForm(TTabbedForm, TabbedForm);
   Application.CreateForm(TDuplicatedForm, DuplicatedForm);
   Application.CreateForm(TForm7, Form7);
   Application.CreateForm(TForm8, Form8);
   Application.CreateForm(TForm9, Form9);
   Application.Run;
+  end
+  else
+  begin
+    ShowMessage('username or password is wrong!');
+  end;
+
 
 end.

@@ -62,15 +62,6 @@ object Form8: TForm8
     Text = 'Garmin Id :'
     TabOrder = 6
   end
-  object Label4: TLabel
-    Position.X = 8.000000000000000000
-    Position.Y = 336.000000000000000000
-    Size.Width = 537.000000000000000000
-    Size.Height = 17.000000000000000000
-    Size.PlatformDefault = False
-    Text = '*Balance = ( Current Stock - Demand ) + Allocated Stock'
-    TabOrder = 9
-  end
   object Label5: TLabel
     Position.X = 304.000000000000000000
     Position.Y = 64.000000000000000000
@@ -78,7 +69,7 @@ object Form8: TForm8
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'PSO Version :'
-    TabOrder = 13
+    TabOrder = 12
   end
   object psoVersionLabel: TLabel
     Position.X = 384.000000000000000000
@@ -87,7 +78,7 @@ object Form8: TForm8
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'psoVersionLabel'
-    TabOrder = 14
+    TabOrder = 13
   end
   object Button1: TButton
     Anchors = [akTop, akRight]
@@ -98,7 +89,7 @@ object Form8: TForm8
     Size.Width = 192.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 17
+    TabOrder = 16
     Text = 'Show Allocated Stock Detail'
     OnClick = Button1Click
   end
