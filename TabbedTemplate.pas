@@ -1389,8 +1389,8 @@ begin
   isiPsoVersion;
   getGarminId;
   getModelNumber;  // it obviously can be maximize.
-  updateStock; //  we need to update this method;
-  updateDemand; // we don't need this method anymore. get from store procedure;
+  // updateStock; //  we need to update this method;
+  // updateDemand; // we don't need this method anymore. get from store procedure;
   loadGif(Image1);  //loading di menu duplication checker
   loadGif(Image2);  // loading di menu main grid
 
@@ -2376,7 +2376,9 @@ begin
             if not (total = stock_awal ) then
             begin
               //update
-              queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';
+              // queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';
+              // no longer updating allocated stock
+              queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +'';
               FDConnection1.ExecSQL(queryUpdate);
             end;
           end;
@@ -2393,7 +2395,7 @@ end;
 procedure TTabbedForm.validasiLogFile;
 begin
   //for I := Low to High do
-    
+
 end;
 
 end.
