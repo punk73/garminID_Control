@@ -33,9 +33,6 @@ object Form8: TForm8
     object StringColumn3: TStringColumn
       Header = 'Demand'
     end
-    object StringColumn4: TStringColumn
-      Header = 'Allocated Stock'
-    end
     object StringColumn5: TStringColumn
       Header = 'Balance'
     end

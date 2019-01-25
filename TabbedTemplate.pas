@@ -1388,9 +1388,9 @@ begin
 
   isiPsoVersion;
   getGarminId;
-  getModelNumber;
-  updateStock;
-  updateDemand;
+  getModelNumber;  // it obviously can be maximize.
+  updateStock; //  we need to update this method;
+  updateDemand; // we don't need this method anymore. get from store procedure;
   loadGif(Image1);  //loading di menu duplication checker
   loadGif(Image2);  // loading di menu main grid
 

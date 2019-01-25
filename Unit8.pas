@@ -19,7 +19,6 @@ type
     StringColumn1: TStringColumn;
     StringColumn2: TStringColumn;
     StringColumn3: TStringColumn;
-    StringColumn4: TStringColumn;
     psoConnection: TFDConnection;
     FDQuery1: TFDQuery;
     Label2: TLabel;
@@ -101,30 +100,20 @@ begin
         if not (currentStock='') then stock:=currentStock
         else stock:= '0';
 
-        if not (allocated_stock='') then allocatedStock := allocated_stock
+        if not (allocated_stock='') then allocatedStock := '0'
         else allocatedStock:='0';
 
         demand:= tmpQueryPSO['demand'];
         //isi end date
         detailDemandGrid.Cells[0, i] := endDate ;
+
         //isi currentStock
-        if i=0 then
-        begin
-          detailDemandGrid.Cells[1,i] := currentStock;
-          //isi allocated stock
-          detailDemandGrid.Cells[3, i] := allocatedStock ;
-        end
-        else
-        begin
-          detailDemandGrid.Cells[1,i] := IntToStr( StrToInt( detailDemandGrid.Cells[4,i-1]) )  ;
-          //isi allocated stock
-          detailDemandGrid.Cells[3, i] := '0' ;
-        end;
+        detailDemandGrid.Cells[1,i] := currentStock;
 
         //isi demand
         detailDemandGrid.Cells[2, i] := demand ;
         //isi balance
-        detailDemandGrid.Cells[4, i] := IntToStr( StrToInt(detailDemandGrid.Cells[1,i]) - StrToInt(demand) + StrToInt(detailDemandGrid.Cells[3,i]) ) ;
+        detailDemandGrid.Cells[3, i] := IntToStr( StrToInt(detailDemandGrid.Cells[1,i]) - StrToInt(demand) ) ;
 
         i:= i+1;
         tmpQueryPSO.Next;
