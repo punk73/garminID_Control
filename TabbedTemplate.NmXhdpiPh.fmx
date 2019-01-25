@@ -31,16 +31,13 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5336.000000000000000000
+        Size.Height = 5433.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 359.000000000000000000
           Size.Height = 368.000000000000000000
           RowCount = 21
           Viewport.Width = 359.000000000000000000
           Viewport.Height = 368.000000000000000000
-          inherited StringColumn1: TStringColumn
-            Size.Width = 241.000000000000000000
-          end
         end
         inherited Panel7: TPanel
           inherited Edit1: TEdit
@@ -63,7 +60,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5353.000000000000000000
+        Size.Height = 5450.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 135.000000000000000000
           Size.Height = 440.000000000000000000
@@ -100,7 +97,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5345.000000000000000000
+        Size.Height = 5442.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 231.000000000000000000
           Size.Height = 416.000000000000000000
@@ -115,7 +112,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5345.000000000000000000
+        Size.Height = 5442.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -127,15 +124,6 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
           RowCount = 21
           Viewport.Width = 0.000000000000000000
           Viewport.Height = 423.000000000000000000
-          inherited StringColumn9: TStringColumn
-            Size.Width = 57.000000000000000000
-          end
-          inherited StringColumn10: TStringColumn
-            Size.Width = 207.000000000000000000
-          end
-          inherited StringColumn11: TStringColumn
-            Size.Width = 69.000000000000000000
-          end
         end
         inherited listPath: TListBox
           Size.Height = 328.000000000000000000
@@ -150,7 +138,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5345.000000000000000000
+        Size.Height = 5442.000000000000000000
         inherited Label12: TLabel
           Position.Y = 455.000000000000000000
         end
@@ -162,12 +150,6 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
           RowCount = 815
           Viewport.Width = 0.000000000000000000
           Viewport.Height = 161.000000000000000000
-          inherited StringColumn5: TStringColumn
-            Size.Width = 185.000000000000000000
-          end
-          inherited StringColumn6: TStringColumn
-            Size.Width = 79.000000000000000000
-          end
         end
         inherited Label9: TLabel
           TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -203,20 +185,5 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
             GestureID = sgiRight
           end>
       end>
-  end
-  inherited stockQuery: TFDQuery
-    Active = True
-  end
-  inherited duplicateQuery: TFDQuery
-    Active = True
-  end
-  inherited lineQuery: TFDQuery
-    Active = True
-  end
-  inherited psoQuery: TFDQuery
-    Active = True
-  end
-  inherited MainQuery: TFDQuery
-    Active = True
   end
 end

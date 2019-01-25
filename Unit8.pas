@@ -107,7 +107,17 @@ begin
         detailDemandGrid.Cells[0, i] := endDate ;
 
         //isi currentStock
-        detailDemandGrid.Cells[1,i] := currentStock;
+        //isi currentStock
+        if i=0 then
+        begin
+          detailDemandGrid.Cells[1,i] := currentStock;
+          //isi allocated stock
+        end
+        else
+        begin
+          //stock = stock -
+          detailDemandGrid.Cells[1,i] := IntToStr( StrToInt( detailDemandGrid.Cells[3,i-1]) );
+        end;
 
         //isi demand
         detailDemandGrid.Cells[2, i] := demand ;
