@@ -1,0 +1,79 @@
+unit Unit11;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs ,
+  FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.StdCtrls, FireDAC.Comp.Client;
+
+type
+  TForm11 = class(TForm)
+    Memo1: TMemo;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form11: TForm11;
+
+implementation
+  uses TabbedTemplate;
+{$R *.fmx}
+
+procedure TForm11.Button1Click(Sender: TObject);
+var
+  query, queryUpdate: string;
+  total,stock_awal, I,Code: Integer;
+  tmpQuery: TFDQuery;
+  selisih, allocated_stock: Integer;
+  path: string;
+begin
+    query:='SELECT id,`path`,stock,stock_awal,allocated_stock FROM `stocks`';
+    total:=0;
+    try
+      tmpQuery:= TFDQuery.Create(Self);
+      tmpQuery.Connection:= FDConnection1;
+      tmpQuery.SQL.Text:= query;
+      tmpQuery.Active:=true;
+      tmpQuery.Open();
+
+
+      while not (tmpQuery.Eof) do
+      begin
+        path := tmpQuery['path'];
+        stock_awal := tmpQuery['stock_awal'];
+          Application.ProcessMessages; //agar program tetap listen terhadap event
+        total:= GetDirectoryCount( path ); //Value Baru
+          Application.ProcessMessages; //agar program tetap listen terhadap event
+
+        //tmpQuery['stock'] = value lama
+        selisih := stock_awal - total ; //selisih = value lama- value baru
+        allocated_stock := tmpQuery['allocated_stock'];
+        //ShowMessage(inttostr(total));
+        //ShowMessage(tmpQuery['path']+''+ );
+          if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
+          begin
+            if not (total = stock_awal ) then
+            begin
+              //update
+              // queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';
+              // no longer updating allocated stock
+              queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +'';
+              FDConnection1.ExecSQL(queryUpdate);
+            end;
+          end;
+
+
+        tmpQuery.Next;
+      end;
+
+    finally
+      tmpQuery.Free;
+    end;
+end;
+
+end.

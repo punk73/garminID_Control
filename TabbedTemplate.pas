@@ -139,6 +139,7 @@ type
     Image2: TImage;
     FloatAnimation2: TFloatAnimation;
     Button13: TButton;
+    Button15: TButton;
 
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -262,7 +263,7 @@ var
 
 
 implementation
-    uses Unit1, Unit2,  Unit3, Unit4, Unit5, Unit8, Unit9;
+    uses Unit1, Unit2,  Unit3, Unit4, Unit5, Unit8, Unit9, Unit11;
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
@@ -2356,7 +2357,7 @@ begin
       tmpQuery.Active:=true;
       tmpQuery.Open();
 
-
+      queryUpdate := '';
       while not (tmpQuery.Eof) do
       begin
         path := tmpQuery['path'];
@@ -2364,29 +2365,28 @@ begin
           Application.ProcessMessages; //agar program tetap listen terhadap event
         total:= GetDirectoryCount( path ); //Value Baru
           Application.ProcessMessages; //agar program tetap listen terhadap event
+
         //tmpQuery['stock'] = value lama
         selisih := stock_awal - total ; //selisih = value lama- value baru
         allocated_stock := tmpQuery['allocated_stock'];
         //ShowMessage(inttostr(total));
         //ShowMessage(tmpQuery['path']+''+ );
-        if not ( allocated_stock = selisih  ) then
-        begin
           if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
           begin
-            if not (total = stock_awal ) then
-            begin
+            //if not (total = stock_awal ) then
+            //begin
               //update
               // queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';
               // no longer updating allocated stock
-              queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +'';
-              FDConnection1.ExecSQL(queryUpdate);
-            end;
+              queryUpdate:= queryUpdate + 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +';';
+              //form11.Memo1.Lines.Add( queryUpdate );
+            //end;
           end;
-        end;
 
         tmpQuery.Next;
       end;
-
+      FDConnection1.ExecSQL(queryUpdate);
+      tmpQuery.Close;
     finally
       tmpQuery.Free;
     end;

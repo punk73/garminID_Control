@@ -4,23 +4,25 @@
 		<NoProfile iOSSimulator="iPhone5" Android="nexus_new"/>
 	</ActiveMobileDevice>
 	<Transactions>
-    <Transaction>1899-12-30 00:00:00.000.394,=E:\Delphi Project\Garmin id tab project\Unit3.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.511,E:\Delphi Project\Garmin id tab project\TIsiGridThread.pas=</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.984,=E:\Delphi Project\Garmin id tab project\Unit5.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.806,E:\Delphi Project\Garmin id tab project\TIsiGridThread.pas=E:\Delphi Project\Garmin id tab project\Unit2.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.047,=E:\Delphi Project\Garmin id tab project\Unit3.pas</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.268,=E:\Delphi Project\Garmin id tab project\Unit7.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.984,=E:\Delphi Project\Garmin id tab project\Unit5.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.394,=E:\Delphi Project\Garmin id tab project\Unit3.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.299,=E:\Delphi Project\Garmin id tab project\Unit8.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.270,=E:\Delphi Project\Garmin id tab project\Unit4.pas</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.136,=E:\Master Program\masteran\FMXGif\FMX.GifUtils.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.035,E:\Master Program\masteran\FMXGif\FMX.GifUtils.pas=</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.268,=E:\Delphi Project\Garmin id tab project\Unit7.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.136,=E:\Master Program\masteran\FMXGif\FMX.GifUtils.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.628,=E:\Delphi Project\Garmin id tab project\Unit9.pas</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.806,E:\Delphi Project\Garmin id tab project\Unit2.pas=E:\Delphi Project\Garmin id tab project\TIsiGridThread.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.736,=E:\Delphi Project\Garmin id tab project\Unit2.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.257,=E:\Delphi Project\Garmin id tab project\libmysql.dll</Transaction>
     <Transaction>1899-12-30 00:00:00.000.392,=E:\Delphi Project\Garmin id tab project\Unit6.pas</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.736,=E:\Delphi Project\Garmin id tab project\Unit2.pas</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.815,=E:\Delphi Project\Garmin id tab project\FMX.GifUtils.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.786,=E:\Delphi Project\Garmin id tab project\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.815,=E:\Delphi Project\Garmin id tab project\FMX.GifUtils.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.961,=E:\Delphi Project\Garmin id tab project\Unit2.pas</Transaction>
     <Transaction>2019-01-22 12:26:09.000.192,=C:\Users\it8\Documents\Embarcadero\Studio\Projects\garmin\Unit10.pas</Transaction>
+    <Transaction>2019-02-15 09:29:40.986,=C:\Users\it8\Documents\Embarcadero\Studio\Projects\garmin\Unit11.pas</Transaction>
+    <Transaction>2019-02-15 10:31:36.782,C:\Users\it8\Documents\Embarcadero\Studio\Projects\garmin\Unit11.pas=</Transaction>
   </Transactions>
 </BorlandProject>
