@@ -139,6 +139,7 @@ type
     Image2: TImage;
     FloatAnimation2: TFloatAnimation;
     Button13: TButton;
+    Memo1: TMemo;
     Button15: TButton;
 
     procedure Button10Click(Sender: TObject);
@@ -202,6 +203,7 @@ type
     procedure duplicateQueryBeforeOpen(DataSet: TDataSet);
     procedure duplicateQueryAfterOpen(DataSet: TDataSet);
     procedure Button13Click(Sender: TObject);
+    procedure Button15Click(Sender: TObject);
 
 
 
@@ -575,6 +577,11 @@ begin
   end;
 
 
+end;
+
+procedure TTabbedForm.Button15Click(Sender: TObject);
+begin
+  Memo1.Lines.Clear;
 end;
 
 procedure TTabbedForm.Button1Click(Sender: TObject);
@@ -2351,6 +2358,7 @@ begin
     query:='SELECT id,`path`,stock,stock_awal,allocated_stock FROM `stocks`';
     total:=0;
     try
+      Memo1.Lines.Clear; //clear logs;
       tmpQuery:= TFDQuery.Create(Self);
       tmpQuery.Connection:= FDConnection1;
       tmpQuery.SQL.Text:= query;
@@ -2362,25 +2370,20 @@ begin
       begin
         path := tmpQuery['path'];
         stock_awal := tmpQuery['stock_awal'];
-          Application.ProcessMessages; //agar program tetap listen terhadap event
+        Application.ProcessMessages; //agar program tetap listen terhadap event
         total:= GetDirectoryCount( path ); //Value Baru
-          Application.ProcessMessages; //agar program tetap listen terhadap event
+        Application.ProcessMessages; //agar program tetap listen terhadap event
+        Memo1.Lines.Add( IntToStr(tmpQuery['id']) + ' = ' + IntToStr(total) );
 
-        //tmpQuery['stock'] = value lama
-        selisih := stock_awal - total ; //selisih = value lama- value baru
-        allocated_stock := tmpQuery['allocated_stock'];
-        //ShowMessage(inttostr(total));
-        //ShowMessage(tmpQuery['path']+''+ );
           if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
           begin
-            //if not (total = stock_awal ) then
-            //begin
-              //update
-              // queryUpdate:= 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+', allocated_stock='+ IntToStr(selisih) +' WHERE id='+ IntToStr( tmpQuery['id']) +'';
-              // no longer updating allocated stock
-              queryUpdate:= queryUpdate + 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +';';
-              //form11.Memo1.Lines.Add( queryUpdate );
-            //end;
+            queryUpdate:= queryUpdate + 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +';';
+            Memo1.Lines.Add( 'stock with id = ' + IntToStr(tmpQuery['id']) + ' updated! current stock = ' + IntToStr( total ) );
+
+          end
+          else
+          begin
+             Memo1.Lines.Add( 'stock with id = ' + IntToStr(tmpQuery['id']) + ' not updated! current stock = ' + IntToStr( total ) );
           end;
 
         tmpQuery.Next;

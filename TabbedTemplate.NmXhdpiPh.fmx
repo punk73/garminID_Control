@@ -31,7 +31,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5433.000000000000000000
+        Size.Height = 5724.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 359.000000000000000000
           Size.Height = 368.000000000000000000
@@ -49,6 +49,10 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
             TextSettings.Font.StyleExt = {00070000000000000004000000}
           end
         end
+        inherited Memo1: TMemo
+          Viewport.Width = 185.000000000000000000
+          Viewport.Height = 217.000000000000000000
+        end
       end
       inherited Panel3: TPanel
         Size.Width = 0.000000000000000000
@@ -60,7 +64,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5450.000000000000000000
+        Size.Height = 5741.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 135.000000000000000000
           Size.Height = 440.000000000000000000
@@ -97,7 +101,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5442.000000000000000000
+        Size.Height = 5733.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 231.000000000000000000
           Size.Height = 416.000000000000000000
@@ -112,7 +116,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5442.000000000000000000
+        Size.Height = 5733.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -138,7 +142,7 @@ inherited TabbedForm_NmXhdpiPh: TTabbedForm_NmXhdpiPh
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 5442.000000000000000000
+        Size.Height = 5733.000000000000000000
         inherited Label12: TLabel
           Position.Y = 455.000000000000000000
         end
