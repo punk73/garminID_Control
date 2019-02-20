@@ -141,6 +141,8 @@ type
     Button13: TButton;
     Memo1: TMemo;
     Button15: TButton;
+    MenuItem3: TMenuItem;
+    Button16: TButton;
 
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -204,6 +206,7 @@ type
     procedure duplicateQueryAfterOpen(DataSet: TDataSet);
     procedure Button13Click(Sender: TObject);
     procedure Button15Click(Sender: TObject);
+    procedure Button16Click(Sender: TObject);
 
 
 
@@ -234,6 +237,7 @@ type
     procedure simpanDemand(garmin_id:string;value:TStrings);
     function isInArray(str:string; list:TStringList): boolean;
     function GetDirectoryCount(const DirName: string): Integer;
+    function GetDirectoryString(const DirName : String ) : String;
     procedure getStock;
     procedure updateStock;
     procedure listModelRefresh;
@@ -582,6 +586,32 @@ end;
 procedure TTabbedForm.Button15Click(Sender: TObject);
 begin
   Memo1.Lines.Clear;
+  Log.d('button has been pressed');
+end;
+
+procedure TTabbedForm.Button16Click(Sender: TObject);
+var
+  int : Integer;
+  path , value, hasil : String;
+  arr : TStringDynArray;
+begin
+//  int := GetDirectoryCount(listPath.)
+  path:= listPath.Selected.Text;
+  //edit path supaya backslash kebaca di mySql
+  int := GetDirectoryCount(path);
+  Log.d( path + ' = '+ IntToStr(int));
+  if int < 20 then
+  begin
+    hasil := GetDirectoryString(path);
+    Log.d(hasil);
+  end;
+
+  // kalau beda, update.
+  if not ( IntToStr(int) = edtStocks.Text) then
+  begin
+    edtStocks.Text := IntToStr(int);
+  end;
+
 end;
 
 procedure TTabbedForm.Button1Click(Sender: TObject);
@@ -1459,6 +1489,29 @@ begin
     Result := Length(TDirectory.GetDirectories(DirName))
   else
     Result:=-1;
+end;
+
+function TTabbedForm.GetDirectoryString(const DirName: String): String;
+var
+  hasil, value : String;
+  arr : TStringDynArray;
+begin
+  // this method is mean to be debugging process;
+
+  if DirectoryExists(DirName) and DirIsReadOnly(DirName) then
+  begin
+    arr := TDirectory.GetDirectories(DirName);
+
+    hasil := '';
+    for value in arr do
+    begin
+      hasil := hasil +' '+ value;
+    end;
+
+    Result := hasil;
+  end
+  else
+    Result:='';
 end;
 
 procedure TTabbedForm.getError(message: string);
@@ -2375,7 +2428,7 @@ begin
         Application.ProcessMessages; //agar program tetap listen terhadap event
         Memo1.Lines.Add( IntToStr(tmpQuery['id']) + ' = ' + IntToStr(total) );
 
-          if not (total=-1) then //total=-1 jika filepath di db invalid di computer client
+          if (total > -1) then //total=-1 jika filepath di db invalid di computer client
           begin
             queryUpdate:= queryUpdate + 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +';';
             Memo1.Lines.Add( 'stock with id = ' + IntToStr(tmpQuery['id']) + ' updated! current stock = ' + IntToStr( total ) );
