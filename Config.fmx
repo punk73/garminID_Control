@@ -1,0 +1,43 @@
+object Form12: TForm12
+  Left = 0
+  Top = 0
+  Caption = 'Form12'
+  ClientHeight = 304
+  ClientWidth = 545
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object txtPsoQuery: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    Lines.Strings = (
+      'select model_no, sum(qty) as Qty'
+      
+        #9'from t_file where create_time=(select max(create_time) from t_f' +
+        'ile)'
+      '  and start_serial <=  CURDATE()'
+      'group by model_no')
+    Position.X = 120.000000000000000000
+    Position.Y = 24.000000000000000000
+    Size.Width = 401.000000000000000000
+    Size.Height = 225.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Viewport.Width = 397.000000000000000000
+    Viewport.Height = 205.000000000000000000
+  end
+  object Label1: TLabel
+    Position.X = 24.000000000000000000
+    Position.Y = 22.000000000000000000
+    Text = 'PSO QUERY'
+    TabOrder = 1
+  end
+  object Button1: TButton
+    Position.X = 448.000000000000000000
+    Position.Y = 264.000000000000000000
+    TabOrder = 2
+    Text = 'SAVE'
+    OnClick = Button1Click
+  end
+end

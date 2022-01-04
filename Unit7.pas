@@ -273,8 +273,8 @@ begin
         oParams:=Tstringlist.Create;
         oParams.LoadFromFile( ExtractFilePath(ParamStr(0)) + 'file.ini' );
         //oParams.Add('Pooled=True');
-        FDManager.AddConnectionDef('garmin_inventory', 'MySQL', oParams);
-        LoginConnection.ConnectionDefName:='garmin_inventory';
+        FDManager.AddConnectionDef('garmin_inventory_login', 'MySQL', oParams);
+        LoginConnection.ConnectionDefName:='garmin_inventory_login';
       finally
         oParams.Free;
       end;

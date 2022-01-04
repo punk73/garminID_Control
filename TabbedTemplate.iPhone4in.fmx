@@ -31,7 +31,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel1: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 2225.000000000000000000
+        Size.Height = 2547.000000000000000000
         inherited mainGrid: TStringGrid
           Size.Width = 279.000000000000000000
           Size.Height = 305.000000000000000000
@@ -64,7 +64,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel2: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 2242.000000000000000000
+        Size.Height = 2564.000000000000000000
         inherited duplicateGrid: TStringGrid
           Size.Width = 55.000000000000000000
           Size.Height = 377.000000000000000000
@@ -101,7 +101,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel4: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 2234.000000000000000000
+        Size.Height = 2556.000000000000000000
         inherited garminGrid: TStringGrid
           Size.Width = 151.000000000000000000
           Size.Height = 353.000000000000000000
@@ -116,7 +116,7 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel5: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 2234.000000000000000000
+        Size.Height = 2556.000000000000000000
         inherited edtPathStock: TEdit
           inherited Button9: TEllipsesEditButton
             Size.Height = 50.000000000000000000
@@ -136,12 +136,12 @@ inherited TabbedForm_iPhone4in: TTabbedForm_iPhone4in
       end
     end
     inherited TabItem6: TTabItem
-      Size.Width = 67.000000000000000000
+      Size.Width = 66.000000000000000000
       ExplicitSize.cx = 132.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       inherited Panel8: TPanel
         Size.Width = 0.000000000000000000
-        Size.Height = 2234.000000000000000000
+        Size.Height = 2556.000000000000000000
         inherited Label12: TLabel
           Position.Y = 392.000000000000000000
         end

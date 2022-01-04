@@ -17,8 +17,8 @@ uses
   Data.Bind.EngExt, Fmx.Bind.DBEngExt, Fmx.Bind.Grid, System.Bindings.Outputs,
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
   FMX.Menus,  FMX.ExtCtrls, FMX.Colors, FMX.Memo, FMX.ComboEdit,
-  System.ImageList, FMX.ImgList, FMX.WebBrowser, FMX.Objects, FMX.GifUtils,
-  FMX.Platform, FMX.Surfaces;
+  System.ImageList, FMX.ImgList, FMX.WebBrowser,  FMX.GifUtils,
+  FMX.Platform, FMX.Surfaces, FMX.Objects;
 
 type
   TTabbedForm = class(TForm)
@@ -143,6 +143,7 @@ type
     Button15: TButton;
     MenuItem3: TMenuItem;
     Button16: TButton;
+    Button17: TButton;
 
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
@@ -207,6 +208,7 @@ type
     procedure Button13Click(Sender: TObject);
     procedure Button15Click(Sender: TObject);
     procedure Button16Click(Sender: TObject);
+    procedure Button17Click(Sender: TObject);
 
 
 
@@ -237,6 +239,7 @@ type
     procedure simpanDemand(garmin_id:string;value:TStrings);
     function isInArray(str:string; list:TStringList): boolean;
     function GetDirectoryCount(const DirName: string): Integer;
+    function GetDirCount(const DirName: string) : Integer;
     function GetDirectoryString(const DirName : String ) : String;
     procedure getStock;
     procedure updateStock;
@@ -269,7 +272,7 @@ var
 
 
 implementation
-    uses Unit1, Unit2,  Unit3, Unit4, Unit5, Unit8, Unit9, Unit11;
+    uses Unit1, Unit2,  Unit3, Unit4, Unit5, Unit8, Unit9, Unit11, Config;
 
 {$R *.fmx}
 {$R *.NmXhdpiPh.fmx ANDROID}
@@ -611,6 +614,14 @@ begin
   begin
     edtStocks.Text := IntToStr(int);
   end;
+
+end;
+
+procedure TTabbedForm.Button17Click(Sender: TObject);
+begin
+
+Config.Form12.txtPsoQuery.Lines := psoQuery.SQL;
+Config.Form12.Show;
 
 end;
 
@@ -1483,10 +1494,37 @@ begin
   edtGarminId.SetFocus;
 end;
 
+function TTabbedForm.GetDirCount(const DirName: string): Integer;
+var
+  res: Integer;
+  dir: TDirectory;
+  Name: string;
+begin
+//  Result := 0;
+//  res := FindFirst( DirName , faDirectory, SearchRec);
+//  if res=0 then begin
+//    try
+//      while res=0 do begin
+//        if SearchRec.FindData.dwFileAttributes and faDirectory<>0 then begin
+//          Name := SearchRec.FindData.cFileName;
+//          if (Name<>'.') and (Name<>'..') then begin
+//            inc(Result);
+//          end;
+//        end;
+//        res := FindNext(SearchRec);
+//      end;
+//    finally
+//      FindClose(SearchRec);
+//    end;
+//  end;
+
+
+end;
+
 function TTabbedForm.GetDirectoryCount(const DirName: string): Integer;
 begin
   if DirectoryExists(DirName) and DirIsReadOnly(DirName) then
-    Result := Length(TDirectory.GetDirectories(DirName))
+    Result := Length(TDirectory.GetDirectories(DirName ))
   else
     Result:=-1;
 end;
@@ -1695,6 +1733,7 @@ end;
 procedure TTabbedForm.koneksi;
 var
   oParams: TStringList;
+  psoParams:TStringList;
 begin
   try
 
@@ -1705,6 +1744,7 @@ begin
           oParams:=Tstringlist.Create;
           oParams.LoadFromFile( ExtractFilePath(ParamStr(0)) + 'file.ini' );
           oParams.Add('Pooled=True');
+          FDManager.DeleteConnectionDef('garmin_inventory');
           FDManager.AddConnectionDef('garmin_inventory', 'MySQL', oParams);
           FDConnection1.ConnectionDefName:='garmin_inventory';
         finally
@@ -1723,13 +1763,13 @@ begin
       if FileExists(ExtractFilePath(ParamStr(0)) + 'dbpso.ini' ) then
       begin
         try
-          oParams:=Tstringlist.Create;
-          oParams.LoadFromFile( ExtractFilePath(ParamStr(0)) + 'dbpso.ini' );
-          oParams.Add('Pooled=True');
-          FDManager.AddConnectionDef('db_pso', 'MySQL', oParams);
-          psoConnection.ConnectionDefName:='db_pso';
+          psoParams:=Tstringlist.Create;
+          psoParams.LoadFromFile( ExtractFilePath(ParamStr(0)) + 'dbpso.ini' );
+//          psoParams.Add('Pooled=True');
+          FDManager.AddConnectionDef('dbpso', 'MySQL', psoParams);
+          psoConnection.ConnectionDefName:='dbpso';
         finally
-          oParams.Free;
+          psoParams.Free;
         end;
       end;
       psoConnection.Connected:=true;
@@ -2426,17 +2466,17 @@ begin
         Application.ProcessMessages; //agar program tetap listen terhadap event
         total:= GetDirectoryCount( path ); //Value Baru
         Application.ProcessMessages; //agar program tetap listen terhadap event
-        Memo1.Lines.Add( IntToStr(tmpQuery['id']) + ' = ' + IntToStr(total) );
+//        Memo1.Lines.Add( IntToStr(tmpQuery['id']) + ' = ' + IntToStr(total) );
 
           if (total > -1) then //total=-1 jika filepath di db invalid di computer client
           begin
             queryUpdate:= queryUpdate + 'UPDATE `stocks` SET `stock`='+ IntToStr(total)+' WHERE id='+ IntToStr( tmpQuery['id']) +';';
-            Memo1.Lines.Add( 'stock with id = ' + IntToStr(tmpQuery['id']) + ' updated! current stock = ' + IntToStr( total ) );
+//            Memo1.Lines.Add( 'stock with id = ' + IntToStr(tmpQuery['id']) + ' updated! current stock = ' + IntToStr( total ) );
 
           end
           else
           begin
-             Memo1.Lines.Add( 'stock with id = ' + IntToStr(tmpQuery['id']) + ' not updated! current stock = ' + IntToStr( total ) );
+             Memo1.Lines.Add( 'Path "'+ path + '" bermasalah. silahkan cek' );
           end;
 
         tmpQuery.Next;
